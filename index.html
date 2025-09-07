@@ -81,9 +81,14 @@ button:disabled{opacity:.45;cursor:not-allowed;}
   color:var(--text);width:100%;height:100%;justify-content:center;
 }
 .card img.favicon{width:48px;height:48px;margin-bottom:8px;display:block;image-rendering:auto;}
-.link-title{
-  font-size:13px;font-weight:800;color:var(--text);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%;
+.link-title {
+  font-size: 11px;          /* μικρότερο μέγεθος */
+  font-weight: 700;         /* λίγο πιο “μαλακό” */
+  color: var(--text);
+  white-space: normal;      /* επιτρέπει πολλές γραμμές */
+  word-break: break-word;   /* σπάει μεγάλες λέξεις */
+  text-align: center;       /* κεντράρει το κείμενο */
+  max-width: 95%;           /* αφήνει περισσότερο χώρο */
 }
 .link-desc{
   font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;
