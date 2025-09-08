@@ -169,6 +169,20 @@ body:has(footer) .wrap{padding-bottom:70px;}
   opacity:0;pointer-events:none;transition:opacity .2s;box-shadow:0 6px 18px rgba(0,0,0,.2);
 }
 [data-tooltip]:hover::after{opacity:1;}
+
+  /* === Smooth transitions === */
+body, footer, button {
+  transition: background 0.3s, color 0.3s, opacity 0.3s, transform 0.1s;
+}
+
+/* === Hover / Active στα κουμπιά === */
+button:hover {
+  opacity: 0.85;
+}
+button:active {
+  transform: scale(0.97);
+}
+  
 </style>
 </head>
 <body>
