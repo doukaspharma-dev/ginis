@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <title>Τα δικά μου χρήσιμα</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link id="favicon" rel="icon" href="">
+<link rel="shortcut icon" type="image/png" href="assets/unnamed.png">
 <style>
 /* ===== ΧΡΩΜΑΤΑ ΘΕΜΑΤΟΣ ===== */
 :root{
-  --bg1:#0d1b2a; --bg2:#1b263b; --card:#415a77; --text:#e0e1dd; --accent:#f4a261;
-  --border:rgba(255,255,255,.15);
+--bg1:#0d1b2a; --bg2:#1b263b; --card:#415a77; --text:#e0e1dd; --accent:#f4a261;
+--border:rgba(255,255,255,.15);
 }
 
 /* Reset */
@@ -24,23 +24,34 @@ header{text-align:center;margin-bottom:10px;}
 header h1{margin:4px 0 0;font-size:26px;font-weight:800;}
 header h2{margin:6px 0 0;font-size:14px;color:#2a9df4;font-weight:700;}
 header h3{margin:6px 0 0;font-size:13px;color:#bbb;font-weight:500;}
-#themeToggle {
-  position: absolute;
-  top: 115px;   /* πάνω κάτω */
-  right: 190px;     /* δεξια αριστερά */
-  margin-top:8px;
-  padding:6px 14px;
-  border-radius:8px;
-  border:none;
-  cursor:pointer;
-  background:var(--accent);
-  color:#fff;          /* 👈 Πάντα λευκά γράμματα */
-  font-weight:700;
-  font-size:15px;
-}
 
 /* ===== TOPBAR BUTTONS ===== */
-.topbar{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:12px 0 18px;}
+.topbar {
+  display: flex;
+  justify-content: center;  /* Κεντρικά τα κουμπιά */
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 18px;
+  position: relative;
+}
+
+/* Container για δεξιά κουμπιά */
+.topbar-right {
+  margin-left: auto; /* Σπρώχνει ό,τι έχει μέσα δεξιά */
+}
+
+/* Κουμπί Dark / Light */
+#themeToggle {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+}
+
 button{padding:8px 14px;border:none;border-radius:10px;cursor:pointer;
   background:var(--accent);color:#fff;;font-weight:700;font-size:14px;}
 button.gray{background:#596070 !important;color:#ccc !important;}
@@ -93,6 +104,7 @@ button:disabled{opacity:.45;cursor:not-allowed;}
   text-align: center;       /* κεντράρει το κείμενο */
   max-width: 95%;           /* αφήνει περισσότερο χώρο */
 }
+
 .link-desc{
   font-size:9px;color:rgba(255,255,255,.6);margin-top:2px;
   max-width:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
@@ -165,34 +177,38 @@ body:has(footer) .wrap{padding-bottom:210px;}
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <h1>Τα δικά μου χρήσιμα</h1>
-    <h2>Φαρμακείο Γκίνης Πέτρος. Πολύγωνο.</h2>
-    <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
+
+<header>
+  <h1>Τα δικά μου χρήσιμα</h1>
+  <h2>Φαρμακείο Γκίνης Κ. Πέτρος, Πολύγωνο.</h2>
+  <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
+</header>
+
+<div class="topbar">
+  <!-- Κουμπιά κεντρικά -->
+  <button id="addBtnTop">+ Προσθήκη νέου link</button>
+  <button id="undoBtnTop" class="gray" disabled>↩ Αναίρεση</button>
+  <button id="backupBtn">Backup</button>
+  <button id="restoreBtn">Restore</button>
+
+  <!-- Δεξιά -->
+  <div class="topbar-right">
     <button id="themeToggle">🌙 Dark</button>
-  </header>
-
-  <div class="topbar">
-    <button id="addBtnTop">+ Προσθήκη νέου link</button>
-    <button id="undoBtnTop" class="gray" disabled>↩ Αναίρεση</button>
-    <button id="backupBtn">Backup</button>
-    <button id="restoreBtn">Restore</button>
   </div>
-
-  <div id="categories"></div>
 </div>
 
-  <!-- ===== ΧΩΡΟΣ ΓΙΑ ΚΑΤΗΓΟΡΙΕΣ ===== -->
-  <div id="categories"></div>
+
+
+<div id="categories"></div>
 </div>
+
 
 <footer>
-  <div class="btnrow">
-    <button id="addBtnFoot">+ Προσθήκη νέου link</button>
-  </div>
-  <div class="note">Φτιαγμένο με αγάπη από το Doukas Pharmacy Support®</div>
+<div class="btnrow">
+<button id="addBtnFoot">+ Προσθήκη νέου link</button>
+</div>
+<div class="note">Φτιαγμένο με αγάπη από το Doukas Pharmacy Support®</div>
 </footer>
-
 <!-- ===== MODAL ΝΕΟΥ LINK ===== -->
 <div class="modal" id="modalForm">
   <div class="box">
@@ -807,37 +823,7 @@ document.addEventListener("drop",e=>{
   dragSrc=null;
 });
 
-/* ===============================
-   📌 Favicon (τυχαίο) & Init + Theme toggle
-   =============================== */
-function setRandomFavicon(){
-  try{
-    const chars = ['★','❤','💊','🔗','⚕'];
-    const ch = chars[Math.floor(Math.random()*chars.length)];
-    const colors = ['#f4a261','#2f80ed','#ffd54f','#f472b6','#34d399'];
-    const color = colors[Math.floor(Math.random()*colors.length)];
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect rx='12' width='64' height='64' fill='${color}'/><text x='50%' y='56%' font-size='36' text-anchor='middle' fill='white' font-family='Arial, Helvetica, sans-serif'>${ch}</text></svg>`;
-    const url = 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
-    let link = document.getElementById('favicon');
-    if(!link){ link=document.createElement('link'); link.rel='icon'; link.id='favicon'; document.head.appendChild(link); }
-    link.href = url;
-  }catch(e){ /* non-critical */ }
-}
 
-loadData(); loadTheme();
-if(catOrder.length===0){
-  categories={"Εισαγωγή":[]};
-  catOrder=["Εισαγωγή"];
-  saveData();
-}
-render(); updateUndoBtn();
-
-// update palette swatches initial
-["bg1","bg2","card","text","accent"].forEach(id=>{
-  const el=document.getElementById(id);
-  const sw=document.getElementById('swatch-'+id);
-  if(el && sw) sw.style.background = el.value || getTheme()[id];
-});
 
 /* ===============================
    📌 Θέματα
@@ -893,8 +879,22 @@ document.getElementById("themeToggle").addEventListener("click", () => {
   updateThemeButton();
 });
 
-// set random favicon once
-setRandomFavicon();
+loadData(); loadTheme();
+if(catOrder.length===0){
+categories={"Εισαγωγή":[]};
+catOrder=["Εισαγωγή"];
+saveData();
+}
+render(); updateUndoBtn();
+
+
+// update palette swatches initial
+["bg1","bg2","card","text","accent"].forEach(id=>{
+const el=document.getElementById(id);
+const sw=document.getElementById('swatch-'+id);
+if(el && sw) sw.style.background = el.value || getTheme()[id];
+});
+
 </script>
 </body>
 </html>
