@@ -1,191 +1,234 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-<meta charset="UTF-8">
-<title>Τα δικά μου χρήσιμα</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" type="image/png" href="assets/unnamed.png">
-<style>
-/* ===== ΧΡΩΜΑΤΑ ΘΕΜΑΤΟΣ ===== */
-:root{
---bg1:#0d1b2a; --bg2:#1b263b; --card:#415a77; --text:#e0e1dd; --accent:#f4a261;
---border:rgba(255,255,255,.15);
-}
+  <meta charset="UTF-8">
+  <title>Τα δικά μου χρήσιμα</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="assets/unnamed.png">
 
-/* Reset */
-*{box-sizing:border-box}
-body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));
-  color:var(--text);font-family:Arial,Helvetica,sans-serif;}
-/* μειωμένα πλάγια περιθώρια + extra κάτω για footer */
-.wrap{max-width:1200px;margin:0 auto;padding:24px 10px 210px;}
+  <style>
+  /* -------------------------------------------------
+     1. ΘΕΜΑΤΙΚΑ ΧΡΩΜΑΤΑ (CSS variables)
+  ------------------------------------------------- */
+  :root {
+    --bg1:#0d1b2a;
+    --bg2:#1b263b;
+    --card:#415a77;
+    --text:#e0e1dd;
+    --accent:#f4a261;
+    --border:rgba(255,255,255,.15);
+  }
 
-/* ===== HEADER ===== */
-header{text-align:center;margin-bottom:10px;}
-header h1{margin:4px 0 0;font-size:26px;font-weight:800;}
-header h2{margin:6px 0 0;font-size:14px;color:#2a9df4;font-weight:700;}
-header h3{margin:6px 0 0;font-size:13px;color:#bbb;font-weight:500;}
+  /* -------------------------------------------------
+     2. RESET + BODY + WRAPPER
+  ------------------------------------------------- */
+  * { box-sizing: border-box; }
+  body {
+    margin:0;
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  .wrap { max-width:1200px; margin:0 auto; padding:24px 10px 210px; }
 
-/* ===== TOPBAR BUTTONS ===== */
-.topbar {
-  display: flex;
-  justify-content: center;  /* Κεντρικά τα κουμπιά */
-  align-items: center;
-  gap: 10px;
-  margin: 12px 0 18px;
-  position: relative;
-}
+  /* -------------------------------------------------
+     3. HEADER
+  ------------------------------------------------- */
+  header { text-align:center; margin-bottom:10px; }
+  header h1 { margin:4px 0 0; font-size:26px; font-weight:800; }
+  header h2 { margin:6px 0 0; font-size:14px; color:#2a9df4; font-weight:700; }
+  header h3 { margin:6px 0 0; font-size:13px; color:#bbb; font-weight:500; }
 
-/* Container για δεξιά κουμπιά */
-.topbar-right {
-  margin-left: auto; /* Σπρώχνει ό,τι έχει μέσα δεξιά */
-}
+  /* -------------------------------------------------
+     4. TOPBAR (κουμπιά πάνω)
+  ------------------------------------------------- */
+  .topbar {
+    display:flex; justify-content:center; align-items:center;
+    gap:10px; margin:12px 0 18px; position:relative;
+  }
+  .topbar-right { margin-left:auto; }
 
-/* Κουμπί Dark / Light */
-#themeToggle {
-  padding: 6px 14px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background: var(--accent);
-  color: #fff;
-  font-weight: 700;
-  font-size: 15px;
-}
+  /* -------------------------------------------------
+     5. ΚΟΥΜΠΙΑ
+  ------------------------------------------------- */
+  button {
+    padding:8px 14px; border:none; border-radius:10px; cursor:pointer;
+    background:var(--accent); color:#fff; font-weight:700; font-size:14px;
+  }
+  button.gray { background:#596070!important; color:#ccc!important; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  button:hover { opacity:0.85; }
+  button:active { transform:scale(0.97); }
 
-button{padding:8px 14px;border:none;border-radius:10px;cursor:pointer;
-  background:var(--accent);color:#fff;;font-weight:700;font-size:14px;}
-button.gray{background:#596070 !important;color:#ccc !important;}
-button:disabled{opacity:.45;cursor:not-allowed;}
+  /* Dropdown επιλογής theme */
+  #themeSelect {
+    padding:6px 10px; border-radius:8px; border:1px solid var(--border);
+    background:var(--card); color:var(--text); font-weight:600; cursor:pointer;
+  }
 
-/* ===== ΚΑΤΗΓΟΡΙΕΣ ===== */
-#categories{display:flex;flex-direction:column;gap:18px;padding:0 6px;}
-.category{background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:14px;padding:10px;}
-.category.drag-over{outline:2px dashed #5aa9ff;outline-offset:4px;}
-.category-title{display:flex;align-items:center;justify-content:space-between;position:relative;}
-.category-title h2{margin:0;font-size:18px;}
-.cat-actions{display:flex;gap:6px;opacity:0;transition:.2s;position:absolute;right:0;top:0;}
-.category-title:hover .cat-actions{opacity:1;}
-.cat-btn{cursor:pointer;font-size:12px;padding:2px 6px;border-radius:6px;
-  background:rgba(0,0,0,.45);color:var(--text);}
-.cat-btn:hover{background:rgba(0,0,0,.75);}
+  /* -------------------------------------------------
+     6. ΚΑΤΗΓΟΡΙΕΣ
+  ------------------------------------------------- */
+  #categories { display:flex; flex-direction:column; gap:18px; padding:0 6px; }
+  .category {
+    background:rgba(255,255,255,.04); border:1px solid var(--border);
+    border-radius:14px; padding:10px;
+  }
+  .category.drag-over { outline:2px dashed #5aa9ff; outline-offset:4px; }
+  .category-title { display:flex; align-items:center; justify-content:space-between; position:relative; }
+  .category-title h2 { margin:0; font-size:18px; }
+  .cat-actions { display:flex; gap:6px; opacity:0; transition:.2s; position:absolute; right:0; top:0; }
+  .category-title:hover .cat-actions { opacity:1; }
+  .cat-btn {
+    cursor:pointer; font-size:12px; padding:2px 6px; border-radius:6px;
+    background:rgba(0,0,0,.45); color:var(--text);
+  }
+  .cat-btn:hover { background:rgba(0,0,0,.75); }
 
-/* ===== GRID & CARDS ===== */
-/* ελαφρώς μεγαλύτερες κάρτες + λίγο πιο αραιό κενό */
-.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:12px;margin-top:10px;min-height:44px;}
-.card{
-  background:var(--card);border:1px solid var(--border);border-radius:22px;
-  width:100%;aspect-ratio:1/1;position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;transition:.18s ease;
-  padding:10px; /* 👉 για να μην κολλά το περιεχόμενο στο περίγραμμα */
-}
-.card:hover{
-  transform:translateY(-3px);
-  background: color-mix(in oklab, var(--accent) 20%, transparent);
-  border-color:var(--accent);
-}
-/* ➕ Εμφάνιση όταν είναι pinned */
-.card.pinned{
-  outline:2px solid gold; outline-offset:-2px;
-  box-shadow:0 0 0 2px rgba(255,215,0,.25) inset;
-}
+  /* -------------------------------------------------
+     7. GRID & CARDS
+  ------------------------------------------------- */
+  .grid {
+    display:grid; grid-template-columns:repeat(10,1fr);
+    gap:12px; margin-top:10px; min-height:44px;
+  }
+  .card {
+    background:var(--card); border:1px solid var(--border); border-radius:22px;
+    width:100%; aspect-ratio:1/1; position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    transition:.18s ease; padding:10px;
+  }
+  .card:hover {
+    transform:translateY(-3px);
+    background:color-mix(in oklab, var(--accent) 20%, transparent);
+    border-color:var(--accent);
+  }
+  .card.pinned {
+    outline:2px solid gold; outline-offset:-2px;
+    box-shadow:0 0 0 2px rgba(255,215,0,.25) inset;
+  }
 
-.card a{
-  display:flex;flex-direction:column;align-items:center;text-decoration:none;
-  color:var(--text);width:100%;height:100%;justify-content:center;
-}
-.card img.favicon{width:48px;height:48px;margin-bottom:8px;display:block;image-rendering:auto;}
-.link-title {
-  font-size: 11px;          /* μικρότερο μέγεθος */
-  font-weight: 700;         /* λίγο πιο “μαλακό” */
-  color: var(--text);
-  white-space: nowrap;      /* κρατάει το κείμενο σε μια γραμμή */
-  word-break: break-word;   /* σπάει μεγάλες λέξεις */
-  text-align: center;       /* κεντράρει το κείμενο */
-  max-width: 95%;           /* αφήνει περισσότερο χώρο */
-}
+  /* -------------------------------------------------
+     8. LINKS ΣΕ ΚΑΡΤΕΣ
+  ------------------------------------------------- */
+  .card a {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-decoration:none; color:var(--text); width:100%; height:100%;
+  }
+  .card img.favicon {
+    width:48px; height:48px; margin-bottom:8px; display:block;
+  }
+  .link-title {
+    font-size:11px; font-weight:700; color:var(--text);
+    white-space:nowrap; word-break:break-word; text-align:center;
+    max-width:95%;
+  }
+  .link-desc {
+    font-size:9px; color:rgba(255,255,255,.6); margin-top:2px;
+    max-width:90%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
 
-.link-desc{
-  font-size:9px;color:rgba(255,255,255,.6);margin-top:2px;
-  max-width:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+  /* Hover σε links */
+  a { color:var(--text); text-decoration:none; transition:.25s; }
+  a:not(.fav):not(.del):not(.edit):hover {
+    color:var(--accent);
+    background:rgba(230,57,70,0.15);
+    font-weight:600; padding:2px 4px; border-radius:6px;
+  }
+  .card a:not(.fav):not(.del):not(.edit):hover {
+    color:var(--accent); background:rgba(230,57,70,0.1);
+    border-radius:10px; transform:scale(1.03);
+  }
 
-/* Κουμπιά πάνω στις κάρτες (SVG, διαφανή) */
-.ctrl-left,.ctrl-right{position:absolute;top:6px;display:flex;gap:6px;opacity:0;transition:.2s;}
-.card:hover .ctrl-left,.card:hover .ctrl-right{opacity:1;}
-.ctrl-left{left:6px;} .ctrl-right{right:6px;}
-/* ➕ Κουμπί pin κάτω αριστερά */
-.ctrl-bottom{position:absolute;left:6px;bottom:6px;opacity:0;transition:.2s;}
-.card:hover .ctrl-bottom{opacity:1;}
+  /* -------------------------------------------------
+     9. ΚΟΥΜΠΙΑ ΠΑΝΩ ΣΕ ΚΑΡΤΕΣ
+  ------------------------------------------------- */
+  .ctrl-left,.ctrl-right {
+    position:absolute; top:6px; display:flex; gap:6px;
+    opacity:0; transition:.2s;
+  }
+  .card:hover .ctrl-left,.card:hover .ctrl-right { opacity:1; }
+  .ctrl-left{left:6px;} .ctrl-right{right:6px;}
+  .ctrl-bottom { position:absolute; left:6px; bottom:6px; opacity:0; transition:.2s; }
+  .card:hover .ctrl-bottom { opacity:1; }
+  .ctrl-btn { background:transparent; border:none; padding:0; cursor:pointer; }
+  .ctrl-btn svg { width:20px; height:20px; }
+  .ctrl-btn:hover { transform:scale(1.14); }
 
-.ctrl-btn{
-  background:transparent;border:none;padding:0;margin:0;cursor:pointer;line-height:0;display:flex;
-}
-.ctrl-btn svg{width:20px;height:20px;display:block;}
-.ctrl-btn:hover{transform:scale(1.14);}
-
-/* ===== FOOTER ===== */
-footer{position:fixed;left:0;bottom:0;width:100%;background:rgba(35,36,41,.96);backdrop-filter:blur(6px);text-align:center;margin-top:10px;color:var(--muted,#a8b0bb);font-size:12px;padding:8px 10px;}
-footer .btnrow{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:6px;}
-footer .note{color:#aab2bd;font-weight:700;}
-body:has(footer) .wrap{padding-bottom:70px;}
-
-/* ===== MODALS ===== */
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
-  background:rgba(0,0,0,.6);z-index:4000;}
-.modal .box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;
-  padding:16px;width:94%;max-width:420px;}
-.modal h3{margin:0 0 8px;font-size:18px;}
-.modal .row{display:flex;flex-direction:column;gap:6px;margin:8px 0;}
-.modal input,.modal textarea,select{
-  background:var(--card);color:var(--text);border:1px solid var(--border);
-  border-radius:8px;padding:8px;width:100%;
-}
-.modal .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:6px;}
-
-/* Icon picker rows */
-.icon-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.icon-row select,.icon-row input[type=file]{flex:1;}
-.icon-preview{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:12px;color:#cbd5e1;}
-.icon-preview img{width:24px;height:24px;}
-
-/* Κουμπί παλέτας (αόρατο αλλά clickable) -- μεγαλώσαμε σε 64x64 */
-#paletteBtn{position:fixed;top:50%;right:0;transform:translateY(-50%);
-  width:64px;height:64px;opacity:0;cursor:pointer;z-index:4500;}
-
-/* palette swatches inside modal */
-.palette-row{display:flex;align-items:center;gap:12px;}
-.color-swatch{width:48px;height:48px;border-radius:8px;border:1px solid var(--border);flex-shrink:0;}
-
-/* ===== TOOLTIP (pale) ===== */
-/* 留: Keep tooltips available for other elements (topbar etc.), but
-   we will not add data-tooltip to the card icon buttons so those won't show tooltips. */
-[data-tooltip]{position:relative;}
-[data-tooltip]::after{
-  content:attr(data-tooltip);
-  position:absolute;bottom:125%;left:50%;transform:translateX(-50%);
-  background:#fff9c4;color:#0a58ca;border:1px solid rgba(10,88,202,.35);
-  padding:4px 8px;border-radius:6px;white-space:nowrap;font-size:12px;font-weight:600;
-  opacity:0;pointer-events:none;transition:opacity .2s;box-shadow:0 6px 18px rgba(0,0,0,.2);
-}
-[data-tooltip]:hover::after{opacity:1;}
-
-  /* === Smooth transitions === */
-body, footer, button {
-  transition: background 0.3s, color 0.3s, opacity 0.3s, transform 0.1s;
-}
-
-/* === Hover / Active στα κουμπιά === */
-button:hover {
-  opacity: 0.85;
-}
-button:active {
-  transform: scale(0.97);
-}
+  /* -------------------------------------------------
+     10. FOOTER
+  ------------------------------------------------- */
+  footer {
+    position:fixed; left:0; bottom:0; width:100%;
+    background:rgba(35,36,41,.96); backdrop-filter:blur(6px);
+    text-align:center; color:#a8b0bb; font-size:12px; padding:8px 10px;
+  }
+  footer .btnrow { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:6px; }
+  footer .note { color:#aab2bd; font-weight:700; }
+  body:has(footer) .wrap { padding-bottom:70px; }
   
-</style>
+
+
+  /* -------------------------------------------------
+     11. MODALS
+  ------------------------------------------------- */
+  .modal {
+    position:fixed; inset:0; display:none;
+    align-items:center; justify-content:center;
+    background:rgba(0,0,0,.6); z-index:4000;
+  }
+  .modal .box {
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:14px; padding:16px; width:94%; max-width:420px;
+  }
+  .modal h3 { margin:0 0 8px; font-size:18px; }
+  .modal .row { display:flex; flex-direction:column; gap:6px; margin:8px 0; }
+  .modal input,.modal textarea,select {
+    background:var(--card); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:8px; width:100%;
+  }
+  .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:6px; }
+
+  /* Επιλογή εικονιδίου */
+  .icon-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .icon-row select,.icon-row input[type=file]{flex:1;}
+  .icon-preview { display:flex; align-items:center; gap:8px; margin-top:4px; font-size:12px; color:#cbd5e1; }
+  .icon-preview img{width:24px;height:24px;}
+
+  /* Κουμπί παλέτας (αόρατο) */
+  #paletteBtn {
+    position:fixed; top:50%; right:0; transform:translateY(-50%);
+    width:64px; height:64px; opacity:0; cursor:pointer; z-index:4500;
+  }
+
+  /* Παλέτα */
+  .palette-row { display:flex; align-items:center; gap:12px; }
+  .color-swatch { width:48px; height:48px; border-radius:8px; border:1px solid var(--border); }
+
+  /* -------------------------------------------------
+     12. TOOLTIP
+  ------------------------------------------------- */
+  [data-tooltip]{position:relative;}
+  [data-tooltip]::after{
+    content:attr(data-tooltip);
+    position:absolute; bottom:125%; left:50%; transform:translateX(-50%);
+    background:#fff9c4; color:#0a58ca; border:1px solid rgba(10,88,202,.35);
+    padding:4px 8px; border-radius:6px; white-space:nowrap; font-size:12px; font-weight:600;
+    opacity:0; pointer-events:none; transition:opacity .2s; box-shadow:0 6px 18px rgba(0,0,0,.2);
+  }
+  [data-tooltip]:hover::after{opacity:1;}
+
+  /* -------------------------------------------------
+     13. TRANSITIONS
+  ------------------------------------------------- */
+  body, footer, button {
+    transition: background .3s, color .3s, opacity .3s, transform .1s;
+  }
+
+  </style>
 </head>
 <body>
+ 
 <div class="wrap">
 
 <header>
@@ -201,11 +244,23 @@ button:active {
   <button id="backupBtn">Backup</button>
   <button id="restoreBtn">Restore</button>
 
+
+
   <!-- Δεξιά -->
-  <div class="topbar-right">
-    <button id="themeToggle">🌙 Dark</button>
-  </div>
+<div class="topbar-right">
+  <select id="themeSelect">
+    <option value="dark">Dark 🌙</option>
+    <option value="light">Light ☀️</option>
+    <option value="green">Green 🌵</option>
+    <option value="brown">Brown ☕</option>
+    <option value="purple">Purple 🪀</option>
+    <option value="blue">Blue 🌊</option>
+    <option value="orange">Orange 🍊</option>
+    <option value="pink">Pink 🌸</option>
+  </select>
 </div>
+  </div>
+
 
 
 
@@ -286,6 +341,9 @@ button:active {
   </div>
 </div>
 
+
+
+
 <!-- ===== ΚΡΥΦΟ ΚΟΥΜΠΙ ΓΙΑ ΠΑΛΕΤΑ ===== -->
 <div id="paletteBtn" data-tooltip="Ρυθμίσεις χρωμάτων"></div>
 
@@ -309,17 +367,17 @@ let themeDefault = {
 function svgIcon(kind, active=false){
   const color = active ? "#ffd54f" : "#e8eaed";
   if(kind==="edit") return `
-    <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
+    <svg viewBox="0 0 24 24" aria-label="Επεξεργασία" role="img">
       <path fill="${color}" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/>
       <path fill="${color}" d="M20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.83z"/>
     </svg>`;
   if(kind==="delete") return `
-    <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
+    <svg viewBox="0 0 24 24" aria-label="Διαγραφή" role="img">
       <path fill="${color}" d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1z"/>
     </svg>`;
   // pin
   return `
-    <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
+    <svg viewBox="0 0 24 24" aria-label="Pin" role="img">
       <path fill="${color}" d="M16,12V5l1-1V3H7V4l1,1v7L5,15v2h6v4h2v-4h6v-2L16,12z"/>
     </svg>`;
 }
@@ -451,7 +509,6 @@ function render(){
     grid.dataset.cat = cat;
 
     const list = (categories[cat] || []);
-    // Σειρά: pinned πρώτα, αλλά κρατάμε indices
     const orderIdx = list.map((_,i)=>i).sort((a,b)=>{
       const pa = !!(list[a] && list[a].pinned), pb = !!(list[b] && list[b].pinned);
       if(pa===pb) return a-b;
@@ -460,14 +517,25 @@ function render(){
 
     orderIdx.forEach(idx=>{
       const l = list[idx] || {};
-      // icon source
-      let iconSrc = "";
-      if(l.iconType === "upload" && l.iconValue){ iconSrc = l.iconValue; }
-      else if(l.iconType === "builtin" && l.iconValue){ iconSrc = builtinToDataUrl(l.iconValue); }
-      else {
-        let domain=""; try{ domain=(new URL(l.url)).hostname; }catch{}
-        const gg = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
-        iconSrc = gg;
+
+      // compute initial iconSrc (but don't set img.src until listeners attached)
+      let initialIcon = "";
+      if(l.iconType === "upload" && l.iconValue){
+        initialIcon = l.iconValue;
+      }
+      else if(l.iconType === "builtin" && l.iconValue){
+        initialIcon = builtinToDataUrl(l.iconValue);
+      }
+      else if(l.url){
+        try{
+          const domain = (new URL(l.url)).hostname;
+          if(domain) initialIcon = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+          else initialIcon = 'assets/default-favicon.png';
+        }catch(e){
+          initialIcon = 'assets/default-favicon.png';
+        }
+      } else {
+        initialIcon = 'assets/default-favicon.png';
       }
 
       const card = document.createElement("div");
@@ -477,6 +545,7 @@ function render(){
       card.dataset.idx=idx;
       if(l.pinned) card.classList.add("pinned");
 
+      // build inner structure except <img> so we can attach listeners before setting src
       card.innerHTML = `
         <div class="ctrl-left">
           <button class="ctrl-btn edit" aria-label="Επεξεργασία">
@@ -493,18 +562,73 @@ function render(){
             ${svgIcon('pin', !!l.pinned)}
           </button>
         </div>
-        <a href="${l.url}" target="_blank" draggable="false">
-          <img class="favicon" src="${iconSrc}"
-            onerror="this.onerror=null; (function(img){
-              try{
-                const d='${builtinToDataUrl("link")}';
-                img.src=d;
-              }catch(e){}
-            })(this);">
-          <div class="link-title" style="color:var(--text)">${(l.name||"").slice(0,13)}</div>
-          <div class="link-desc">${l.desc||""}</div>
-        </a>`;
+      `;
 
+      // anchor and text
+      const a = document.createElement("a");
+      a.href = l.url || "#";
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.draggable = false;
+
+      // img element with robust fallback
+      const img = document.createElement("img");
+      img.className = "favicon";
+      img.setAttribute("alt", l.name || "");
+      img.draggable = false;
+	  
+	   
+
+
+      // flags to avoid infinite loops
+      img._triedDefault = false;
+      img._triedBuiltin = false;
+
+      // error handler: try default asset, then builtin SVG data URL
+      const onErr = function(){
+        // remove current handler to avoid repeated triggers
+        img.removeEventListener('error', onErr);
+        if(!img._triedDefault){
+          img._triedDefault = true;
+          img.addEventListener('error', onErr); // reattach to catch default failing too
+          img.src = 'assets/default-favicon.png';
+        } else if(!img._triedBuiltin){
+          img._triedBuiltin = true;
+          // use builtin SVG data URL (should always work)
+          img.src = builtinToDataUrl("link");
+        } else {
+          // give up (no more fallbacks)
+          img.removeEventListener('error', onErr);
+        }
+      };
+      img.addEventListener('error', onErr);
+
+      // load handler: detect tiny placeholders (1x1) and fallback to default
+   img.addEventListener('load', function(){
+  if(img.naturalWidth < 32){ // αν είναι μικρό ή διάφανο
+    img.src = 'assets/default-favicon.png';
+  }
+});
+
+      // now set the initial src (after listeners attached)
+      img.src = initialIcon;
+
+      // title + desc
+      const titleDiv = document.createElement("div");
+      titleDiv.className = "link-title";
+      titleDiv.style.color = "var(--text)";
+      titleDiv.textContent = (l.name||"").slice(0,13);
+
+      const descDiv = document.createElement("div");
+      descDiv.className = "link-desc";
+      descDiv.textContent = l.desc || "";
+
+      // assemble
+      a.appendChild(img);
+      a.appendChild(titleDiv);
+      a.appendChild(descDiv);
+
+      card.appendChild(a);
       grid.appendChild(card);
     });
 
@@ -512,6 +636,7 @@ function render(){
     wrap.appendChild(sec);
   });
 }
+
 
 /* ===============================
    📌 Listeners — Κουμπιά και Ενέργειες
@@ -612,9 +737,19 @@ document.addEventListener("click", e => {
   // Διαγραφή link
   if(e.target.closest(".del")){
     const c = e.target.closest(".card");
+    const catName = c.dataset.cat;
+
     pushHistory();
-    categories[c.dataset.cat].splice(+c.dataset.idx,1);
-    saveData(); render();
+    categories[catName].splice(+c.dataset.idx,1);
+
+    // 👉 Αν η κατηγορία άδειασε, σβήνουμε και την ίδια
+    if(categories[catName].length === 0){
+      delete categories[catName];
+      catOrder = catOrder.filter(x => x !== catName);
+    }
+
+    saveData(); 
+    render();
   }
 
   // Επεξεργασία link
@@ -622,7 +757,9 @@ document.addEventListener("click", e => {
     const c = e.target.closest(".card");
     editing = {cat:c.dataset.cat, idx:+c.dataset.idx};
     const l = categories[editing.cat][editing.idx];
-    urlEl.value=l.url; nameEl.value=l.name||""; descEl.value=l.desc||"";
+    urlEl.value=l.url; 
+    nameEl.value=l.name||""; 
+    descEl.value=l.desc||"";
     catSel.innerHTML = catOrder.map(x=>
       `<option ${x===editing.cat?"selected":""}>${x}</option>`).join("");
     newCatEl.value="";
@@ -634,9 +771,11 @@ document.addEventListener("click", e => {
     iconPrev.style.display  = "none";
     if(l.iconType==="builtin"){
       builtinEl.value = l.iconValue || "link";
-      iconPrevImg.src = builtinToDataUrl(builtinEl.value); iconPrev.style.display="flex";
+      iconPrevImg.src = builtinToDataUrl(builtinEl.value); 
+      iconPrev.style.display="flex";
     }else if(l.iconType==="upload" && l.iconValue){
-      iconPrevImg.src = l.iconValue; iconPrev.style.display="flex";
+      iconPrevImg.src = l.iconValue; 
+      iconPrev.style.display="flex";
     }
 
     document.getElementById("modalTitle").innerText="Επεξεργασία link";
@@ -652,7 +791,8 @@ document.addEventListener("click", e => {
       categories[newN]=categories[cat];
       delete categories[cat];
       catOrder[catOrder.indexOf(cat)]=newN;
-      saveData(); render();
+      saveData(); 
+      render();
     }
   }
 
@@ -663,7 +803,8 @@ document.addEventListener("click", e => {
       pushHistory();
       delete categories[cat];
       catOrder=catOrder.filter(c=>c!==cat);
-      saveData(); render();
+      saveData(); 
+      render();
     }
   }
 
@@ -676,9 +817,11 @@ document.addEventListener("click", e => {
     if(!item) return;
     pushHistory();
     item.pinned = !item.pinned;
-    saveData(); render();
+    saveData(); 
+    render();
   }
 });
+
 
 /* ===============================
    📌 Backup & Restore
@@ -833,11 +976,26 @@ document.addEventListener("drop",e=>{
   dragSrc=null;
 });
 
-
-
 /* ===============================
    📌 Θέματα
-   =============================== */
+=============================== */
+const themes = {
+  dark: { bg1:"#0d1b2a", bg2:"#1b263b", card:"#415a77", text:"#e0e1dd", accent:"#00bcd4" },
+  light: { bg1:"#f0f4f8", bg2:"#ffffff", card:"#e0e7ef", text:"#2c3e50", accent:"#1565c0" },
+  green: { bg1:"#2b2f24", bg2:"#3b4330", card:"#5a6b4c", text:"#f2f5e9", accent:"#a4c639" },
+  brown: { bg1:"#332020", bg2:"#4a2b2b", card:"#663d3d", text:"#faeeee", accent:"#e57373"},
+  purple: { bg1:"#2a1f38", bg2:"#3a2b4d", card:"#513d66", text:"#f5edf9", accent:"#ba68c8" },
+  blue: { bg1:"#102840", bg2:"#16324f", card:"#1e4060", text:"#e3f2fd", accent:"#64b5f6" },
+  orange: { bg1:"#402010", bg2:"#5a2b15", card:"#73381c", text:"#fff3e0", accent:"#ffb74d" },
+  pink: { bg1:"#3d1f2b", bg2:"#522a3d", card:"#66384e", text:"#fce4ec", accent:"#f48fb1" }
+};
+
+function applyTheme(t){
+  for(const [k,v] of Object.entries(t)){
+    document.documentElement.style.setProperty("--"+k, v);
+  }
+}
+
 function getTheme(){
   const cs = getComputedStyle(document.documentElement);
   return {
@@ -848,61 +1006,75 @@ function getTheme(){
     accent: cs.getPropertyValue("--accent").trim()
   };
 }
-function applyTheme(t){
-  for(const [k,v] of Object.entries(t)){
-    document.documentElement.style.setProperty("--"+k, v);
+
+// αποθήκευση theme (όνομα ή custom)
+function saveTheme(nameOrObj){ 
+  if(typeof nameOrObj === "string"){
+    localStorage.setItem("themeName", nameOrObj);
+    localStorage.removeItem("customTheme");
+  } else {
+    localStorage.setItem("themeName", "custom");
+    localStorage.setItem("customTheme", JSON.stringify(nameOrObj));
   }
 }
-function saveTheme(t){ localStorage.setItem("theme", JSON.stringify(t)); }
+
+// φόρτωμα αποθηκευμένου θέματος
 function loadTheme(){
-  const t = JSON.parse(localStorage.getItem("theme") || "null");
-  if(t) applyTheme(t);
+  let name = localStorage.getItem("themeName") || "dark";
+  let t = null;
+
+  if(name === "custom"){
+    t = JSON.parse(localStorage.getItem("customTheme") || "null");
+    if(t) applyTheme(t);
+  } else {
+    t = themes[name] || themes.dark;
+    applyTheme(t);
+  }
+
+  // ενημέρωση dropdown
+  const sel = document.getElementById("themeSelect");
+  if(sel){
+    if(name === "custom"){
+      // Αν δεν υπάρχει επιλογή custom στο select → πρόσθεσέ την
+      if(![...sel.options].some(o => o.value === "custom")){
+        sel.add(new Option("Custom", "custom"));
+      }
+      sel.value = "custom";
+    } else {
+      sel.value = name;
+    }
+  }
 }
 
-let lightTheme = { 
-  bg1:"#f0f4f8", 
-  bg2:"#ffffff", 
-  card:"#e0e7ef", 
-  text:"#2c3e50", 
-  accent:"#1565c0"   // μπλε για έντονη αντίθεση σε ανοιχτό φόντο
-};
-let darkTheme  = { 
-  bg1:"#0d1b2a", 
-  bg2:"#1b263b", 
-  card:"#415a77", 
-  text:"#e0e1dd", 
-  accent:"#00bcd4"   // γαλάζιο για έντονη αντίθεση σε σκούρο φόντο
-};
-
-function updateThemeButton(){
-  const current = getTheme();
-  const isDark = current.bg1.toLowerCase() === darkTheme.bg1.toLowerCase();
-  document.getElementById("themeToggle").innerText = isDark ? "🌙 Dark" : "🌞 Light";
-}
-
-document.getElementById("themeToggle").addEventListener("click", () => {
-  const current = getTheme();
-  const isDark = current.bg1.toLowerCase() === darkTheme.bg1.toLowerCase();
-  const t = isDark ? lightTheme : darkTheme;
-  applyTheme(t);
-  saveTheme(t);
-  updateThemeButton();
+// αλλαγή όταν επιλέγεις από το dropdown
+document.getElementById("themeSelect").addEventListener("change", e => {
+  let chosen = e.target.value;
+  if(themes[chosen]){
+    applyTheme(themes[chosen]);
+    saveTheme(chosen);
+  }
 });
 
-loadData(); loadTheme();
+
+
+
+
+// κλήση στην εκκίνηση
+loadTheme();
+
+loadData(); 
 if(catOrder.length===0){
-categories={"Εισαγωγή":[]};
-catOrder=["Εισαγωγή"];
-saveData();
+  categories={"Εισαγωγή":[]};
+  catOrder=["Εισαγωγή"];
+  saveData();
 }
 render(); updateUndoBtn();
 
-
 // update palette swatches initial
 ["bg1","bg2","card","text","accent"].forEach(id=>{
-const el=document.getElementById(id);
-const sw=document.getElementById('swatch-'+id);
-if(el && sw) sw.style.background = el.value || getTheme()[id];
+  const el=document.getElementById(id);
+  const sw=document.getElementById('swatch-'+id);
+  if(el && sw) sw.style.background = el.value || getTheme()[id];
 });
 
 </script>
