@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+
+  <meta charset="UTF-8">
+  <title>Favicon Επιλογές</title>
+  <link rel="icon" href="data:,"> <!-- default -->
+  <meta charset="UTF-8">
+  <title>Τα δικά μου χρήσιμα</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="assets/unnamed.png">
+
+  <style>
+  /* -------------------------------------------------
+     1. ΘΕΜΑΤΙΚΑ ΧΡΩΜΑΤΑ (CSS variables)
+  ------------------------------------------------- */
+  :root {
+    --bg1:#0d1b2a;
+    --bg2:#1b263b;
+    --card:#415a77;
+    --text:#e0e1dd;
+    --accent:#f4a261;
+    --border:rgba(255,255,255,.15);
+  }
+
+  /* -------------------------------------------------
+     2. RESET + BODY + WRAPPER
+  ------------------------------------------------- */
+  * { box-sizing: border-box; }
+  body {
+    margin:0;
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  .wrap { max-width:1200px; margin:0 auto; padding:24px 10px 210px; }
+
+  /* -------------------------------------------------
+     3. HEADER
+  ------------------------------------------------- */
+  header { text-align:center; margin-bottom:10px; }
+  header h1 { margin:4px 0 0; font-size:26px; font-weight:800; }
+  header h2 { margin:6px 0 0; font-size:14px; color:#2a9df4; font-weight:700; }
+  header h3 { margin:6px 0 0; font-size:13px; color:#bbb; font-weight:500; }
+
+  /* -------------------------------------------------
+     4. TOPBAR (κουμπιά πάνω)
+  ------------------------------------------------- */
+  .topbar {
+    display:flex; justify-content:center; align-items:center;
+    gap:10px; margin:12px 0 18px; position:relative;
+  }
+  .topbar-right { margin-left:auto; }
+
+  /* -------------------------------------------------
+     5. ΚΟΥΜΠΙΑ
+  ------------------------------------------------- */
+  button {
+    padding:8px 14px; border:none; border-radius:10px; cursor:pointer;
+    background:var(--accent); color:#fff; font-weight:700; font-size:14px;
+  }
+  button.gray { background:#596070!important; color:#ccc!important; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  button:hover { opacity:0.85; }
+  button:active { transform:scale(0.97); }
+
+  /* Dropdown επιλογής theme */
+  #themeSelect {
+    padding:6px 10px; border-radius:8px; border:1px solid var(--border);
+    background:var(--card); color:var(--text); font-weight:600; cursor:pointer;
+  }
+
+  /* -------------------------------------------------
+     6. ΚΑΤΗΓΟΡΙΕΣ
+  ------------------------------------------------- */
+  #categories { display:flex; flex-direction:column; gap:18px; padding:0 6px; }
+  .category {
+    background:rgba(255,255,255,.04); border:1px solid var(--border);
+    border-radius:14px; padding:10px;
+  }
+  .category.drag-over { outline:2px dashed #5aa9ff; outline-offset:4px; }
+  .category-title { display:flex; align-items:center; justify-content:space-between; position:relative; }
+  .category-title h2 { margin:0; font-size:18px; }
+  .cat-actions { display:flex; gap:6px; opacity:0; transition:.2s; position:absolute; right:0; top:0; }
+  .category-title:hover .cat-actions { opacity:1; }
+  .cat-btn {
+    cursor:pointer; font-size:12px; padding:2px 6px; border-radius:6px;
+    background:rgba(0,0,0,.45); color:var(--text);
+  }
+  .cat-btn:hover { background:rgba(0,0,0,.75); }
+
+  /* -------------------------------------------------
+     7. GRID & CARDS
+  ------------------------------------------------- */
+  .grid {
+    display:grid; grid-template-columns:repeat(10,1fr);
+    gap:12px; margin-top:10px; min-height:44px;
+  }
+  .card {
+    background:var(--card); border:1px solid var(--border); border-radius:22px;
+    width:100%; aspect-ratio:1/1; position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    transition:.18s ease; padding:10px;
+  }
+  .card:hover {
+    transform:translateY(-3px);
+    background:color-mix(in oklab, var(--accent) 20%, transparent);
+    border-color:var(--accent);
+  }
+  .card.pinned {
+    outline:2px solid gold; outline-offset:-2px;
+    box-shadow:0 0 0 2px rgba(255,215,0,.25) inset;
+  }
+
+  /* -------------------------------------------------
+     8. LINKS ΣΕ ΚΑΡΤΕΣ
+  ------------------------------------------------- */
+  .card a {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-decoration:none; color:var(--text); width:100%; height:100%;
+  }
+  .card img.favicon {
+    width:48px; height:48px; margin-bottom:8px; display:block;
+  }
+  .link-title {
+    font-size:11px; font-weight:700; color:var(--text);
+    white-space:nowrap; word-break:break-word; text-align:center;
+    max-width:95%;
+  }
+  .link-desc {
+    font-size:9px; color:rgba(255,255,255,.6); margin-top:2px;
+    max-width:90%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* Hover σε links */
+  a { color:var(--text); text-decoration:none; transition:.25s; }
+  a:not(.fav):not(.del):not(.edit):hover {
+    color:var(--accent);
+    background:rgba(230,57,70,0.15);
+    font-weight:600; padding:2px 4px; border-radius:6px;
+  }
+  .card a:not(.fav):not(.del):not(.edit):hover {
+    color:var(--accent); background:rgba(230,57,70,0.1);
+    border-radius:10px; transform:scale(1.03);
+  }
+
+  /* -------------------------------------------------
+     9. ΚΟΥΜΠΙΑ ΠΑΝΩ ΣΕ ΚΑΡΤΕΣ
+  ------------------------------------------------- */
+  .ctrl-left,.ctrl-right {
+    position:absolute; top:6px; display:flex; gap:6px;
+    opacity:0; transition:.2s;
+  }
+  .card:hover .ctrl-left,.card:hover .ctrl-right { opacity:1; }
+  .ctrl-left{left:6px;} .ctrl-right{right:6px;}
+  .ctrl-bottom { position:absolute; left:6px; bottom:6px; opacity:0; transition:.2s; }
+  .card:hover .ctrl-bottom { opacity:1; }
+  .ctrl-btn { background:transparent; border:none; padding:0; cursor:pointer; }
+  .ctrl-btn svg { width:20px; height:20px; }
+  .ctrl-btn:hover { transform:scale(1.14); }
+
+  /* -------------------------------------------------
+     10. FOOTER
+  ------------------------------------------------- */
+  footer {
+    position:fixed; left:0; bottom:0; width:100%;
+    background:rgba(35,36,41,.96); backdrop-filter:blur(6px);
+    text-align:center; color:#a8b0bb; font-size:12px; padding:8px 10px;
+  }
+  footer .btnrow { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:6px; }
+  footer .note { color:#aab2bd; font-weight:700; }
+  body:has(footer) .wrap { padding-bottom:70px; }
+  
+
+
+  /* -------------------------------------------------
+     11. MODALS
+  ------------------------------------------------- */
+  .modal {
+    position:fixed; inset:0; display:none;
+    align-items:center; justify-content:center;
+    background:rgba(0,0,0,.6); z-index:4000;
+  }
+  .modal .box {
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:14px; padding:16px; width:94%; max-width:420px;
+  }
+  .modal h3 { margin:0 0 8px; font-size:18px; }
+  .modal .row { display:flex; flex-direction:column; gap:6px; margin:8px 0; }
+  .modal input,.modal textarea,select {
+    background:var(--card); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:8px; width:100%;
+  }
+  .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:6px; }
+
+  /* Επιλογή εικονιδίου */
+  .icon-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .icon-row select,.icon-row input[type=file]{flex:1;}
+  .icon-preview { display:flex; align-items:center; gap:8px; margin-top:4px; font-size:12px; color:#cbd5e1; }
+  .icon-preview img{width:24px;height:24px;}
+
+  /* Κουμπί παλέτας (αόρατο) */
+  #paletteBtn {
+    position:fixed; top:50%; right:0; transform:translateY(-50%);
+    width:64px; height:64px; opacity:0; cursor:pointer; z-index:4500;
+  }
+
+  /* Παλέτα */
+  .palette-row { display:flex; align-items:center; gap:12px; }
+  .color-swatch { width:48px; height:48px; border-radius:8px; border:1px solid var(--border); }
+
+  /* -------------------------------------------------
+     12. TOOLTIP
+  ------------------------------------------------- */
+  [data-tooltip]{position:relative;}
+  [data-tooltip]::after{
+    content:attr(data-tooltip);
+    position:absolute; bottom:125%; left:50%; transform:translateX(-50%);
+    background:#fff9c4; color:#0a58ca; border:1px solid rgba(10,88,202,.35);
+    padding:4px 8px; border-radius:6px; white-space:nowrap; font-size:12px; font-weight:600;
+    opacity:0; pointer-events:none; transition:opacity .2s; box-shadow:0 6px 18px rgba(0,0,0,.2);
+  }
+  [data-tooltip]:hover::after{opacity:1;}
+
+  /* -------------------------------------------------
+     13. TRANSITIONS
+  ------------------------------------------------- */
+  body, footer, button {
+    transition: background .3s, color .3s, opacity .3s, transform .1s;
+  }
+  
+  .category.drag-over {
+  outline: 2px dashed #5aa9ff;
+  outline-offset: 4px;
+  background: rgba(90, 169, 255, 0.08);
+}
+
+  </style>
+</head>
+<body>
+ 
+<div class="wrap">
+
+<header>
+  <h1>Τα δικά μου χρήσιμα</h1>
+  <h2>Φαρμακείο Γκίνης Κ. Πέτρος, Πολύγωνο.</h2>
+  <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
+</header>
+
+<div class="topbar">
+  <!-- Κουμπιά κεντρικά -->
+  <button id="addBtnTop">+ Προσθήκη νέου link</button>
+  <button id="undoBtnTop" class="gray" disabled>↩ Αναίρεση</button>
+  <button id="backupBtn">Backup</button>
+  <button id="restoreBtn">Restore</button>
+
+
+
+  <!-- Δεξιά -->
+<div class="topbar-right">
+  <select id="themeSelect">
+    <option value="dark">Dark 🌙</option>
+    <option value="light">Light ☀️</option>
+    <option value="green">Green 🌵</option>
+    <option value="brown">Brown ☕</option>
+    <option value="purple">Purple 🪀</option>
+    <option value="blue">Blue 🌊</option>
+    <option value="orange">Orange 🍊</option>
+    <option value="pink">Pink 🌸</option>
+  </select>
+</div>
+  </div>
+
+
+
+
+<div id="categories"></div>
+</div>
+
+
+<footer>
+<div class="btnrow">
+<button id="addBtnFoot">+ Προσθήκη νέου link</button>
+</div>
+<div class="note">Φτιαγμένο με αγάπη από το Doukas Pharmacy Support®</div>
+</footer>
+<!-- ===== MODAL ΝΕΟΥ LINK ===== -->
+<div class="modal" id="modalForm">
+  <div class="box">
+    <h3 id="modalTitle">Νέο link</h3>
+    <form id="linkForm" autocomplete="off">
+      <!-- URL -->
+      <div class="row">
+        <input autocomplete="off" type="text" id="url" placeholder="Διεύθυνση (URL)" required>
+      </div>
+
+      <!-- Όνομα -->
+      <div class="row">
+        <input autocomplete="off" type="text" id="name" placeholder="Όνομα (max 13)">
+      </div>
+
+      <!-- Περιγραφή -->
+      <div class="row">
+        <input autocomplete="off" type="text" id="desc" placeholder="Περιγραφή">
+      </div>
+
+      <!-- Icon επιλογές -->
+      <div class="row">
+        <label style="font-size:13px;">Εικονίδιο</label>
+        <div class="icon-row">
+          <select id="iconMode">
+            <option value="auto">Αυτόματο favicon</option>
+            <option value="builtin">Ενσωματωμένο εικονίδιο</option>
+            <option value="upload">Ανέβασμα εικόνας...</option>
+            <option value="url">Από URL...</option> <!-- ΝΕΑ επιλογή -->
+          </select>
+
+          <!-- Builtin -->
+          <select id="builtinIcon" style="display:none">
+            <option value="star">★ Αστέρι</option>
+            <option value="heart">❤ Καρδιά</option>
+            <option value="pill">💊 Χάπι</option>
+            <option value="firstaid">🩹 Πρώτες βοήθειες</option>
+            <option value="link">🔗 Link</option>
+            <option value="doc">📄 Έγγραφο</option>
+          </select>
+
+          <!-- Upload -->
+          <input id="iconFile" type="file"
+                 accept="image/*,.ico,.png,.jpg,.jpeg,.webp,.svg"
+                 style="display:none">
+
+          <!-- URL -->
+          <input id="iconUrl" type="url"
+                 placeholder="https://example.com/icon.png"
+                 style="display:none; flex:1;">
+        </div>
+
+        <!-- Προεπισκόπηση -->
+        <div class="icon-preview" id="iconPreview" style="display:none">
+          <span>Προεπισκόπηση:</span>
+          <img id="iconPreviewImg" alt="icon">
+        </div>
+      </div>
+
+      <!-- Επιλογή / Δημιουργία κατηγορίας -->
+      <div class="row">
+        <select id="categorySelect"></select>
+        <input autocomplete="off" type="text" id="newCategory" placeholder="Νέα κατηγορία">
+      </div>
+
+      <!-- Κουμπιά -->
+      <div class="actions">
+        <button type="button" id="cancelModal">Άκυρο</button>
+        <button type="submit">Αποθήκευση</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== MODAL ΠΑΛΕΤΑΣ ΧΡΩΜΑΤΩΝ ===== -->
+<div class="modal" id="paletteModal">
+  <div class="box">
+    <h3>Παλέτα Χρωμάτων</h3>
+    <div class="row palette-row"><label for="bg1">Φόντο 1</label><input type="color" id="bg1"><div id="swatch-bg1" class="color-swatch"></div></div>
+    <div class="row palette-row"><label for="bg2">Φόντο 2</label><input type="color" id="bg2"><div id="swatch-bg2" class="color-swatch"></div></div>
+    <div class="row palette-row"><label for="card">Κάρτα</label><input type="color" id="card"><div id="swatch-card" class="color-swatch"></div></div>
+    <div class="row palette-row"><label for="text">Κείμενο</label><input type="color" id="text"><div id="swatch-text" class="color-swatch"></div></div>
+    <div class="row palette-row"><label for="accent">Κουμπιά</label><input type="color" id="accent"><div id="swatch-accent" class="color-swatch"></div></div>
+    <div class="actions">
+      <button id="defaultPalette">Default</button>
+      <button id="closePalette">Κλείσιμο</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- ===== ΚΡΥΦΟ ΚΟΥΜΠΙ ΓΙΑ ΠΑΛΕΤΑ ===== -->
+<div id="paletteBtn" data-tooltip="Ρυθμίσεις χρωμάτων"></div>
+
+<script>
+/* ===============================
+   📌 Κατάσταση / Μεταβλητές
+   =============================== */
+let categories = {};   // { Κατηγορία: [ {url,name,desc,iconType,iconValue,pinned?}, ... ] }
+let catOrder = [];     // Σειρά εμφάνισης κατηγοριών
+let editing = null;    // {cat, idx}
+let historyStack = []; // Ιστορικό για undo
+
+// Default χρώματα
+let themeDefault = {
+  bg1:"#1f1f1f", bg2:"#232429", card:"#2b2d33", text:"#eaeef5", accent:"#2f80ed"
+};
+
+/* ===============================
+   📌 SVG Εικονίδια (διαφανή)
+   =============================== */
+function svgIcon(kind, active=false){
+  const color = active ? "#ffd54f" : "#e8eaed";
+  if(kind==="edit") return `
+    <svg viewBox="0 0 24 24" aria-label="Επεξεργασία" role="img">
+      <path fill="${color}" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/>
+      <path fill="${color}" d="M20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.83z"/>
+    </svg>`;
+  if(kind==="delete") return `
+    <svg viewBox="0 0 24 24" aria-label="Διαγραφή" role="img">
+      <path fill="${color}" d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1z"/>
+    </svg>`;
+  // pin
+  return `
+    <svg viewBox="0 0 24 24" aria-label="Pin" role="img">
+      <path fill="${color}" d="M16,12V5l1-1V3H7V4l1,1v7L5,15v2h6v4h2v-4h6v-2L16,12z"/>
+    </svg>`;
+}
+
+/* ===============================
+   📌 Αποθήκευση Δεδομένων
+   =============================== */
+function saveData(){
+  localStorage.setItem("categories", JSON.stringify(categories));
+  localStorage.setItem("catOrder", JSON.stringify(catOrder));
+}
+function loadData(){
+  categories = JSON.parse(localStorage.getItem("categories") || "{}");
+  catOrder = JSON.parse(localStorage.getItem("catOrder") || "[]");
+}
+
+/* ===============================
+   📌 Θέμα / Χρώματα
+   =============================== */
+function applyTheme(t){
+  for(const [k,v] of Object.entries(t)){
+    document.documentElement.style.setProperty("--"+k, v);
+  }
+}
+function getTheme(){
+  const cs = getComputedStyle(document.documentElement);
+  return {
+    bg1: cs.getPropertyValue("--bg1").trim(),
+    bg2: cs.getPropertyValue("--bg2").trim(),
+    card: cs.getPropertyValue("--card").trim(),
+    text: cs.getPropertyValue("--text").trim(),
+    accent: cs.getPropertyValue("--accent").trim()
+  };
+}
+function saveTheme(t){ localStorage.setItem("theme", JSON.stringify(t)); }
+function loadTheme(){
+  const t = JSON.parse(localStorage.getItem("theme") || "null") || themeDefault;
+  applyTheme(t);
+  ["bg1","bg2","card","text","accent"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = t[id];
+  });
+}
+
+/* ===============================
+   📌 Undo / Ιστορικό
+   =============================== */
+function pushHistory(){
+  historyStack.push(JSON.stringify({
+    categories: JSON.parse(JSON.stringify(categories)),
+    catOrder: [...catOrder],
+    theme: getTheme()
+  }));
+  if(historyStack.length > 80) historyStack.shift();
+  updateUndoBtn();
+}
+function updateUndoBtn(){
+  const b = document.getElementById("undoBtnTop");
+  if(historyStack.length === 0){ b.disabled = true; b.classList.add("gray"); }
+  else { b.disabled = false; b.classList.remove("gray"); }
+}
+function undo(){
+  if(historyStack.length === 0) return;
+  const snap = JSON.parse(historyStack.pop());
+  categories = snap.categories;
+  catOrder = snap.catOrder;
+  applyTheme(snap.theme);
+  saveData(); saveTheme(snap.theme);
+  render();
+  updateUndoBtn();
+}
+
+/* ===============================
+   📌 Βοηθοί
+   =============================== */
+function normalizeUrl(u){
+  if(!u) return "";
+  let s = u.trim();
+  if(!/^https?:\/\//i.test(s)){
+    if(/^www\./i.test(s)) s = "https://" + s;
+    else s = "https://" + s;
+  }
+  return s;
+}
+function dedupeAdd(cat, linkObj){
+  const url = linkObj.url;
+  if(!(categories[cat])) categories[cat] = [];
+  if(categories[cat].some(L => (L.url||"").toLowerCase() === url.toLowerCase())) return false;
+  categories[cat].push(linkObj);
+  return true;
+}
+function builtinToDataUrl(kind){
+  const map = {
+    star:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>',
+    heart:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M12 21s-6.716-4.928-9.428-8.35C-0.287 9.39 1.38 5 5.6 5c2.08 0 3.512 1.124 4.4 2.36C10.888 6.124 12.32 5 14.4 5 18.62 5 20.287 9.39 17.428 12.65 14.716 16.072 12 21 12 21z"/></svg>',
+    pill:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M4.22 19.78a3.75 3.75 0 0 1 0-5.3l6.26-6.26a3.75 3.75 0 0 1 5.3 5.3l-6.26 6.26a3.75 3.75 0 0 1-5.3 0Zm7.42-12.02 4.6 4.6"/></svg>',
+    firstaid:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="14" rx="2" ry="2" fill="white" opacity="0.15"/><path fill="white" d="M13 6h-2V4h2v2Zm-3 5H7v2h3v3h2v-3h3v-2h-3V8h-2v3Z"/></svg>',
+    link:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M10.59 13.41a1.996 1.996 0 0 0 2.82 0l3.59-3.59a2 2 0 1 0-2.83-2.83l-1 1 1.41 1.41 1-1a.5.5 0 1 1 .71.71l-3.59 3.59a.996.996 0 1 1-1.41-1.41l1-1-1.41-1.41-1 1a2 2 0 0 0 0 2.83Z"/></svg>',
+    doc:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5L14 3.5Z"/></svg>'
+  };
+  const svg = map[kind] || map.link;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+/* ===============================
+   📌 Render — Σχεδίαση UI (με Pin + Drag&Drop για νέα links)
+   =============================== */
+function render(){
+  const wrap = document.getElementById("categories");
+  wrap.innerHTML = "";
+
+  catOrder.forEach(cat=>{
+    const sec = document.createElement("div");
+    sec.className = "category";
+    sec.draggable = true;
+    sec.dataset.cat = cat;
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    grid.dataset.cat = cat;
+
+    const list = (categories[cat] || []);
+    const orderIdx = list.map((_,i)=>i).sort((a,b)=>{
+      const pa = !!(list[a] && list[a].pinned), pb = !!(list[b] && list[b].pinned);
+      if(pa===pb) return a-b;
+      return pb - pa;
+    });
+
+    orderIdx.forEach(idx=>{
+      const l = list[idx] || {};
+
+      let initialIcon = "";
+      if(l.iconType === "upload" && l.iconValue){
+        initialIcon = l.iconValue;
+      }
+      else if(l.iconType === "builtin" && l.iconValue){
+        initialIcon = builtinToDataUrl(l.iconValue);
+      }
+      else if(l.iconType === "url" && l.iconValue){   // ✅ ΝΕΟ κομμάτι
+        initialIcon = l.iconValue;
+      }
+      else if(l.url){
+        try{
+          const domain = (new URL(l.url)).hostname;
+          if(domain) initialIcon = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+          else initialIcon = 'assets/default-favicon.png';
+        }catch(e){
+          initialIcon = 'assets/default-favicon.png';
+        }
+      } else {
+        initialIcon = 'assets/default-favicon.png';
+      }
+
+
+      const card = document.createElement("div");
+      card.className="card";
+      card.draggable=true;
+      card.dataset.cat=cat;
+      card.dataset.idx=idx;
+      if(l.pinned) card.classList.add("pinned");
+
+      card.innerHTML = `
+        <div class="ctrl-left">
+          <button class="ctrl-btn edit" aria-label="Επεξεργασία">
+            ${svgIcon('edit')}
+          </button>
+        </div>
+        <div class="ctrl-right">
+          <button class="ctrl-btn del" aria-label="Διαγραφή">
+            ${svgIcon('delete')}
+          </button>
+        </div>
+        <div class="ctrl-bottom">
+          <button class="ctrl-btn pin" aria-label="Pin / Unpin">
+            ${svgIcon('pin', !!l.pinned)}
+          </button>
+        </div>
+      `;
+
+      const a = document.createElement("a");
+      a.href = l.url || "#";
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.draggable = false;
+
+      const img = document.createElement("img");
+      img.className = "favicon";
+      img.setAttribute("alt", l.name || "");
+      img.draggable = false;
+
+      img._triedDefault = false;
+      img._triedBuiltin = false;
+
+      const onErr = function(){
+        img.removeEventListener('error', onErr);
+        if(!img._triedDefault){
+          img._triedDefault = true;
+          img.addEventListener('error', onErr);
+          img.src = 'assets/default-favicon.png';
+        } else if(!img._triedBuiltin){
+          img._triedBuiltin = true;
+          img.src = builtinToDataUrl("link");
+        }
+      };
+      img.addEventListener('error', onErr);
+
+      img.addEventListener('load', function(){
+        if(img.naturalWidth < 32){
+          img.src = 'assets/default-favicon.png';
+        }
+      });
+
+      img.src = initialIcon;
+
+      const titleDiv = document.createElement("div");
+      titleDiv.className = "link-title";
+      titleDiv.style.color = "var(--text)";
+      titleDiv.textContent = (l.name||"").slice(0,13);
+
+      const descDiv = document.createElement("div");
+      descDiv.className = "link-desc";
+      descDiv.textContent = l.desc || "";
+
+      a.appendChild(img);
+      a.appendChild(titleDiv);
+      a.appendChild(descDiv);
+
+      card.appendChild(a);
+      grid.appendChild(card);
+    });
+
+    // 👉 Drag & Drop νέα links
+    sec.addEventListener("dragover", e => {
+      e.preventDefault();
+      sec.classList.add("drag-over");
+    });
+    sec.addEventListener("dragleave", () => {
+      sec.classList.remove("drag-over");
+    });
+    sec.addEventListener("drop", e => {
+      e.preventDefault();
+      sec.classList.remove("drag-over");
+
+      const url = e.dataTransfer.getData("text/uri-list") || e.dataTransfer.getData("text/plain");
+      if (!url) return;
+
+      fetchTitle(url).then(title => {
+        const newLink = {
+          url,
+          name: title || (new URL(url).hostname),
+          desc: "",
+          iconType: "auto",
+          iconValue: ""
+        };
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(newLink);
+        saveData();
+        render();
+      });
+    });
+
+    sec.appendChild(grid);
+    wrap.appendChild(sec);
+  });
+}
+
+/* ===============================
+   📌 Συνάρτηση για να βρίσκουμε τον τίτλο σελίδας
+   =============================== */
+async function fetchTitle(url) {
+  try {
+    const res = await fetch(url, { mode: "cors" });
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.querySelector("title")?.innerText.trim();
+  } catch {
+    return "";
+  }
+}
+
+
+
+/* ===============================
+   📌 Listeners — Κουμπιά και Ενέργειες
+   =============================== */
+// Modal νέο link
+["addBtnTop","addBtnFoot"].forEach(id =>
+  document.getElementById(id).onclick = () => {
+    editing = null;
+    document.getElementById("modalTitle").innerText = "Νέο link";
+    document.getElementById("linkForm").reset();
+    document.getElementById("iconPreview").style.display="none";
+    document.getElementById("builtinIcon").style.display="none";
+    document.getElementById("iconFile").style.display="none";
+    document.getElementById("iconMode").value="auto";
+
+    document.getElementById("categorySelect").innerHTML =
+      catOrder.map(c=>`<option>${c}</option>`).join("");
+
+    document.getElementById("modalForm").style.display = "flex";
+  }
+);
+document.getElementById("cancelModal").onclick =
+  () => document.getElementById("modalForm").style.display = "none";
+
+// Icon mode switching
+const iconModeEl = document.getElementById("iconMode");
+const builtinEl  = document.getElementById("builtinIcon");
+const iconFileEl = document.getElementById("iconFile");
+const iconUrlEl  = document.getElementById("iconUrl"); // ΝΕΟ input
+const iconPrev   = document.getElementById("iconPreview");
+const iconPrevImg= document.getElementById("iconPreviewImg");
+
+iconModeEl.addEventListener("change", ()=>{
+  builtinEl.style.display  = iconModeEl.value==="builtin" ? "inline-block" : "none";
+  iconFileEl.style.display = iconModeEl.value==="upload"  ? "inline-block" : "none";
+  iconUrlEl.style.display  = iconModeEl.value==="url"     ? "inline-block" : "none";
+  iconPrev.style.display   = "none";
+});
+
+builtinEl.addEventListener("change", ()=>{
+  const url = builtinToDataUrl(builtinEl.value);
+  iconPrevImg.src = url; 
+  iconPrev.style.display="flex";
+});
+
+iconFileEl.addEventListener("change", ()=>{
+  const f = iconFileEl.files && iconFileEl.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = () => { 
+    iconPrevImg.src = r.result; 
+    iconPrev.style.display="flex"; 
+  };
+  r.readAsDataURL(f);
+});
+
+// ΝΕΟ: από URL
+iconUrlEl.addEventListener("input", ()=>{
+  const u = iconUrlEl.value.trim();
+  if(u){
+    iconPrevImg.src = u;
+    iconPrev.style.display="flex";
+  }else{
+    iconPrev.style.display="none";
+  }
+});
+
+// Helper: emoji σε PNG dataURL
+function builtinToDataUrl(type){
+  const map = {
+    star: "★",
+    heart: "❤",
+    pill: "💊",
+    firstaid: "🩹",
+    link: "🔗",
+    doc: "📄"
+  };
+  const emoji = map[type] || "🔗";
+  const canvas = document.createElement("canvas");
+  canvas.width = 64; 
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  ctx.font = "48px serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(emoji, 32, 32);
+  return canvas.toDataURL("image/png");
+}
+
+
+// Demo: υποβολή φόρμας
+document.getElementById("linkForm").onsubmit = e => {
+  e.preventDefault();
+  alert("Αποθήκευση link με iconType=" + iconModeEl.value);
+};
+
+
+// Υποβολή φόρμας
+const urlEl = document.getElementById("url"),
+      nameEl = document.getElementById("name"),
+      descEl = document.getElementById("desc"),
+      catSel = document.getElementById("categorySelect"),
+      newCatEl = document.getElementById("newCategory");
+
+document.getElementById("linkForm").onsubmit = e => {
+  e.preventDefault();
+  const url = normalizeUrl(urlEl.value);
+  const name = nameEl.value.trim();
+  const desc = descEl.value.trim();
+  if(!url){ alert("Παρακαλώ εισάγετε URL"); return; }
+
+  let cat = catSel.value, newCat = newCatEl.value.trim();
+  if(newCat) cat = newCat;
+
+  if(!categories[cat]){ pushHistory(); categories[cat]=[]; catOrder.push(cat); }
+
+  // εικονίδιο
+  let iconType = iconModeEl.value;
+  let iconValue = null;
+  if(iconType==="builtin"){
+    iconValue = builtinEl.value || "link";
+  }else if(iconType==="upload"){
+    if(iconFileEl.files && iconFileEl.files[0]){
+      iconValue = iconPrevImg.src || null;
+    }else{
+      iconType = "auto";
+    }
+  }else if(iconType==="url"){     // ΝΕΟ mode
+    if(iconUrlEl.value.trim()){
+      iconValue = iconUrlEl.value.trim();
+    }else{
+      iconType = "auto";
+    }
+  }
+
+  pushHistory();
+  const baseObj = { url, name, desc, iconType, iconValue };
+  if(editing){
+    const prev = categories[editing.cat][editing.idx] || {};
+    const updated = { ...baseObj, pinned: !!prev.pinned }; // κρατάμε το pinned
+    categories[editing.cat][editing.idx] = updated;
+  }else{
+    const linkObj = { ...baseObj, pinned:false };
+    dedupeAdd(cat, linkObj);
+  }
+
+  saveData(); render();
+  document.getElementById("modalForm").style.display = "none";
+};
+
+
+
+
+
+
+
+
+// Ενέργειες σε κάρτες/κατηγορίες
+document.addEventListener("click", e => {
+  // Διαγραφή link
+  if(e.target.closest(".del")){
+    const c = e.target.closest(".card");
+    const catName = c.dataset.cat;
+
+    pushHistory();
+    categories[catName].splice(+c.dataset.idx,1);
+
+    // 👉 Αν η κατηγορία άδειασε, σβήνουμε και την ίδια
+    if(categories[catName].length === 0){
+      delete categories[catName];
+      catOrder = catOrder.filter(x => x !== catName);
+    }
+
+    saveData(); 
+    render();
+  }
+
+  // Επεξεργασία link
+  if(e.target.closest(".edit")){
+    const c = e.target.closest(".card");
+    editing = {cat:c.dataset.cat, idx:+c.dataset.idx};
+    const l = categories[editing.cat][editing.idx];
+    urlEl.value=l.url; 
+    nameEl.value=l.name||""; 
+    descEl.value=l.desc||"";
+    catSel.innerHTML = catOrder.map(x=>
+      `<option ${x===editing.cat?"selected":""}>${x}</option>`).join("");
+    newCatEl.value="";
+
+    // προεπιλογή icon στα πεδία
+    iconModeEl.value = l.iconType || "auto";
+    builtinEl.style.display = iconModeEl.value==="builtin" ? "inline-block" : "none";
+    iconFileEl.style.display= iconModeEl.value==="upload"  ? "inline-block" : "none";
+    iconPrev.style.display  = "none";
+    if(l.iconType==="builtin"){
+      builtinEl.value = l.iconValue || "link";
+      iconPrevImg.src = builtinToDataUrl(builtinEl.value); 
+      iconPrev.style.display="flex";
+    }else if(l.iconType==="upload" && l.iconValue){
+      iconPrevImg.src = l.iconValue; 
+      iconPrev.style.display="flex";
+    }
+
+    document.getElementById("modalTitle").innerText="Επεξεργασία link";
+    document.getElementById("modalForm").style.display="flex";
+  }
+  
+
+  // Μετονομασία κατηγορίας
+  if(e.target.closest(".rename")){
+    const cat = e.target.closest(".category").dataset.cat;
+    const newN = prompt("Νέο όνομα:",cat);
+    if(newN && newN!==cat){
+      pushHistory();
+      categories[newN]=categories[cat];
+      delete categories[cat];
+      catOrder[catOrder.indexOf(cat)]=newN;
+      saveData(); 
+      render();
+    }
+  }
+
+  // Διαγραφή κατηγορίας
+  if(e.target.closest(".delcat")){
+    const cat = e.target.closest(".category").dataset.cat;
+    if(confirm("Διαγραφή "+cat+";")){
+      pushHistory();
+      delete categories[cat];
+      catOrder=catOrder.filter(c=>c!==cat);
+      saveData(); 
+      render();
+    }
+  }
+
+  // Pin / Unpin
+  if(e.target.closest(".pin")){
+    const card = e.target.closest(".card");
+    const cat = card.dataset.cat;
+    const idx = +card.dataset.idx;
+    const item = categories[cat][idx];
+    if(!item) return;
+    pushHistory();
+    item.pinned = !item.pinned;
+    saveData(); 
+    render();
+  }
+});
+
+
+/* ===============================
+   📌 Backup & Restore
+   =============================== */
+document.getElementById("backupBtn").onclick=()=>{
+  const blob=new Blob([JSON.stringify({
+    categories,catOrder,theme:getTheme(),version:3
+  },null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="bookmarks_backup.json";
+  a.click();
+};
+
+document.getElementById("restoreBtn").onclick=()=>{
+  const choice = confirm("OK: Επαναφορά από JSON backup\nCancel: Εισαγωγή από HTML σελιδοδείκτες");
+  const inp=document.createElement("input");
+  inp.type="file"; inp.accept = choice ? ".json" : ".html,.htm,.txt";
+  inp.onchange=()=>{
+    const r=new FileReader();
+    r.onload=()=>{
+      if(choice){
+        try{
+          const d=JSON.parse(r.result);
+          if(d.categories && d.catOrder){
+            pushHistory();
+            categories=d.categories;catOrder=d.catOrder;
+            if(d.theme){applyTheme(d.theme);saveTheme(d.theme);}
+            saveData(); render(); updateUndoBtn();
+          } else { alert("Μη έγκυρο JSON."); }
+        }catch{ alert("Μη έγκυρο JSON."); }
+      } else {
+        const merge = confirm("OK: Συγχώνευση (δεν προσθέτει διπλά)\nCancel: Αντικατάσταση");
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(r.result,"text/html");
+        const anchors = Array.from(doc.querySelectorAll("a[href]"));
+        if(anchors.length===0){ alert("Δεν βρέθηκαν links στο HTML."); return; }
+        if(!merge){ pushHistory(); categories={}; catOrder=[]; }
+
+        function closestHeading(el){
+          let cur=el; for(let i=0;i<4 && cur;i++, cur=cur.previousElementSibling){
+            if(/H[1-3]/.test(cur.tagName)) return cur.textContent.trim();
+          }
+          let p=el.parentElement; while(p){
+            const h = p.querySelector("h3,h2,h1"); if(h) return h.textContent.trim();
+            p=p.parentElement;
+          }
+          return "Εισαγωγή";
+        }
+
+        let added=0;
+        anchors.forEach(a=>{
+          let href=a.getAttribute("href")||"";
+          if(!href) return;
+          if(!/^https?:\/\//i.test(href) && !/^www\./i.test(href)) return;
+          const url = normalizeUrl(href);
+          const name = (a.getAttribute("title")||a.textContent||"").trim();
+          const desc = "";
+          const cat = closestHeading(a);
+          if(!(categories[cat])){ categories[cat]=[]; catOrder.push(cat); }
+          const ok = dedupeAdd(cat, {url,name,desc,iconType:"auto",iconValue:null,pinned:false});
+          if(ok) added++;
+        });
+
+        saveData(); render(); updateUndoBtn();
+        alert("Εισαγωγή HTML ολοκληρώθηκε. Προστέθηκαν "+added+" links.");
+      }
+    };
+    r.readAsText(inp.files[0]);
+  };
+  inp.click();
+};
+
+/* ===============================
+   📌 Παλέτα Χρωμάτων
+   =============================== */
+document.getElementById("paletteBtn").onclick=
+  ()=>document.getElementById("paletteModal").style.display="flex";
+document.getElementById("closePalette").onclick=
+  ()=>document.getElementById("paletteModal").style.display="none";
+
+["bg1","bg2","card","text","accent"].forEach(id=>{
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.oninput=e=>{
+    document.documentElement.style.setProperty("--"+id,e.target.value);
+    // update swatch if exists
+    const sw = document.getElementById('swatch-'+id);
+    if(sw) sw.style.background = e.target.value;
+    pushHistory();
+    saveTheme(getTheme());
+  };
+});
+document.getElementById("defaultPalette").onclick=()=>{
+  applyTheme(themeDefault);
+  saveTheme(themeDefault);
+  ["bg1","bg2","card","text","accent"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value = themeDefault[id];
+    const sw = document.getElementById('swatch-'+id);
+    if(sw) sw.style.background = themeDefault[id];
+  });
+  pushHistory();
+};
+
+/* ===============================
+   📌 Undo
+   =============================== */
+document.getElementById("undoBtnTop").onclick=undo;
+
+/* ===============================
+   📌 Drag & Drop (links και κατηγορίες)
+   =============================== */
+let dragSrc=null;
+document.addEventListener("dragstart",e=>{
+  const c=e.target.closest(".card"),
+        cat=e.target.closest(".category");
+  if(c){dragSrc=c;} else if(cat){dragSrc=cat;}
+});
+document.addEventListener("dragover",e=>{
+  if(e.target.closest(".card")||e.target.closest(".category")) e.preventDefault();
+});
+document.addEventListener("drop",e=>{
+  e.preventDefault(); if(!dragSrc) return;
+  const card=e.target.closest(".card"),
+        cat=e.target.closest(".category");
+
+  // Μεταφορά link
+  if(dragSrc.classList.contains("card")){
+    const f=dragSrc.dataset.cat, i=+dragSrc.dataset.idx, l=categories[f][i];
+    pushHistory();
+    categories[f].splice(i,1);
+    if(card && card!==dragSrc){
+      categories[card.dataset.cat].splice(+card.dataset.idx,0,l);
+    }else if(cat){
+      categories[cat.dataset.cat].push(l);
+    }else{
+      categories[f].push(l);
+    }
+    saveData(); render();
+  }
+
+  // Μεταφορά κατηγορίας
+  if(dragSrc.classList.contains("category") && cat){
+    const fi=catOrder.indexOf(dragSrc.dataset.cat),
+          ti=catOrder.indexOf(cat.dataset.cat);
+    pushHistory();
+    catOrder.splice(fi,1);
+    catOrder.splice(ti,0,dragSrc.dataset.cat);
+    saveData(); render();
+  }
+  dragSrc=null;
+});
+
+/* ===============================
+   📌 Θέματα
+=============================== */
+const themes = {
+  dark: { bg1:"#0d1b2a", bg2:"#1b263b", card:"#415a77", text:"#e0e1dd", accent:"#00bcd4" },
+  light: { bg1:"#f0f4f8", bg2:"#ffffff", card:"#e0e7ef", text:"#2c3e50", accent:"#1565c0" },
+  green: { bg1:"#2b2f24", bg2:"#3b4330", card:"#5a6b4c", text:"#f2f5e9", accent:"#a4c639" },
+  brown: { bg1:"#332020", bg2:"#4a2b2b", card:"#663d3d", text:"#faeeee", accent:"#e57373"},
+  purple: { bg1:"#2a1f38", bg2:"#3a2b4d", card:"#513d66", text:"#f5edf9", accent:"#ba68c8" },
+  blue: { bg1:"#102840", bg2:"#16324f", card:"#1e4060", text:"#e3f2fd", accent:"#64b5f6" },
+  orange: { bg1:"#402010", bg2:"#5a2b15", card:"#73381c", text:"#fff3e0", accent:"#ffb74d" },
+  pink: { bg1:"#3d1f2b", bg2:"#522a3d", card:"#66384e", text:"#fce4ec", accent:"#f48fb1" }
+};
+
+function applyTheme(t){
+  for(const [k,v] of Object.entries(t)){
+    document.documentElement.style.setProperty("--"+k, v);
+  }
+}
+
+function getTheme(){
+  const cs = getComputedStyle(document.documentElement);
+  return {
+    bg1: cs.getPropertyValue("--bg1").trim(),
+    bg2: cs.getPropertyValue("--bg2").trim(),
+    card: cs.getPropertyValue("--card").trim(),
+    text: cs.getPropertyValue("--text").trim(),
+    accent: cs.getPropertyValue("--accent").trim()
+  };
+}
+
+// αποθήκευση theme (όνομα ή custom)
+function saveTheme(nameOrObj){ 
+  if(typeof nameOrObj === "string"){
+    localStorage.setItem("themeName", nameOrObj);
+    localStorage.removeItem("customTheme");
+  } else {
+    localStorage.setItem("themeName", "custom");
+    localStorage.setItem("customTheme", JSON.stringify(nameOrObj));
+  }
+}
+
+// φόρτωμα αποθηκευμένου θέματος
+function loadTheme(){
+  let name = localStorage.getItem("themeName") || "dark";
+  let t = null;
+
+  if(name === "custom"){
+    t = JSON.parse(localStorage.getItem("customTheme") || "null");
+    if(t) applyTheme(t);
+  } else {
+    t = themes[name] || themes.dark;
+    applyTheme(t);
+  }
+
+  // ενημέρωση dropdown
+  const sel = document.getElementById("themeSelect");
+  if(sel){
+    if(name === "custom"){
+      // Αν δεν υπάρχει επιλογή custom στο select → πρόσθεσέ την
+      if(![...sel.options].some(o => o.value === "custom")){
+        sel.add(new Option("Custom", "custom"));
+      }
+      sel.value = "custom";
+    } else {
+      sel.value = name;
+    }
+  }
+}
+
+// αλλαγή όταν επιλέγεις από το dropdown
+document.getElementById("themeSelect").addEventListener("change", e => {
+  let chosen = e.target.value;
+  if(themes[chosen]){
+    applyTheme(themes[chosen]);
+    saveTheme(chosen);
+  }
+});
+
+
+
+
+
+// κλήση στην εκκίνηση
+loadTheme();
+
+loadData(); 
+if(catOrder.length===0){
+  categories={"Εισαγωγή":[]};
+  catOrder=["Εισαγωγή"];
+  saveData();
+}
+render(); updateUndoBtn();
+
+// update palette swatches initial
+["bg1","bg2","card","text","accent"].forEach(id=>{
+  const el=document.getElementById(id);
+  const sw=document.getElementById('swatch-'+id);
+  if(el && sw) sw.style.background = el.value || getTheme()[id];
+});
+
+</script>
+</body>
+</html>
