@@ -80,15 +80,67 @@
     border-radius:14px; padding:10px;
   }
   .category.drag-over { outline:2px dashed #5aa9ff; outline-offset:4px; }
-  .category-title { display:flex; align-items:center; justify-content:space-between; position:relative; }
-  .category-title h2 { margin:0; font-size:18px; }
-  .cat-actions { display:flex; gap:6px; opacity:0; transition:.2s; position:absolute; right:0; top:0; }
-  .category-title:hover .cat-actions { opacity:1; }
-  .cat-btn {
-    cursor:pointer; font-size:12px; padding:2px 6px; border-radius:6px;
-    background:rgba(0,0,0,.45); color:var(--text);
-  }
-  .cat-btn:hover { background:rgba(0,0,0,.75); }
+/* ===== Στυλ για τίτλο κατηγορίας ===== */
+.category-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 4px 2px;
+}
+
+/* Όνομα κατηγορίας αριστερά */
+.category-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Ενέργειες δεξιά */
+.cat-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+/* Φαίνονται στο hover */
+.category-title:hover .cat-actions {
+  opacity: 1;
+}
+
+/* Collapse κουμπί */
+.toggle-btn {
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.toggle-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
+/* Edit / Delete */
+.cat-btn {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.cat-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
 
   /* -------------------------------------------------
      7. GRID & CARDS
@@ -265,6 +317,39 @@
   0% {transform: translateY(0) scale(1);}
   100% {transform: translateY(-1200px) scale(0.5);}
 }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10,1fr);
+  gap: 12px;
+  margin-top: 10px;
+  min-height: 0px;
+
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  max-height: 9999px; /* πάντα αρκετό για πολλά links */
+  opacity: 1;
+}
+
+.grid.collapsed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle-btn {
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.toggle-btn:hover {
+  background: rgba(0,0,0,.65);
+}
 
 
 
@@ -425,6 +510,8 @@
 /* ===============================
    📌 Κατάσταση / Μεταβλητές
    =============================== */
+let collapsedCats = JSON.parse(localStorage.getItem("collapsedCats") || "[]");
+
 let categories = {};   // { Κατηγορία: [ {url,name,desc,iconType,iconValue,pinned?}, ... ] }
 let catOrder = [];     // Σειρά εμφάνισης κατηγοριών
 let editing = null;    // {cat, idx}
@@ -564,38 +651,78 @@ function render(){
   wrap.innerHTML = "";
 
   catOrder.forEach(cat=>{
-  const sec = document.createElement("div");
-  sec.className = "category";
-  sec.draggable = true;
-  sec.dataset.cat = cat;
+    const sec = document.createElement("div");
+    sec.className = "category";
+    sec.draggable = true;
+    sec.dataset.cat = cat;
 
-// τίτλος κατηγορίας
-  const title = document.createElement("div");
-  title.className = "category-title";
+    // τίτλος κατηγορίας
+    const title = document.createElement("div");
+    title.className = "category-title";
 
-  const h2 = document.createElement("h2");
-  h2.textContent = cat;
-  title.appendChild(h2);
+    // όνομα αριστερά
+    const h2 = document.createElement("h2");
+    h2.textContent = cat;
+    title.appendChild(h2);
 
-// αν θες και τα κουμπάκια επεξεργασίας / διαγραφής
-	const actions = document.createElement("div");
-	actions.className = "cat-actions";
-	actions.innerHTML = `
-	<span class="cat-btn rename">✎</span>
-	<span class="cat-btn delcat">🗑</span>
-`;
-	title.appendChild(actions);
+  // actions δεξιά
+const actions = document.createElement("div");
+actions.className = "cat-actions";
 
-  sec.appendChild(title);
+// κουμπί collapse
+const toggleBtn = document.createElement("span");
+toggleBtn.textContent = collapsedCats.includes(cat) ? "▸" : "▾";
+toggleBtn.className = "toggle-btn";
+actions.appendChild(toggleBtn);
 
-// grid με links
-  const grid = document.createElement("div");
-  grid.className = "grid";
-  grid.dataset.cat = cat;
+    // κουμπιά edit / delete
+const renameBtn = document.createElement("span");
+renameBtn.className = "cat-btn rename";
+renameBtn.textContent = "✎";
+actions.appendChild(renameBtn);
 
-  sec.appendChild(grid);
+const delBtn = document.createElement("span");
+delBtn.className = "cat-btn delcat";
+delBtn.textContent = "🗑";
+actions.appendChild(delBtn);
+
+title.appendChild(actions);
 
 
+
+    sec.appendChild(title);
+
+    // grid με links
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    grid.dataset.cat = cat;
+    if (collapsedCats.includes(cat)) grid.classList.add("collapsed");
+    sec.appendChild(grid);
+
+    // event collapse
+   toggleBtn.onclick = () => {
+  const isCollapsed = grid.classList.toggle("collapsed");
+  toggleBtn.textContent = isCollapsed ? "▸" : "▾";
+
+  if (isCollapsed) {
+    if (!collapsedCats.includes(cat)) collapsedCats.push(cat);
+
+    // ➜ Μεταφορά κατηγορίας στο τέλος
+    const idx = catOrder.indexOf(cat);
+    if (idx > -1) {
+      catOrder.splice(idx, 1);     // βγάζουμε την κατηγορία από τη θέση της
+      catOrder.push(cat);          // και την βάζουμε στο τέλος
+      saveData();
+      render();                    // ξαναζωγραφίζουμε για να φανεί
+    }
+
+  } else {
+    collapsedCats = collapsedCats.filter(c => c !== cat);
+  }
+  localStorage.setItem("collapsedCats", JSON.stringify(collapsedCats));
+};
+
+    // περιεχόμενο κατηγορίας (links)
     const list = (categories[cat] || []);
     const orderIdx = list.map((_,i)=>i).sort((a,b)=>{
       const pa = !!(list[a] && list[a].pinned), pb = !!(list[b] && list[b].pinned);
@@ -613,7 +740,7 @@ function render(){
       else if(l.iconType === "builtin" && l.iconValue){
         initialIcon = builtinToDataUrl(l.iconValue);
       }
-      else if(l.iconType === "url" && l.iconValue){   // ✅ ΝΕΟ κομμάτι
+      else if(l.iconType === "url" && l.iconValue){
         initialIcon = l.iconValue;
       }
       else if(l.url){
@@ -627,7 +754,6 @@ function render(){
       } else {
         initialIcon = 'assets/default-favicon.png';
       }
-
 
       const card = document.createElement("div");
       card.className="card";
@@ -736,10 +862,11 @@ function render(){
       });
     });
 
-    sec.appendChild(grid);
     wrap.appendChild(sec);
   });
 }
+
+
 
 /* ===============================
    📌 Συνάρτηση για να βρίσκουμε τον τίτλο σελίδας
