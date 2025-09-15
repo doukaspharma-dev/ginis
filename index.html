@@ -11,6 +11,7 @@
   <link rel="shortcut icon" type="image/png" href="assets/unnamed.png">
 
   <style>
+  
   /* -------------------------------------------------
      1. ΘΕΜΑΤΙΚΑ ΧΡΩΜΑΤΑ (CSS variables)
   ------------------------------------------------- */
@@ -235,9 +236,50 @@
   background: rgba(90, 169, 255, 0.08);
 }
 
+  <!-- Μπουρμπουλήθρες -->
+
+.bubbles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+.bubbles span {
+  position: absolute;
+  display: block;
+  width: 20px; height: 20px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  bottom: -100px;
+  animation: rise 20s infinite;
+}
+.bubbles span:nth-child(1){ left:10%; animation-duration:12s; width:15px; height:15px;}
+.bubbles span:nth-child(2){ left:20%; animation-duration:18s;}
+.bubbles span:nth-child(3){ left:70%; animation-duration:16s; width:25px; height:25px;}
+.bubbles span:nth-child(4){ left:50%; animation-duration:22s;}
+.bubbles span:nth-child(5){ left:85%; animation-duration:26s;}
+
+@keyframes rise {
+  0% {transform: translateY(0) scale(1);}
+  100% {transform: translateY(-1200px) scale(0.5);}
+}
+
+
+
+
   </style>
 </head>
 <body>
+
+  <!-- Μπουρμπουλήθρες -->
+
+<div class="bubbles">
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+
  
 <div class="wrap">
 
@@ -253,7 +295,6 @@
   <button id="undoBtnTop" class="gray" disabled>↩ Αναίρεση</button>
   <button id="backupBtn">Backup</button>
   <button id="restoreBtn">Restore</button>
-
 
 
   <!-- Δεξιά -->
@@ -523,14 +564,37 @@ function render(){
   wrap.innerHTML = "";
 
   catOrder.forEach(cat=>{
-    const sec = document.createElement("div");
-    sec.className = "category";
-    sec.draggable = true;
-    sec.dataset.cat = cat;
+  const sec = document.createElement("div");
+  sec.className = "category";
+  sec.draggable = true;
+  sec.dataset.cat = cat;
 
-    const grid = document.createElement("div");
-    grid.className = "grid";
-    grid.dataset.cat = cat;
+// τίτλος κατηγορίας
+  const title = document.createElement("div");
+  title.className = "category-title";
+
+  const h2 = document.createElement("h2");
+  h2.textContent = cat;
+  title.appendChild(h2);
+
+// αν θες και τα κουμπάκια επεξεργασίας / διαγραφής
+	const actions = document.createElement("div");
+	actions.className = "cat-actions";
+	actions.innerHTML = `
+	<span class="cat-btn rename">✎</span>
+	<span class="cat-btn delcat">🗑</span>
+`;
+	title.appendChild(actions);
+
+  sec.appendChild(title);
+
+// grid με links
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  grid.dataset.cat = cat;
+
+  sec.appendChild(grid);
+
 
     const list = (categories[cat] || []);
     const orderIdx = list.map((_,i)=>i).sort((a,b)=>{
@@ -843,12 +907,6 @@ document.getElementById("linkForm").onsubmit = e => {
 };
 
 
-
-
-
-
-
-
 // Ενέργειες σε κάρτες/κατηγορίες
 document.addEventListener("click", e => {
   // Διαγραφή link
@@ -899,7 +957,6 @@ document.addEventListener("click", e => {
     document.getElementById("modalForm").style.display="flex";
   }
   
-
   // Μετονομασία κατηγορίας
   if(e.target.closest(".rename")){
     const cat = e.target.closest(".category").dataset.cat;
@@ -1174,9 +1231,6 @@ document.getElementById("themeSelect").addEventListener("change", e => {
 });
 
 
-
-
-
 // κλήση στην εκκίνηση
 loadTheme();
 
@@ -1187,6 +1241,8 @@ if(catOrder.length===0){
   saveData();
 }
 render(); updateUndoBtn();
+
+
 
 // update palette swatches initial
 ["bg1","bg2","card","text","accent"].forEach(id=>{
