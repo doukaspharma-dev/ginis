@@ -351,6 +351,43 @@
   background: rgba(0,0,0,.65);
 }
 
+/* Νέο στυλ για header */
+header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* απόσταση λογότυπου-κειμένου */
+}
+
+.logo-title img {
+  height: 60px; /* μέγεθος logo, το ρυθμίζεις όπως θες */
+  border-radius: 12px; /* προαιρετικό, αν θες στρογγυλεμένες γωνίες */
+}
+
+.titles h1 {
+  margin: 4px 0 0;
+  font-size: 26px;
+  font-weight: 800;
+}
+.titles h2 {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #2a9df4;
+  font-weight: 700;
+}
+.titles h3 {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #bbb;
+  font-weight: 500;
+}
+
+
 
 
 
@@ -369,10 +406,16 @@
 <div class="wrap">
 
 <header>
-  <h1>Τα δικά μου χρήσιμα</h1>
-  <h2>Φαρμακείο Γκίνης Κ. Πέτρος, Πολύγωνο.</h2>
-  <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
+  <div class="logo-title">
+    <img src="assets/unnamed.png" alt="Logo">
+    <div class="titles">
+      <h1>Τα δικά μου χρήσιμα</h1>
+      <h2>Φαρμακείο Γκίνης Κ. Πέτρος, Πολύγωνο.</h2>
+      <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
+    </div>
+  </div>
 </header>
+
 
 <div class="topbar">
   <!-- Κουμπιά κεντρικά -->
