@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="el">
 <head>
@@ -146,24 +147,52 @@
      7. GRID & CARDS
   ------------------------------------------------- */
   .grid {
-    display:grid; grid-template-columns:repeat(10,1fr);
-    gap:12px; margin-top:10px; min-height:44px;
+  display: grid;
+  grid-template-columns: repeat(10,1fr);
+  gap: 12px;
+  margin-top: 10px;
+  min-height: 44px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  width: 100%;
+  aspect-ratio: 1/1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .18s ease;
+  padding: 10px;
+
+  /* ✨ Fade-in animation */
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  background: color-mix(in oklab, var(--accent) 20%, transparent);
+  border-color: var(--accent);
+}
+
+.card.pinned {
+  outline: 2px solid gold;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 2px rgba(255,215,0,.25) inset;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  .card {
-    background:var(--card); border:1px solid var(--border); border-radius:22px;
-    width:100%; aspect-ratio:1/1; position:relative; overflow:hidden;
-    display:flex; align-items:center; justify-content:center;
-    transition:.18s ease; padding:10px;
-  }
-  .card:hover {
-    transform:translateY(-3px);
-    background:color-mix(in oklab, var(--accent) 20%, transparent);
-    border-color:var(--accent);
-  }
-  .card.pinned {
-    outline:2px solid gold; outline-offset:-2px;
-    box-shadow:0 0 0 2px rgba(255,215,0,.25) inset;
-  }
+}
+
 
   /* -------------------------------------------------
      8. LINKS ΣΕ ΚΑΡΤΕΣ
@@ -387,6 +416,101 @@ header {
   font-weight: 500;
 }
 
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(35,36,41,.96);
+  backdrop-filter: blur(6px);
+  font-size: 12px;
+  color: #a8b0bb;
+  padding: 8px 10px;
+  overflow: hidden;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(35,36,41,.96);
+  backdrop-filter: blur(6px);
+  font-size: 12px;
+  color: #a8b0bb;
+  padding: 8px 10px;
+  overflow: hidden;
+}
+
+/* Wrapper για το pulse */
+.note-wrapper {
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.note {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-right 12s linear infinite,
+             colorShift 8s linear infinite;
+	/* text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff, 0 0 30px #00e5ff;*/
+}
+
+
+/* Κίνηση */
+@keyframes scroll-right {
+  0%   { transform: translateX(-100vw); }
+  100% { transform: translateX(100vw); }
+}
+
+/* Εναλλαγή χρώματος */
+@keyframes colorShift {
+  0%   { color: #f4a261; }
+  25%  { color: #2a9df4; }
+  50%  { color: #a1ff0a; }
+  75%  { color: #ff4081; }
+  100% { color: #f4a261; }
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.2); }
+}
+
+.typewriter {
+  display: inline-block;
+  overflow: hidden;             /* κρύβει το υπόλοιπο κείμενο */
+  white-space: nowrap;          /* να μη σπάει γραμμή */
+  border-right: 2px solid var(--accent); /* σαν cursor */
+  width: 0;                     /* ξεκινάει μηδενικό */
+  animation: typing 3s steps(25, end) forwards,
+             blinkCursor 0.7s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to   { width: 100% }
+}
+
+@keyframes blinkCursor {
+  from, to { border-color: transparent }
+  50% { border-color: var(--accent) }
+}
+.card {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Keyframes όπως πριν */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 
 
@@ -409,7 +533,7 @@ header {
   <div class="logo-title">
     <img src="assets/unnamed.png" alt="Logo">
     <div class="titles">
-      <h1>Τα δικά μου χρήσιμα</h1>
+     <h1 class="typewriter">Τα δικά μου χρήσιμα</h1>
       <h2>Φαρμακείο Γκίνης Κ. Πέτρος, Πολύγωνο.</h2>
       <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
     </div>
@@ -448,10 +572,12 @@ header {
 
 
 <footer>
-<div class="btnrow">
-<button id="addBtnFoot">+ Προσθήκη νέου link</button>
-</div>
-<div class="note">Φτιαγμένο με αγάπη από το Doukas Pharmacy Support®</div>
+  <div class="btnrow">
+    <button id="addBtnFoot">+ Προσθήκη νέου link</button>
+  </div>
+  <div class="note-wrapper">
+    <div class="note">Φτιαγμένο με αγάπη από το Doukas Pharmacy Support®</div>
+  </div>
 </footer>
 <!-- ===== MODAL ΝΕΟΥ LINK ===== -->
 <div class="modal" id="modalForm">
@@ -653,6 +779,22 @@ function undo(){
   render();
   updateUndoBtn();
 }
+
+// Προσθέτει staggered animation στις κάρτες
+function animateCards() {
+  const cards = document.querySelectorAll(".card");
+  cards.forEach((card, i) => {
+    card.style.animationDelay = (i * 0.1) + "s"; // 0.1s διαφορά η κάθε μία
+  });
+}
+
+// Κάθε φορά που γίνεται render ξανά, τρέχει το animation
+const originalRender = render;
+render = function() {
+  originalRender();
+  animateCards();
+};
+
 
 /* ===============================
    📌 Βοηθοί
