@@ -1996,7 +1996,17 @@ function resizeBase64Image(base64, maxSize = 64) {
   });
 }
 	
-
+// Πρόσθεσε αυτό προσωρινά στο script
+setTimeout(() => {
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.menu-btn')) {
+      const btn = e.target.closest('.menu-btn');
+      const menu = btn.nextElementSibling;
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      e.stopPropagation();
+    }
+  });
+}, 1000);
 </script>
 </body>
 </html>
