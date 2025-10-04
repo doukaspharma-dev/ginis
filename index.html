@@ -177,7 +177,31 @@
   transition: .18s ease;
   padding: 10px;
 
- 
+  /* ✨ Fade-in animation */
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  background: color-mix(in oklab, var(--accent) 20%, transparent);
+  border-color: var(--accent);
+}
+
+.card.pinned {
+  outline: 2px solid gold;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 2px rgba(255,215,0,.25) inset;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
   /* -------------------------------------------------
      8. LINKS ΣΕ ΚΑΡΤΕΣ
@@ -217,7 +241,100 @@
 }
 
 
+ /* -------------------------------------------------
+   ΝΕΟ MENU ΠΑΝΩ ΣΤΙΣ ΚΑΡΤΕΣ
+  ------------------------------------------------- */
 
+/* το <a> μένει χαμηλά ώστε να μην σκεπάζει το κουμπί */
+.card a {
+  position: relative;
+  z-index: 0;
+}
+
+/* κουμπί με τις τρεις τελείες */
+.card .menu-btn {
+  position: absolute;
+  top: 4px;        /* ✅ κολλάει στην κορυφή */
+  right: 4px;      /* ✅ πάει δεξιά */
+  width: 14px;
+  height: 20px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 2px;
+  background: rgba(0,0,0,0.4);
+  color: var(--text);
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .2s;
+  z-index: 1100;
+  pointer-events: auto;
+}
+
+.card:hover .menu-btn {
+  opacity: 1;
+}
+
+/* popup με τα κουμπάκια */
+.card .menu-popup {
+  position: absolute;
+  top: -32px;        /* εμφανίζεται ΠΑΝΩ από τις ⋮ */
+  right: 8px;
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  padding: 1px;   /* μικρότερο περιθώριο μέσα */
+  gap: 1px;       /* μικρότερο κενό ανάμεσα στα κουμπιά */
+  display: none;
+  flex-direction: row; /* κάθετα τα κουμπάκια */
+  gap: 4px;
+  z-index: 1200;
+}
+
+/* styling για τα κουμπιά μέσα στο popup */
+.card .menu-popup button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 1px;       /* πιο μικρό */
+}
+
+.card .menu-popup button svg {
+  width: 14px;        /* μικρότερο εικονίδιο */
+  height: 14px;
+  fill: var(--text);
+}
+.card .menu-popup button:hover svg {
+  fill: var(--accent);
+}
+
+.card .menu-popup button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.card .menu-popup button svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text);
+  transition: fill 0.2s ease;
+}
+
+/* ✨ Εφέ στο hover */
+.card .menu-popup button:hover {
+  transform: scale(1.2);            /* μεγαλώνει λίγο */
+  background: rgba(255,255,255,0.1); /* ή βάζεις φόντο */
+  border-radius: 4px;
+}
+
+.card .menu-popup button:hover svg {
+  fill: var(--accent); /* αλλάζει χρώμα */
+}
 
 
   /* -------------------------------------------------
@@ -325,7 +442,24 @@
   0% {transform: translateY(0) scale(1);}
   100% {transform: translateY(-1200px) scale(0.5);}
 }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10,1fr);
+  gap: 12px;
+  margin-top: 10px;
+  min-height: 0px;
 
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  max-height: 9999px; /* πάντα αρκετό για πολλά links */
+  opacity: 1;
+}
+
+.grid.collapsed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
 
 .toggle-btn {
   cursor: pointer;
@@ -482,6 +616,17 @@ footer {
   border-radius: 10px;
 }
 
+/* Ολόκληρη η κάρτα μεγαλώνει στο hover */
+.card:hover {
+  transform: scale(1.04);
+  background: color-mix(in oklab, var(--accent) 20%, transparent);
+  border-color: var(--accent);
+}
+
+/* Το grid αφήνει τις κάρτες να “ξεφεύγουν” όταν κάνουν scale */
+.grid {
+  overflow: visible !important;
+}
 
 .palette-row {
   display: flex;
