@@ -1517,41 +1517,6 @@ render();
 document.getElementById("modalForm").style.display = "none";
 };
 
-  // εικονίδιο
-  let iconType = iconModeEl.value;
-  let iconValue = null;
-  if(iconType==="builtin"){
-    iconValue = builtinEl.value || "link";
-  }else if(iconType==="upload"){
-    if(iconFileEl.files && iconFileEl.files[0]){
-      iconValue = iconPrevImg.src || null;
-    }else{
-      iconType = "auto";
-    }
-  }else if(iconType==="url"){     // ΝΕΟ mode
-    if(iconUrlEl.value.trim()){
-      iconValue = iconUrlEl.value.trim();
-    }else{
-      iconType = "auto";
-    }
-  }
-
-pushHistory();
-const baseObj = { url, name, desc, iconType, iconValue };
-
-if(editing){
-  const prev = categories[editing.cat][editing.idx] || {};
-  const updated = { ...baseObj, pinned: !!prev.pinned }; // ← ΕΔΩ ΝΑ ΜΗΝ ΥΠΑΡΧΕΙ ΕΞΤΡΑ }
-  categories[editing.cat][editing.idx] = updated;
-}else{
-  const linkObj = { ...baseObj, pinned:false };
-  dedupeAdd(cat, linkObj);
-}
-
-saveData(); 
-render();
-saveAutoBackup();
-document.getElementById("modalForm").style.display = "none";
 
 
 // Ενέργειες σε κάρτες/κατηγορίες
