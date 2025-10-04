@@ -1622,29 +1622,28 @@ if (target.closest(".delcat")) {
   if (confirm("Διαγραφή " + cat + ";")) {
     pushHistory();
     delete categories[cat];
-    catOrder = catOrder.filter(x => x !== catName);
+    catOrder = catOrder.filter(x => x !== cat);  // <-- Αλλαγή: catName -> cat
     saveData();
     render();
     saveAutoBackup(); 
   }
   return;
-
-  /* ---------------------------
-     Pin / Unpin
-  --------------------------- */
-  if (target.closest(".pin")) {
-    const card = target.closest(".card");
-    const cat = card.dataset.cat;
-    const idx = +card.dataset.idx;
-    const item = categories[cat][idx];
-    if (!item) return;
-    pushHistory();
-    item.pinned = !item.pinned;
-    saveData();
-    render();
-    return;
-  }
-});
+}  
+/* ---------------------------
+   Pin / Unpin
+--------------------------- */
+if (target.closest(".pin")) {
+  const card = target.closest(".card");
+  const cat = card.dataset.cat;
+  const idx = +card.dataset.idx;
+  const item = categories[cat][idx];
+  if (!item) return;
+  pushHistory();
+  item.pinned = !item.pinned;
+  saveData();
+  render();
+  return;
+}
 
 /* ===============================
    📌 Backup & Restore
