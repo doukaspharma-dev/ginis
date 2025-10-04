@@ -1618,11 +1618,11 @@ document.addEventListener("click", e => {
      Διαγραφή κατηγορίας
   --------------------------- */
   if (target.closest(".delcat")) {
-    const cat = target.closest(".category").dataset.cat;
+    catOrder = catOrder.filter(x => x !== catName);
     if (confirm("Διαγραφή " + cat + ";")) {
       pushHistory();
       delete categories[cat];
-      catOrder = catOrder.filter(c => c !== cat);
+      catOrder = catOrder.filter(x => x !== catName);.filter(c => c !== cat);
       saveData();
       render();
 	  saveAutoBackup(); // ← ΠΡΟΣΘΗΚΗ ΕΔΩ
