@@ -35,7 +35,12 @@
     color:var(--text);
     font-family:Arial,Helvetica,sans-serif;
   }
-  .wrap { max-width:1200px; margin:0 auto; padding:24px 10px 210px; }
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 10px 210px;
+  overflow-x: hidden; /* ← ΠΡΟΣΘΕΣΕ ΑΥΤΟ */
+}
 
   /* -------------------------------------------------
      3. HEADER
@@ -161,7 +166,7 @@
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  width: 95%;
+  width: 100%;
   aspect-ratio: 1/1;
   overflow: visible; /* ✅ πολύ σημαντικό */
 
@@ -438,10 +443,11 @@
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(10,1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 12px;
   margin-top: 10px;
   min-height: 54px;
+}
 
   transition: max-height 0.3s ease, opacity 0.3s ease;
   overflow: hidden;
