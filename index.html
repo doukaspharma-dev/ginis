@@ -444,12 +444,13 @@
   100% {transform: translateY(-1200px) scale(0.5);}
 }
 .grid {
+.grid {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   gap: 12px;
   margin-top: 10px;
   min-height: 54px;
-}
+}  /* ✅ Κλείσιμο του .grid */
 
   transition: max-height 0.3s ease, opacity 0.3s ease;
   overflow: hidden;
