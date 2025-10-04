@@ -1536,21 +1536,22 @@ document.getElementById("modalForm").style.display = "none";
     }
   }
 
-  pushHistory();
-  const baseObj = { url, name, desc, iconType, iconValue };
-  if(editing){
-    const prev = categories[editing.cat][editing.idx] || {};
-    const updated = { ...baseObj, pinned: !!prev.pinned }; // κρατάμε το pinned
-    categories[editing.cat][editing.idx] = updated;
-  }else{
-    const linkObj = { ...baseObj, pinned:false };
-    dedupeAdd(cat, linkObj);
-  }
+pushHistory();
+const baseObj = { url, name, desc, iconType, iconValue };
 
-  saveData(); render();
-	saveAutoBackup(); // ← ΠΡΟΣΘΗΚΗ ΕΔΩ
-  document.getElementById("modalForm").style.display = "none";
+if(editing){
+  const prev = categories[editing.cat][editing.idx] || {};
+  const updated = { ...baseObj, pinned: !!prev.pinned }; // ← ΕΔΩ ΝΑ ΜΗΝ ΥΠΑΡΧΕΙ ΕΞΤΡΑ }
+  categories[editing.cat][editing.idx] = updated;
+}else{
+  const linkObj = { ...baseObj, pinned:false };
+  dedupeAdd(cat, linkObj);
 }
+
+saveData(); 
+render();
+saveAutoBackup();
+document.getElementById("modalForm").style.display = "none";
 
 
 // Ενέργειες σε κάρτες/κατηγορίες
