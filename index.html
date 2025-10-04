@@ -1511,10 +1511,10 @@ document.getElementById("linkForm").onsubmit = e => {
     dedupeAdd(cat, linkObj);
   }
 
-  saveData(); 
-  render();
-  saveAutoBackup();
-  document.getElementById("modalForm").style.display = "none"; // 👈 ΚΛΕΙΣΙΜΟ
+saveData(); 
+render();
+// saveAutoBackup(); // ← ΠΡΟΣΩΡΙΝΑ ΣΕ ΣΧΟΛΙΟ
+document.getElementById("modalForm").style.display = "none";
 };
 
   // εικονίδιο
