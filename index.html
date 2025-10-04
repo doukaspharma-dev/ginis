@@ -1614,21 +1614,20 @@ document.addEventListener("click", e => {
     return;
   }
 
-  /* ---------------------------
-     Διαγραφή κατηγορίας
-  --------------------------- */
-  if (target.closest(".delcat")) {
-    catOrder = catOrder.filter(x => x !== catName);
-    if (confirm("Διαγραφή " + cat + ";")) {
-      pushHistory();
-      delete categories[cat];
-      catOrder = catOrder.filter(x => x !== catName);.filter(c => c !== cat);
-      saveData();
-      render();
-	  saveAutoBackup(); // ← ΠΡΟΣΘΗΚΗ ΕΔΩ
-    }
-    return;
+/* ---------------------------
+   Διαγραφή κατηγορίας
+--------------------------- */
+if (target.closest(".delcat")) {
+  const cat = target.closest(".category").dataset.cat;
+  if (confirm("Διαγραφή " + cat + ";")) {
+    pushHistory();
+    delete categories[cat];
+    catOrder = catOrder.filter(x => x !== cat);
+    saveData();
+    render();
+    saveAutoBackup(); 
   }
+  return;
 
   /* ---------------------------
      Pin / Unpin
