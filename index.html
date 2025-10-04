@@ -13,7 +13,671 @@
 
   <style>
   
+  /* -------------------------------------------------
+     1. ΘΕΜΑΤΙΚΑ ΧΡΩΜΑΤΑ (CSS variables)
+  ------------------------------------------------- */
+  :root {
+    --bg1:#0d1b2a;
+    --bg2:#1b263b;
+    --card:#415a77;
+    --text:#e0e1dd;
+    --accent:#f4a261;
+    --border:rgba(255,255,255,.15);
+  }
+
+  /* -------------------------------------------------
+     2. RESET + BODY + WRAPPER
+  ------------------------------------------------- */
+  * { box-sizing: border-box; }
+  body {
+    margin:0;
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  .wrap { max-width:1200px; margin:0 auto; padding:24px 10px 210px; }
+
+  /* -------------------------------------------------
+     3. HEADER
+  ------------------------------------------------- */
+  header { text-align:center; margin-bottom:10px; }
+  header h1 { margin:4px 0 0; font-size:26px; font-weight:800; }
+  header h2 { margin:6px 0 0; font-size:14px; color:#2a9df4; font-weight:700; }
+  header h3 { margin:6px 0 0; font-size:13px; color:#bbb; font-weight:500; }
+
+  /* -------------------------------------------------
+     4. TOPBAR (κουμπιά πάνω)
+  ------------------------------------------------- */
+  .topbar {
+    display:flex; justify-content:center; align-items:center;
+    gap:10px; margin:12px 0 18px; position:relative;
+  }
+  .topbar-right { margin-left:auto; }
+
+  /* -------------------------------------------------
+     5. ΚΟΥΜΠΙΑ
+  ------------------------------------------------- */
+  button {
+    padding:8px 14px; border:none; border-radius:10px; cursor:pointer;
+    background:var(--accent); color:#fff; font-weight:700; font-size:14px;
+  }
+  button.gray { background:#596070!important; color:#ccc!important; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  button:hover { opacity:0.85; }
+  button:active { transform:scale(0.97); }
+
+  /* Dropdown επιλογής theme */
+  #themeSelect {
+    padding:6px 10px; border-radius:8px; border:1px solid var(--border);
+    background:var(--card); color:var(--text); font-weight:600; cursor:pointer;
+  }
+  #theme-toggle {
+  position: relative;
+}
+
+
+
+
+  /* -------------------------------------------------
+     6. ΚΑΤΗΓΟΡΙΕΣ
+  ------------------------------------------------- */
+  #categories { display:flex; flex-direction:column; gap:18px; padding:0 6px; }
+  .category {
+    background:rgba(255,255,255,.04); border:1px solid var(--border);
+    border-radius:14px; padding:10px;
+  }
+  .category.drag-over { outline:2px dashed #5aa9ff; outline-offset:4px; }
+
+
+
+/* ===== Στυλ για τίτλο κατηγορίας ===== */
+.category-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 4px 2px;
+}
+
+/* Όνομα κατηγορίας αριστερά */
+.category-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Ενέργειες δεξιά */
+.cat-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+/* Φαίνονται στο hover */
+.category-title:hover .cat-actions {
+  opacity: 1;
+}
+
+/* Collapse κουμπί */
+.toggle-btn {
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.toggle-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
+/* Edit / Delete */
+.cat-btn {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.cat-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
+
+  /* -------------------------------------------------
+     7. GRID & CARDS
+  ------------------------------------------------- */
+
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 95%;
+  aspect-ratio: 1/1;
+  overflow: visible; /* ✅ πολύ σημαντικό */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .18s ease;
+  padding: 10px;
+
+  /* ✨ Fade-in animation */
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  background: color-mix(in oklab, var(--accent) 20%, transparent);
+  border-color: var(--accent);
+}
+
+.card.pinned {
+  outline: 2px solid gold;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 2px rgba(255,215,0,.25) inset;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+  /* -------------------------------------------------
+     8. LINKS ΣΕ ΚΑΡΤΕΣ
+  ------------------------------------------------- */
+  .card a {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-decoration:none; color:var(--text); width:100%; height:100%;
+  }
+  .card img.favicon {
+    width:48px; height:48px; margin-bottom:8px; display:block;
+  }
+  .link-title {
+    font-size:9px; font-weight:700; color:var(--text);
+    white-space:nowrap; word-break:break-word; text-align:center;
+    max-width:95%;
+  }
+  .link-desc {
+    font-size:8px; color:rgba(255,255,255,.6); margin-top:2px;
+    max-width:90%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* Hover σε links */
+  a { color:var(--text); text-decoration:none; transition:.25s; }
+  a:not(.fav):not(.del):not(.edit):hover {
+    color:var(--accent);
+    background:rgba(230,57,70,0.15);
+    font-weight:600; padding:2px 4px; border-radius:6px;
+  }
   
+  
+.card a:not(.fav):not(.del):not(.edit):hover {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(244, 162, 97, 0.8); /* λαμπάκι γύρω γύρω */
+}
+
+
+ /* -------------------------------------------------
+   ΝΕΟ MENU ΠΑΝΩ ΣΤΙΣ ΚΑΡΤΕΣ
+  ------------------------------------------------- */
+
+/* το <a> μένει χαμηλά ώστε να μην σκεπάζει το κουμπί */
+.card a {
+  position: relative;
+  z-index: 0;
+}
+
+/* κουμπί με τις τρεις τελείες */
+.card .menu-btn {
+  position: absolute;
+  top: 4px;        /* ✅ κολλάει στην κορυφή */
+  right: 4px;      /* ✅ πάει δεξιά */
+  width: 14px;
+  height: 20px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 2px;
+  background: rgba(0,0,0,0.4);
+  color: var(--text);
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .2s;
+  z-index: 1100;
+  pointer-events: auto;
+}
+
+.card:hover .menu-btn {
+  opacity: 1;
+}
+
+/* popup με τα κουμπάκια */
+.card .menu-popup {
+  position: absolute;
+  top: -32px;        /* εμφανίζεται ΠΑΝΩ από τις ⋮ */
+  right: 8px;
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  padding: 1px;   /* μικρότερο περιθώριο μέσα */
+  gap: 1px;       /* μικρότερο κενό ανάμεσα στα κουμπιά */
+  display: none;
+  flex-direction: row; /* κάθετα τα κουμπάκια */
+  gap: 4px;
+  z-index: 1200;
+}
+
+/* styling για τα κουμπιά μέσα στο popup */
+.card .menu-popup button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 1px;       /* πιο μικρό */
+}
+
+.card .menu-popup button svg {
+  width: 14px;        /* μικρότερο εικονίδιο */
+  height: 14px;
+  fill: var(--text);
+}
+.card .menu-popup button:hover svg {
+  fill: var(--accent);
+}
+
+.card .menu-popup button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.card .menu-popup button svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text);
+  transition: fill 0.2s ease;
+}
+
+/* ✨ Εφέ στο hover */
+.card .menu-popup button:hover {
+  transform: scale(1.2);            /* μεγαλώνει λίγο */
+  background: rgba(255,255,255,0.1); /* ή βάζεις φόντο */
+  border-radius: 4px;
+}
+
+.card .menu-popup button:hover svg {
+  fill: var(--accent); /* αλλάζει χρώμα */
+}
+
+
+  /* -------------------------------------------------
+     10. FOOTER
+  ------------------------------------------------- */
+  footer {
+    position:fixed; left:0; bottom:0; width:100%;
+    background:rgba(35,36,41,.96); backdrop-filter:blur(6px);
+    text-align:center; color:#a8b0bb; font-size:12px; padding:8px 10px;
+  }
+  footer .btnrow { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:6px; }
+  footer .note { color:#aab2bd; font-weight:700; }
+  body:has(footer) .wrap { padding-bottom:70px; }
+  
+
+
+  /* -------------------------------------------------
+     11. MODALS
+  ------------------------------------------------- */
+  .modal {
+    position:fixed; inset:0; display:none;
+    align-items:center; justify-content:center;
+    background:rgba(0,0,0,.6); z-index:4000;
+  }
+  .modal .box {
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:14px; padding:16px; width:94%; max-width:420px;
+  }
+  .modal h3 { margin:0 0 8px; font-size:18px; }
+  .modal .row { display:flex; flex-direction:column; gap:6px; margin:8px 0; }
+  .modal input,.modal textarea,select {
+    background:var(--card); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:8px; width:100%;
+  }
+  .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:6px; }
+
+  /* Επιλογή εικονιδίου */
+  .icon-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .icon-row select,.icon-row input[type=file]{flex:1;}
+  .icon-preview { display:flex; align-items:center; gap:8px; margin-top:4px; font-size:12px; color:#cbd5e1; }
+  .icon-preview img{width:24px;height:24px;}
+
+  /* Κουμπί παλέτας (αόρατο) */
+  #paletteBtn {
+    position:fixed; top:50%; right:0; transform:translateY(-50%);
+    width:64px; height:64px; opacity:0; cursor:pointer; z-index:4500;
+  }
+
+  /* Παλέτα */
+  .palette-row { display:flex; align-items:center; gap:12px; }
+  .color-swatch { width:48px; height:48px; border-radius:8px; border:1px solid var(--border); }
+
+  /* -------------------------------------------------
+     12. TOOLTIP
+  ------------------------------------------------- */
+  [data-tooltip]{position:relative;}
+  [data-tooltip]::after{
+    content:attr(data-tooltip);
+    position:absolute; bottom:125%; left:50%; transform:translateX(-50%);
+    background:#fff9c4; color:#0a58ca; border:1px solid rgba(10,88,202,.35);
+    padding:4px 8px; border-radius:6px; white-space:nowrap; font-size:12px; font-weight:600;
+    opacity:0; pointer-events:none; transition:opacity .2s; box-shadow:0 6px 18px rgba(0,0,0,.2);
+  }
+  [data-tooltip]:hover::after{opacity:1;}
+
+  /* -------------------------------------------------
+     13. TRANSITIONS
+  ------------------------------------------------- */
+  body, footer, button {
+    transition: background .3s, color .3s, opacity .3s, transform .1s;
+  }
+  
+  .category.drag-over {
+  outline: 2px dashed #5aa9ff;
+  outline-offset: 4px;
+  background: rgba(90, 169, 255, 0.08);
+}
+
+  <!-- Μπουρμπουλήθρες -->
+
+.bubbles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+.bubbles span {
+  position: absolute;
+  display: block;
+  width: 20px; height: 20px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  bottom: -100px;
+  animation: rise 20s infinite;
+}
+.bubbles span:nth-child(1){ left:10%; animation-duration:12s; width:15px; height:15px;}
+.bubbles span:nth-child(2){ left:20%; animation-duration:18s;}
+.bubbles span:nth-child(3){ left:70%; animation-duration:16s; width:25px; height:25px;}
+.bubbles span:nth-child(4){ left:50%; animation-duration:22s;}
+.bubbles span:nth-child(5){ left:85%; animation-duration:26s;}
+
+@keyframes rise {
+  0% {transform: translateY(0) scale(1);}
+  100% {transform: translateY(-1200px) scale(0.5);}
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10,1fr);
+  gap: 12px;
+  margin-top: 10px;
+  min-height: 0px;
+
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  max-height: 9999px; /* πάντα αρκετό για πολλά links */
+  opacity: 1;
+}
+
+.grid.collapsed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle-btn {
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.toggle-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
+/* Νέο στυλ για header */
+header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* απόσταση λογότυπου-κειμένου */
+}
+
+.logo-title img {
+  height: 60px; /* μέγεθος logo, το ρυθμίζεις όπως θες */
+  border-radius: 12px; /* προαιρετικό, αν θες στρογγυλεμένες γωνίες */
+}
+
+.titles h1 {
+  margin: 4px 0 0;
+  font-size: 26px;
+  font-weight: 800;
+}
+.titles h2 {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #2a9df4;
+  font-weight: 700;
+}
+.titles h3 {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #bbb;
+  font-weight: 500;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(35,36,41,.96);
+  backdrop-filter: blur(6px);
+  font-size: 12px;
+  color: #a8b0bb;
+  padding: 8px 10px;
+  overflow: hidden;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(35,36,41,.96);
+  backdrop-filter: blur(6px);
+  font-size: 12px;
+  color: #a8b0bb;
+  padding: 8px 10px;
+  overflow: hidden;
+}
+
+/* Wrapper για το pulse */
+.note-wrapper {
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.note {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-right 12s linear infinite,
+             colorShift 8s linear infinite;
+	/* text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff, 0 0 30px #00e5ff;*/
+}
+
+
+/* Κίνηση */
+@keyframes scroll-right {
+  0%   { transform: translateX(-100vw); }
+  100% { transform: translateX(100vw); }
+}
+
+/* Εναλλαγή χρώματος */
+@keyframes colorShift {
+  0%   { color: #f4a261; }
+  25%  { color: #2a9df4; }
+  50%  { color: #a1ff0a; }
+  75%  { color: #ff4081; }
+  100% { color: #f4a261; }
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.2); }
+}
+
+.typewriter {
+  display: inline-block;
+  overflow: hidden;             /* κρύβει το υπόλοιπο κείμενο */
+  white-space: nowrap;          /* να μη σπάει γραμμή */
+  border-right: 2px solid var(--accent); /* σαν cursor */
+  width: 0;                     /* ξεκινάει μηδενικό */
+  animation: typing 3s steps(25, end) forwards,
+             blinkCursor 0.7s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to   { width: 100% }
+}
+
+@keyframes blinkCursor {
+  from, to { border-color: transparent }
+  50% { border-color: var(--accent) }
+}
+.card {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Keyframes όπως πριν */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Διορθώσεις για hover στις κάρτες */
+
+/* Το link μέσα στην κάρτα δεν κάνει scale */
+.card a:not(.fav):not(.del):not(.edit):hover {
+  color: var(--accent);
+  background: rgba(230,57,70,0.1);
+  border-radius: 10px;
+}
+
+/* Ολόκληρη η κάρτα μεγαλώνει στο hover */
+.card:hover {
+  transform: scale(1.04);
+  background: color-mix(in oklab, var(--accent) 20%, transparent);
+  border-color: var(--accent);
+}
+
+/* Το grid αφήνει τις κάρτες να “ξεφεύγουν” όταν κάνουν scale */
+.grid {
+  overflow: visible !important;
+}
+
+.palette-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* label αριστερά, preview δεξιά */
+  margin: 6px 0;
+}
+
+.palette-row label {
+  flex: 1; 
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.palette-row input[type="color"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none; /* μένει αόρατο */
+}
+
+.color-preview {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.row.palette-row {
+  flex-direction: row !important; /* παράκαμψη του column */
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+
+.theme-toggle-wrapper {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.theme-toggle-wrapper .version {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+
+
+
+
+
 
 
 
