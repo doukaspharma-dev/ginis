@@ -1177,25 +1177,6 @@ function render(){
     if (collapsedCats.includes(cat)) grid.classList.add("collapsed");
     sec.appendChild(grid);
 
-    // event collapse
-    toggleBtn.onclick = () => {
-      const isCollapsed = grid.classList.toggle("collapsed");
-      toggleBtn.textContent = isCollapsed ? "▸" : "▾";
-      if (isCollapsed) {
-        if (!collapsedCats.includes(cat)) collapsedCats.push(cat);
-        const idx = catOrder.indexOf(cat);
-        if (idx > -1) {
-          catOrder.splice(idx, 1);
-          catOrder.push(cat);
-          saveData();
-          render();
-        }
-      } else {
-        collapsedCats = collapsedCats.filter(c => c !== cat);
-      }
-      localStorage.setItem("collapsedCats", JSON.stringify(collapsedCats));
-    };
-
     // περιεχόμενο κατηγορίας (links)
     const list = (categories[cat] || []);
     const orderIdx = list.map((_,i)=>i).sort((a,b)=>{
@@ -1296,34 +1277,6 @@ function render(){
 
       card.appendChild(a);
       grid.appendChild(card);
-    });
-
-    // 👉 Drag & Drop νέα links
-    sec.addEventListener("dragover", e => {
-      e.preventDefault();
-      sec.classList.add("drag-over");
-    });
-    sec.addEventListener("dragleave", () => {
-      sec.classList.remove("drag-over");
-    });
-    sec.addEventListener("drop", e => {
-      e.preventDefault();
-      sec.classList.remove("drag-over");
-      const url = e.dataTransfer.getData("text/uri-list") || e.dataTransfer.getData("text/plain");
-      if (!url) return;
-      fetchTitle(url).then(title => {
-        const newLink = {
-          url,
-          name: title || (new URL(url).hostname),
-          desc: "",
-          iconType: "auto",
-          iconValue: ""
-        };
-        if (!categories[cat]) categories[cat] = [];
-        categories[cat].push(newLink);
-        saveData();
-        render();
-      });
     });
 
     wrap.appendChild(sec);
