@@ -11,7 +11,6 @@
   <link rel="shortcut icon" type="image/png" href="assets/unnamed.png">
 
   <style>
-  
   /* -------------------------------------------------
      1. ΘΕΜΑΤΙΚΑ ΧΡΩΜΑΤΑ (CSS variables)
   ------------------------------------------------- */
@@ -80,67 +79,15 @@
     border-radius:14px; padding:10px;
   }
   .category.drag-over { outline:2px dashed #5aa9ff; outline-offset:4px; }
-/* ===== Στυλ για τίτλο κατηγορίας ===== */
-.category-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  padding: 4px 2px;
-}
-
-/* Όνομα κατηγορίας αριστερά */
-.category-title h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-}
-
-/* Ενέργειες δεξιά */
-.cat-actions {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  opacity: 0;
-  transition: opacity .2s;
-}
-
-/* Φαίνονται στο hover */
-.category-title:hover .cat-actions {
-  opacity: 1;
-}
-
-/* Collapse κουμπί */
-.toggle-btn {
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-  user-select: none;
-  padding: 2px 6px;
-  border-radius: 6px;
-  background: rgba(0,0,0,.35);
-  color: var(--text);
-  transition: background .2s;
-}
-.toggle-btn:hover {
-  background: rgba(0,0,0,.65);
-}
-
-/* Edit / Delete */
-.cat-btn {
-  cursor: pointer;
-  font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 6px;
-  background: rgba(0,0,0,.35);
-  color: var(--text);
-  transition: background .2s;
-}
-.cat-btn:hover {
-  background: rgba(0,0,0,.65);
-}
-
+  .category-title { display:flex; align-items:center; justify-content:space-between; position:relative; }
+  .category-title h2 { margin:0; font-size:18px; }
+  .cat-actions { display:flex; gap:6px; opacity:0; transition:.2s; position:absolute; right:0; top:0; }
+  .category-title:hover .cat-actions { opacity:1; }
+  .cat-btn {
+    cursor:pointer; font-size:12px; padding:2px 6px; border-radius:6px;
+    background:rgba(0,0,0,.45); color:var(--text);
+  }
+  .cat-btn:hover { background:rgba(0,0,0,.75); }
 
   /* -------------------------------------------------
      7. GRID & CARDS
@@ -288,134 +235,17 @@
   background: rgba(90, 169, 255, 0.08);
 }
 
-  <!-- Μπουρμπουλήθρες -->
-
-.bubbles {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0; left: 0;
-  overflow: hidden;
-  z-index: -1;
-}
-.bubbles span {
-  position: absolute;
-  display: block;
-  width: 20px; height: 20px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 50%;
-  bottom: -100px;
-  animation: rise 20s infinite;
-}
-.bubbles span:nth-child(1){ left:10%; animation-duration:12s; width:15px; height:15px;}
-.bubbles span:nth-child(2){ left:20%; animation-duration:18s;}
-.bubbles span:nth-child(3){ left:70%; animation-duration:16s; width:25px; height:25px;}
-.bubbles span:nth-child(4){ left:50%; animation-duration:22s;}
-.bubbles span:nth-child(5){ left:85%; animation-duration:26s;}
-
-@keyframes rise {
-  0% {transform: translateY(0) scale(1);}
-  100% {transform: translateY(-1200px) scale(0.5);}
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(10,1fr);
-  gap: 12px;
-  margin-top: 10px;
-  min-height: 0px;
-
-  transition: max-height 0.3s ease, opacity 0.3s ease;
-  overflow: hidden;
-  max-height: 9999px; /* πάντα αρκετό για πολλά links */
-  opacity: 1;
-}
-
-.grid.collapsed {
-  max-height: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.toggle-btn {
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-  user-select: none;
-  padding: 2px 6px;
-  border-radius: 6px;
-  background: rgba(0,0,0,.35);
-  color: var(--text);
-  transition: background .2s;
-}
-.toggle-btn:hover {
-  background: rgba(0,0,0,.65);
-}
-
-/* Νέο στυλ για header */
-header {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.logo-title {
-  display: flex;
-  align-items: center;
-  gap: 14px; /* απόσταση λογότυπου-κειμένου */
-}
-
-.logo-title img {
-  height: 60px; /* μέγεθος logo, το ρυθμίζεις όπως θες */
-  border-radius: 12px; /* προαιρετικό, αν θες στρογγυλεμένες γωνίες */
-}
-
-.titles h1 {
-  margin: 4px 0 0;
-  font-size: 26px;
-  font-weight: 800;
-}
-.titles h2 {
-  margin: 6px 0 0;
-  font-size: 14px;
-  color: #2a9df4;
-  font-weight: 700;
-}
-.titles h3 {
-  margin: 6px 0 0;
-  font-size: 13px;
-  color: #bbb;
-  font-weight: 500;
-}
-
-
-
-
-
   </style>
 </head>
 <body>
-
-  <!-- Μπουρμπουλήθρες -->
-
-<div class="bubbles">
-  <span></span><span></span><span></span><span></span><span></span>
-</div>
-
-
  
 <div class="wrap">
 
 <header>
-  <div class="logo-title">
-    <img src="assets/unnamed.png" alt="Logo">
-    <div class="titles">
-      <h1>Τα δικά μου χρήσιμα</h1>
-      <h2>Φαρμακείο Γκίνης Κ. Πέτρος, Πολύγωνο.</h2>
-      <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
-    </div>
-  </div>
+  <h1>Τα δικά μου χρήσιμα</h1>
+  <h2>Φαρμακείο Γκίνης Κ. Πέτρος, Πολύγωνο.</h2>
+  <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
 </header>
-
 
 <div class="topbar">
   <!-- Κουμπιά κεντρικά -->
@@ -423,6 +253,7 @@ header {
   <button id="undoBtnTop" class="gray" disabled>↩ Αναίρεση</button>
   <button id="backupBtn">Backup</button>
   <button id="restoreBtn">Restore</button>
+
 
 
   <!-- Δεξιά -->
@@ -553,8 +384,6 @@ header {
 /* ===============================
    📌 Κατάσταση / Μεταβλητές
    =============================== */
-let collapsedCats = JSON.parse(localStorage.getItem("collapsedCats") || "[]");
-
 let categories = {};   // { Κατηγορία: [ {url,name,desc,iconType,iconValue,pinned?}, ... ] }
 let catOrder = [];     // Σειρά εμφάνισης κατηγοριών
 let editing = null;    // {cat, idx}
@@ -699,73 +528,10 @@ function render(){
     sec.draggable = true;
     sec.dataset.cat = cat;
 
-    // τίτλος κατηγορίας
-    const title = document.createElement("div");
-    title.className = "category-title";
-
-    // όνομα αριστερά
-    const h2 = document.createElement("h2");
-    h2.textContent = cat;
-    title.appendChild(h2);
-
-  // actions δεξιά
-const actions = document.createElement("div");
-actions.className = "cat-actions";
-
-// κουμπί collapse
-const toggleBtn = document.createElement("span");
-toggleBtn.textContent = collapsedCats.includes(cat) ? "▸" : "▾";
-toggleBtn.className = "toggle-btn";
-actions.appendChild(toggleBtn);
-
-    // κουμπιά edit / delete
-const renameBtn = document.createElement("span");
-renameBtn.className = "cat-btn rename";
-renameBtn.textContent = "✎";
-actions.appendChild(renameBtn);
-
-const delBtn = document.createElement("span");
-delBtn.className = "cat-btn delcat";
-delBtn.textContent = "🗑";
-actions.appendChild(delBtn);
-
-title.appendChild(actions);
-
-
-
-    sec.appendChild(title);
-
-    // grid με links
     const grid = document.createElement("div");
     grid.className = "grid";
     grid.dataset.cat = cat;
-    if (collapsedCats.includes(cat)) grid.classList.add("collapsed");
-    sec.appendChild(grid);
 
-    // event collapse
-   toggleBtn.onclick = () => {
-  const isCollapsed = grid.classList.toggle("collapsed");
-  toggleBtn.textContent = isCollapsed ? "▸" : "▾";
-
-  if (isCollapsed) {
-    if (!collapsedCats.includes(cat)) collapsedCats.push(cat);
-
-    // ➜ Μεταφορά κατηγορίας στο τέλος
-    const idx = catOrder.indexOf(cat);
-    if (idx > -1) {
-      catOrder.splice(idx, 1);     // βγάζουμε την κατηγορία από τη θέση της
-      catOrder.push(cat);          // και την βάζουμε στο τέλος
-      saveData();
-      render();                    // ξαναζωγραφίζουμε για να φανεί
-    }
-
-  } else {
-    collapsedCats = collapsedCats.filter(c => c !== cat);
-  }
-  localStorage.setItem("collapsedCats", JSON.stringify(collapsedCats));
-};
-
-    // περιεχόμενο κατηγορίας (links)
     const list = (categories[cat] || []);
     const orderIdx = list.map((_,i)=>i).sort((a,b)=>{
       const pa = !!(list[a] && list[a].pinned), pb = !!(list[b] && list[b].pinned);
@@ -783,7 +549,7 @@ title.appendChild(actions);
       else if(l.iconType === "builtin" && l.iconValue){
         initialIcon = builtinToDataUrl(l.iconValue);
       }
-      else if(l.iconType === "url" && l.iconValue){
+      else if(l.iconType === "url" && l.iconValue){   // ✅ ΝΕΟ κομμάτι
         initialIcon = l.iconValue;
       }
       else if(l.url){
@@ -797,6 +563,7 @@ title.appendChild(actions);
       } else {
         initialIcon = 'assets/default-favicon.png';
       }
+
 
       const card = document.createElement("div");
       card.className="card";
@@ -905,11 +672,10 @@ title.appendChild(actions);
       });
     });
 
+    sec.appendChild(grid);
     wrap.appendChild(sec);
   });
 }
-
-
 
 /* ===============================
    📌 Συνάρτηση για να βρίσκουμε τον τίτλο σελίδας
@@ -1077,6 +843,12 @@ document.getElementById("linkForm").onsubmit = e => {
 };
 
 
+
+
+
+
+
+
 // Ενέργειες σε κάρτες/κατηγορίες
 document.addEventListener("click", e => {
   // Διαγραφή link
@@ -1127,6 +899,7 @@ document.addEventListener("click", e => {
     document.getElementById("modalForm").style.display="flex";
   }
   
+
   // Μετονομασία κατηγορίας
   if(e.target.closest(".rename")){
     const cat = e.target.closest(".category").dataset.cat;
@@ -1401,6 +1174,9 @@ document.getElementById("themeSelect").addEventListener("change", e => {
 });
 
 
+
+
+
 // κλήση στην εκκίνηση
 loadTheme();
 
@@ -1411,8 +1187,6 @@ if(catOrder.length===0){
   saveData();
 }
 render(); updateUndoBtn();
-
-
 
 // update palette swatches initial
 ["bg1","bg2","card","text","accent"].forEach(id=>{
