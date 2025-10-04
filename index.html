@@ -2007,6 +2007,19 @@ setTimeout(() => {
     }
   });
 }, 1000);
+
+// Ενεργοποίησε όλα τα menus
+document.querySelectorAll('.menu-btn').forEach(btn => {
+  btn.onclick = function() {
+    const menu = this.nextElementSibling;
+    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  };
+  btn.style.opacity = '1';
+});
+
+console.log('Menu buttons:', document.querySelectorAll('.menu-btn').length);
+
+	
 </script>
 </body>
 </html>
