@@ -1622,7 +1622,7 @@ if (target.closest(".delcat")) {
   if (confirm("Διαγραφή " + cat + ";")) {
     pushHistory();
     delete categories[cat];
-    catOrder = catOrder.filter(x => x !== cat);
+    catOrder = catOrder.filter(x => x !== catName);
     saveData();
     render();
     saveAutoBackup(); 
