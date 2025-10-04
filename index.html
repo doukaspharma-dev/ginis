@@ -1984,6 +1984,11 @@ function resizeBase64Image(base64, maxSize = 64) {
     img.src = base64;
   });
 }
+	// Κλείσιμο όλων των ανοιχτών event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Βεβαιώσου ότι όλα έχουν φορτώσει
+    console.log('DOM fully loaded');
+});
 	
 </script>
 </body>
