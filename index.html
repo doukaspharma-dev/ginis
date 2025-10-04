@@ -681,38 +681,73 @@ footer {
   color: var(--text);
   opacity: 0.7;
 }
-	  
 /* ===============================
-   📌 ICON SIZE PROTECTION
+   📌 CARD MENU SYSTEM 
    =============================== */
-.card img.favicon {
-  width: 48px !important;
-  height: 48px !important;
-  max-width: 48px !important;
-  max-height: 48px !important;
-  object-fit: contain !important;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-}
-
-/* Extra protection against oversized content */
-.card a {
-  overflow: hidden !important;
-}
-
-.card {
-  overflow: hidden !important;
-}
-
-/* 🚨 EXCEPTIONS για menu */
-.card .menu-popup {
-  overflow: visible !important;
-}
-
 .card .menu-btn {
-  overflow: visible !important;
-  z-index: 1100 !important;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 14px;
+  height: 20px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 2px;
+  background: rgba(0,0,0,0.4);
+  color: var(--text);
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .2s;
+  z-index: 1100;
 }
+
+.card:hover .menu-btn {
+  opacity: 1;
+}
+
+.card .menu-popup {
+  position: absolute;
+  top: -32px;
+  right: 8px;
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  padding: 1px;
+  gap: 1px;
+  display: none;
+  flex-direction: row;
+  gap: 4px;
+  z-index: 1200;
+}
+
+.card .menu-popup button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.card .menu-popup button svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text);
+  transition: fill 0.2s ease;
+}
+
+.card .menu-popup button:hover {
+  transform: scale(1.2);
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+}
+
+.card .menu-popup button:hover svg {
+  fill: var(--accent);
+}	  
+
     </style>
   <!-- Μπουρμπουλήθρες -->
 
@@ -1996,28 +2031,6 @@ function resizeBase64Image(base64, maxSize = 64) {
   });
 }
 	
-// Πρόσθεσε αυτό προσωρινά στο script
-setTimeout(() => {
-  document.addEventListener('click', function(e) {
-    if (e.target.closest('.menu-btn')) {
-      const btn = e.target.closest('.menu-btn');
-      const menu = btn.nextElementSibling;
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-      e.stopPropagation();
-    }
-  });
-}, 1000);
-
-// Ενεργοποίησε όλα τα menus
-document.querySelectorAll('.menu-btn').forEach(btn => {
-  btn.onclick = function() {
-    const menu = this.nextElementSibling;
-    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-  };
-  btn.style.opacity = '1';
-});
-
-console.log('Menu buttons:', document.querySelectorAll('.menu-btn').length);
 
 	
 </script>
