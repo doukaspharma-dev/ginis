@@ -1621,13 +1621,13 @@ if (target.closest(".delcat")) {
   if (confirm("Διαγραφή " + cat + ";")) {
     pushHistory();
     delete categories[cat];
-    catOrder = catOrder.filter(x => x !== cat);  // <-- Αλλαγή: catName -> cat
+    catOrder = catOrder.filter(x => x !== cat);
     saveData();
     render();
     saveAutoBackup(); 
   }
   return;
-}  // <-- ΠΡΟΣΘΗΚΗ ΑΥΤΟΥ ΤΟΥ }
+}  // Τέλος διαγραφής κατηγορίας
 
 /* ---------------------------
    Pin / Unpin
@@ -1644,6 +1644,7 @@ if (target.closest(".pin")) {
   render();
   return;
 }
+
 /* ===============================
    📌 Backup & Restore
    =============================== */
