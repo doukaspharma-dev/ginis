@@ -1,14 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="el">
-	
 <head>
+
   <meta charset="UTF-8">
   <title>Favicon Επιλογές</title>
   <link rel="icon" href="data:,"> <!-- default -->
   <meta charset="UTF-8">
   <title>Τα δικά μου χρήσιμα</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" type="image/png" href="assets/unnamed.png">
+   <link rel="shortcut icon" type="image/png" href="assets/unnamed.png">
 
   <style>
   
@@ -34,12 +35,7 @@
     color:var(--text);
     font-family:Arial,Helvetica,sans-serif;
   }
-.wrap {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 10px 210px;
-  overflow-x: hidden; /* ← ΠΡΟΣΘΕΣΕ ΑΥΤΟ */
-}
+  .wrap { max-width:1200px; margin:0 auto; padding:24px 10px 210px; }
 
   /* -------------------------------------------------
      3. HEADER
@@ -165,7 +161,7 @@
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  width: 100%;
+  width: 95%;
   aspect-ratio: 1/1;
   overflow: visible; /* ✅ πολύ σημαντικό */
 
@@ -208,22 +204,24 @@
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     text-decoration:none; color:var(--text); width:100%; height:100%;
   }
- .card img.favicon {
-  width: 48px !important;
-  height: 48px !important;
-  max-width: 48px !important;
-  max-height: 48px !important;
-  object-fit: contain !important;
-}
+  .card img.favicon {
+    width:48px; height:48px; margin-bottom:8px; display:block;
+  }
   .link-title {
     font-size:9px; font-weight:700; color:var(--text);
     white-space:nowrap; word-break:break-word; text-align:center;
     max-width:95%;
   }
   .link-desc {
-    font-size:8px; color:rgba(255,255,255,.6); margin-top:2px;
-    max-width:90%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
+  font-size: 8px; 
+  color: rgba(255,255,255,.6); 
+  margin-top: 2px;
+  max-width: 90%; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  max-width: 15ch; /* 👈 ΝΕΟ - περιορίζει σε 15 χαρακτήρες */
+}
 
   /* Hover σε links */
   a { color:var(--text); text-decoration:none; transition:.25s; }
@@ -253,32 +251,40 @@
   z-index: 0;
 }
 
-/* κουμπί με τις τρεις τελείες */
 .card .menu-btn {
   position: absolute;
-  top: 8px;        /* ✅ κολλάει στην κορυφή */
-  right: 8px;      /* ✅ πάει δεξιά */
-  width: 20px;
-  height: 20px;
-  border: 1px solid #000;
-  border-radius: 5px;
-  padding: 2px;
-  background: rgba(0,0,0,0.4);
-  color: var(--text);
+  top: 4px;
+  right: 4px;
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent); /* ΜΠΛΕ όπως το accent χρώμα */
+  color: white; /* ΛΕΥΚΟ κείμενο για καλύτερη αντίθεση */
   font-size: 12px;
-  line-height: 16px;
+  font-weight: bold;
+  line-height: 18px;
   text-align: center;
   cursor: pointer;
   opacity: 0;
-  transition: opacity .2s;
+  transition: all 0.3s ease;
   z-index: 1100;
   pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
-
 .card:hover .menu-btn {
   opacity: 1;
+  transform: scale(1.1);
 }
-
+.card .menu-btn:hover {
+  background: color-mix(in srgb, var(--accent) 80%, #000 20%); /* Πιο σκούρο μπλε στο hover */
+  transform: scale(1.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
 /* popup με τα κουμπάκια */
 .card .menu-popup {
   position: absolute;
@@ -415,6 +421,7 @@
   background: rgba(90, 169, 255, 0.08);
 }
 
+  <!-- Μπουρμπουλήθρες -->
 
 .bubbles {
   position: fixed;
@@ -444,13 +451,11 @@
   100% {transform: translateY(-1200px) scale(0.5);}
 }
 .grid {
-.grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(10,1fr);
   gap: 12px;
   margin-top: 10px;
-  min-height: 54px;
-}  /* ✅ Κλείσιμο του .grid */
+  min-height: 0px;
 
   transition: max-height 0.3s ease, opacity 0.3s ease;
   overflow: hidden;
@@ -681,73 +686,29 @@ footer {
   color: var(--text);
   opacity: 0.7;
 }
-/* ===============================
-   📌 CARD MENU SYSTEM 
-   =============================== */
-.card .menu-btn {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 14px;
-  height: 20px;
-  border: 1px solid #000;
-  border-radius: 5px;
-  padding: 2px;
-  background: rgba(0,0,0,0.4);
-  color: var(--text);
-  font-size: 10px;
-  line-height: 16px;
-  text-align: center;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity .2s;
-  z-index: 1100;
-}
 
-.card:hover .menu-btn {
-  opacity: 1;
-}
 
-.card .menu-popup {
-  position: absolute;
-  top: -32px;
-  right: 8px;
-  background: var(--bg2);
-  border: 2px solid var(--border);
-  border-radius: 4px;
-  padding: 1px;
-  gap: 1px;
-  display: none;
-  flex-direction: row;
-  gap: 4px;
-  z-index: 1200;
-}
 
-.card .menu-popup button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 2px;
-  transition: transform 0.2s ease, background 0.2s ease;
-}
 
-.card .menu-popup button svg {
-  width: 16px;
-  height: 16px;
-  fill: var(--text);
-  transition: fill 0.2s ease;
-}
 
-.card .menu-popup button:hover {
-  transform: scale(1.2);
-  background: rgba(255,255,255,0.1);
-  border-radius: 4px;
-}
 
-.card .menu-popup button:hover svg {
-  fill: var(--accent);
-}	  
 
+
+
+  </style>
+</head>
+<body>
+  <style>
+    #paletteModal .actions-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    #paletteModal .actions-row button {
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
     </style>
   <!-- Μπουρμπουλήθρες -->
 
@@ -764,7 +725,7 @@ footer {
     <img src="assets/unnamed.png" alt="Logo">
     <div class="titles">
      <h1 class="typewriter">Τα δικά μου χρήσιμα</h1>
-      <h2>Φαρμακείο Γκίνης Κ. Πέτρος, Πολύγωνο.</h2>
+      <h2>Συστεγασμένα Φαρμακεία Νεοκ. & Νικ. Μενεξιάδης & ΣΙΑ Ο.Ε.</h2>
       <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
     </div>
   </div>
@@ -885,7 +846,7 @@ footer {
 </div>
 
 <div class="theme-toggle-wrapper">
-  <span class="version">ver. 2.2.3i</span>
+  <span class="version">ver. 2.3.9b</span>
 </div>
 
 
@@ -971,6 +932,34 @@ let themeDefault = {
 };
 
 /* ===============================
+   📌 Default Favicon Generator
+   =============================== */
+function getDefaultFavicon() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64; 
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    
+    // Φόντο
+    ctx.fillStyle = '#415a77';
+    ctx.fillRect(0, 0, 64, 64);
+    
+    // Κύκλος
+    ctx.fillStyle = '#e0e1dd';
+    ctx.beginPath();
+    ctx.arc(32, 32, 20, 0, 2 * Math.PI);
+    ctx.fill();
+    
+    // Γράμμα "L"
+    ctx.fillStyle = '#415a77';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('L', 32, 32);
+    
+    return canvas.toDataURL('image/png');
+}
+/* ===============================
    📌 SVG Εικονίδια (διαφανή)
    =============================== */
 function svgIcon(kind, active=false){
@@ -1003,6 +992,9 @@ function loadData(){
   catOrder = JSON.parse(localStorage.getItem("catOrder") || "[]");
 }
 
+/* ===============================
+   📌 Θέμα / Χρώματα
+   =============================== */
 
 /* ===============================
    📌 Undo / Ιστορικό
@@ -1029,41 +1021,10 @@ function undo(){
   applyTheme(snap.theme);
   saveData(); saveTheme(snap.theme);
   render();
-  saveAutoBackup(); // ← ΠΡΟΣΘΗΚΗ ΕΔΩ
   updateUndoBtn();
 }
 
 let firstLoad = true;
-
-	// Πρόσθεσε αυτή τη function για μεγεθος icon
-function resizeImage(file, maxSize = 64) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    img.onload = function() {
-      // Υπολόγισε νέο μέγεθος διατηρώντας aspect ratio
-      let width = img.width;
-      let height = img.height;
-      
-      if (width > height && width > maxSize) {
-        height = (height * maxSize) / width;
-        width = maxSize;
-      } else if (height > maxSize) {
-        width = (width * maxSize) / height;
-        height = maxSize;
-      }
-      
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL('image/png'));
-    };
-    
-    img.src = URL.createObjectURL(file);
-  });
-}
 
 // Προσθέτει staggered animation στις κάρτες (μόνο στο πρώτο render)
 function animateCards() {
@@ -1126,7 +1087,6 @@ function showAutoBackups() {
 // σύνδεση του κουμπιού
 document.getElementById("autoBackupBtn").addEventListener("click", showAutoBackups);
 
-
 /* ===============================
    📌 Render — Σχεδίαση UI (με Pin + Drag&Drop για νέα links)
    =============================== */
@@ -1178,6 +1138,25 @@ function render(){
     if (collapsedCats.includes(cat)) grid.classList.add("collapsed");
     sec.appendChild(grid);
 
+    // event collapse
+    toggleBtn.onclick = () => {
+      const isCollapsed = grid.classList.toggle("collapsed");
+      toggleBtn.textContent = isCollapsed ? "▸" : "▾";
+      if (isCollapsed) {
+        if (!collapsedCats.includes(cat)) collapsedCats.push(cat);
+        const idx = catOrder.indexOf(cat);
+        if (idx > -1) {
+          catOrder.splice(idx, 1);
+          catOrder.push(cat);
+          saveData();
+          render();
+        }
+      } else {
+        collapsedCats = collapsedCats.filter(c => c !== cat);
+      }
+      localStorage.setItem("collapsedCats", JSON.stringify(collapsedCats));
+    };
+
     // περιεχόμενο κατηγορίας (links)
     const list = (categories[cat] || []);
     const orderIdx = list.map((_,i)=>i).sort((a,b)=>{
@@ -1199,17 +1178,17 @@ function render(){
       else if(l.iconType === "url" && l.iconValue){
         initialIcon = l.iconValue;
       }
-      else if(l.url){
-        try{
-          const domain = (new URL(l.url)).hostname;
-          if(domain) initialIcon = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
-          else initialIcon = 'assets/default-favicon.png';
-        }catch(e){
-          initialIcon = 'assets/default-favicon.png';
-        }
-      } else {
-        initialIcon = 'assets/default-favicon.png';
-      }
+ else if(l.url){
+  try{
+    const domain = (new URL(l.url)).hostname;
+    if(domain) initialIcon = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+    else initialIcon = getDefaultFavicon();  // ΜΟΝΟ αν αποτύχει
+  }catch(e){
+    initialIcon = getDefaultFavicon();  // ΜΟΝΟ αν αποτύχει
+  }
+} else {
+  initialIcon = getDefaultFavicon();  // ΜΟΝΟ αν δεν υπάρχει URL
+}
 
       const card = document.createElement("div");
       card.className="card";
@@ -1239,27 +1218,28 @@ function render(){
       img.setAttribute("alt", l.name || "");
       img.draggable = false;
 
-      img._triedDefault = false;
-      img._triedBuiltin = false;
-
-      const onErr = function(){
-        img.removeEventListener('error', onErr);
-        if(!img._triedDefault){
-          img._triedDefault = true;
-          img.addEventListener('error', onErr);
-          img.src = 'assets/default-favicon.png';
-        } else if(!img._triedBuiltin){
-          img._triedBuiltin = true;
-          img.src = builtinToDataUrl("link");
-        }
+      // ✅ ΒΕΛΤΙΩΜΕΝΟ FAVICON LOADING (Απλοποιημένο)
+      img.onerror = function() {
+        this.src = getDefaultFavicon();
+        this.style.width = '40px';
+        this.style.height = '40px';
       };
-      img.addEventListener('error', onErr);
 
-      img.addEventListener('load', function(){
-        if(img.naturalWidth < 32){
-          img.src = 'assets/default-favicon.png';
+      img.onload = function() {
+        // Έλεγχος για πολύ μικρά favicons
+        if(this.naturalWidth < 16 || this.naturalHeight < 16){
+          this.src = getDefaultFavicon();
         }
-      });
+        // Έλεγχος για πολύ μεγάλα favicons
+        else if(this.naturalWidth > 64 || this.naturalHeight > 64) {
+          this.style.maxWidth = '40px';
+          this.style.maxHeight = '40px';
+          this.style.objectFit = 'contain';
+        }
+        // Normalize μέγεθος για όλα τα favicons
+        this.style.width = '40px';
+        this.style.height = '40px';
+      };
 
       img.src = initialIcon;
 
@@ -1270,7 +1250,7 @@ function render(){
 
       const descDiv = document.createElement("div");
       descDiv.className = "link-desc";
-      descDiv.textContent = l.desc || "";
+      descDiv.textContent = (l.desc || "").slice(0, 15);
 
       a.appendChild(img);
       a.appendChild(titleDiv);
@@ -1280,11 +1260,37 @@ function render(){
       grid.appendChild(card);
     });
 
+    // 👉 Drag & Drop νέα links
+    sec.addEventListener("dragover", e => {
+      e.preventDefault();
+      sec.classList.add("drag-over");
+    });
+    sec.addEventListener("dragleave", () => {
+      sec.classList.remove("drag-over");
+    });
+    sec.addEventListener("drop", e => {
+      e.preventDefault();
+      sec.classList.remove("drag-over");
+      const url = e.dataTransfer.getData("text/uri-list") || e.dataTransfer.getData("text/plain");
+      if (!url) return;
+      fetchTitle(url).then(title => {
+        const newLink = {
+          url,
+          name: title || (new URL(url).hostname),
+          desc: "",
+          iconType: "auto",
+          iconValue: ""
+        };
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(newLink);
+        saveData();
+        render();
+      });
+    });
+
     wrap.appendChild(sec);
   });
-}
-
-/* ===============================
+}/* ===============================
    📌 Συνάρτηση για να βρίσκουμε τον τίτλο σελίδας
    =============================== */
 async function fetchTitle(url) {
@@ -1345,34 +1351,18 @@ builtinEl.addEventListener("change", ()=>{
   iconPrev.style.display="flex";
 });
 
-	// Builtin icons
-builtinEl.addEventListener("change", ()=>{
-  const url = builtinToDataUrl(builtinEl.value);
-  iconPrevImg.src = url; 
-  iconPrev.style.display="flex";
-});
-
-// Upload icons (ΑΝΤΙΚΑΤΑΣΤΑΣΗ με auto-resize)
-iconFileEl.addEventListener("change", async ()=>{
+iconFileEl.addEventListener("change", ()=>{
   const f = iconFileEl.files && iconFileEl.files[0];
   if(!f) return;
-  
-  // AUTO-RESIZE αν η εικόνα είναι μεγάλη
-  if (f.size > 50000) { // Αν είναι >50KB
-    const resizedDataUrl = await resizeImage(f, 64);
-    iconPrevImg.src = resizedDataUrl;
-  } else {
-    const r = new FileReader();
-    r.onload = () => { 
-      iconPrevImg.src = r.result; 
-    };
-    r.readAsDataURL(f);
-  }
-  
-  iconPrev.style.display="flex";
+  const r = new FileReader();
+  r.onload = () => { 
+    iconPrevImg.src = r.result; 
+    iconPrev.style.display="flex"; 
+  };
+  r.readAsDataURL(f);
 });
 
-// URL icons 
+// ΝΕΟ: από URL
 iconUrlEl.addEventListener("input", ()=>{
   const u = iconUrlEl.value.trim();
   if(u){
@@ -1432,10 +1422,9 @@ document.getElementById("linkForm").onsubmit = e => {
 
   if(!categories[cat]){ pushHistory(); categories[cat]=[]; catOrder.push(cat); }
 
-  // 👇 ΠΡΟΣΘΗΚΗ ΕΙΚΟΝΙΔΙΟΥ ΚΩΔΙΚΑ
+  // εικονίδιο
   let iconType = iconModeEl.value;
   let iconValue = null;
-  
   if(iconType==="builtin"){
     iconValue = builtinEl.value || "link";
   }else if(iconType==="upload"){
@@ -1444,7 +1433,7 @@ document.getElementById("linkForm").onsubmit = e => {
     }else{
       iconType = "auto";
     }
-  }else if(iconType==="url"){
+  }else if(iconType==="url"){     // ΝΕΟ mode
     if(iconUrlEl.value.trim()){
       iconValue = iconUrlEl.value.trim();
     }else{
@@ -1454,22 +1443,18 @@ document.getElementById("linkForm").onsubmit = e => {
 
   pushHistory();
   const baseObj = { url, name, desc, iconType, iconValue };
-  
   if(editing){
     const prev = categories[editing.cat][editing.idx] || {};
-    const updated = { ...baseObj, pinned: !!prev.pinned };
+    const updated = { ...baseObj, pinned: !!prev.pinned }; // κρατάμε το pinned
     categories[editing.cat][editing.idx] = updated;
   }else{
     const linkObj = { ...baseObj, pinned:false };
     dedupeAdd(cat, linkObj);
   }
 
-saveData(); 
-render();
-// saveAutoBackup(); // ← ΠΡΟΣΩΡΙΝΑ ΣΕ ΣΧΟΛΙΟ
-document.getElementById("modalForm").style.display = "none";
+  saveData(); render();
+  document.getElementById("modalForm").style.display = "none";
 };
-
 
 
 // Ενέργειες σε κάρτες/κατηγορίες
@@ -1510,7 +1495,6 @@ document.addEventListener("click", e => {
     }
     saveData();
     render();
-	  saveAutoBackup(); // ← ΠΡΟΣΘΗΚΗ ΕΔΩ
     return;
   }
 
@@ -1562,43 +1546,193 @@ document.addEventListener("click", e => {
       catOrder[catOrder.indexOf(cat)] = newN;
       saveData();
       render();
-	  saveAutoBackup(); // ← ΠΡΟΣΘΗΚΗ ΕΔΩ
     }
     return;
   }
-/* ---------------------------
-   Διαγραφή κατηγορίας
---------------------------- */
-if (target.closest(".delcat")) {
-  const cat = target.closest(".category").dataset.cat;
-  if (confirm("Διαγραφή " + cat + ";")) {
+
+  /* ---------------------------
+     Διαγραφή κατηγορίας
+  --------------------------- */
+  if (target.closest(".delcat")) {
+    const cat = target.closest(".category").dataset.cat;
+    if (confirm("Διαγραφή " + cat + ";")) {
+      pushHistory();
+      delete categories[cat];
+      catOrder = catOrder.filter(c => c !== cat);
+      saveData();
+      render();
+    }
+    return;
+  }
+
+  /* ---------------------------
+     Pin / Unpin
+  --------------------------- */
+  if (target.closest(".pin")) {
+    const card = target.closest(".card");
+    const cat = card.dataset.cat;
+    const idx = +card.dataset.idx;
+    const item = categories[cat][idx];
+    if (!item) return;
     pushHistory();
-    delete categories[cat];
-    catOrder = catOrder.filter(x => x !== cat);
+    item.pinned = !item.pinned;
     saveData();
     render();
-    saveAutoBackup(); 
+    return;
   }
-  return;
-}  // Τέλος διαγραφής κατηγορίας
+});
 
-/* ---------------------------
-   Pin / Unpin
---------------------------- */
-if (target.closest(".pin")) {
-  const card = target.closest(".card");
-  const cat = card.dataset.cat;
-  const idx = +card.dataset.idx;
-  const item = categories[cat][idx];
-  if (!item) return;
-  pushHistory();
-  item.pinned = !item.pinned;
-  saveData();
-  render();
-  return;
+/* ===============================
+   📌 Ελέγχει και συμπιέζει μεγάλες εικόνες
+   =============================== */
+function compressImageIfNeeded(dataUrl, maxWidth = 64, maxHeight = 64, quality = 0.8) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = function() {
+	
+
+      // Αν η εικόνα είναι μικρή, κράτα την ως έχει
+      if (img.width <= maxWidth && img.height <= maxHeight) {
+        resolve(dataUrl);
+        return;
+      }
+
+      // Συμπίεση για μεγάλες εικόνες
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Υπολογισμός νέων διαστάσεων διατηρώντας aspect ratio
+      let width = img.width;
+      let height = img.height;
+      
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      
+      ctx.drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/png', quality));
+    };
+    
+    img.onerror = function() {
+      // Αν αποτύχει το load, επέστρεψε default
+      resolve('assets/default-favicon.png');
+    };
+    
+    img.src = dataUrl;
+  });
 }
 
-}); // 👈 Κλείνει το addEventListener!
+/* ===============================
+   📌 Ενημέρωση loadData για έλεγχο εικόνων
+   =============================== */
+const originalLoadData = loadData;
+loadData = function() {
+  originalLoadData();
+  
+  // Έλεγχος και διόρθωση μεγάλων εικόνων
+  Object.keys(categories).forEach(cat => {
+    categories[cat].forEach(link => {
+      if (link.iconType === "upload" && link.iconValue && 
+          link.iconValue.startsWith('data:image') && 
+          link.iconValue.length > 5000) { // Αν είναι μεγάλη εικόνα (>5KB)
+        
+        compressImageIfNeeded(link.iconValue).then(compressed => {
+          link.iconValue = compressed;
+          saveData(); // Αποθήκευση αλλαγών
+        });
+      }
+    });
+  });
+};
+
+/* ===============================
+   📌 Ενημέρωση restore για έλεγχο εικόνων
+   =============================== */
+function safeRestore(data) {
+  // Επεξεργασία όλων των links για συμπίεση εικόνων
+  const processLinks = async () => {
+    for (const cat in data.categories) {
+      for (const link of data.categories[cat]) {
+        if (link.iconType === "upload" && link.iconValue && 
+            link.iconValue.startsWith('data:image')) {
+          
+          // Έλεγχος αν είναι μεγάλη εικόνα
+          if (link.iconValue.length > 5000) {
+            link.iconValue = await compressImageIfNeeded(link.iconValue);
+          }
+        }
+      }
+    }
+    
+    // Εφαρμογή των δεδομένων μετά την επεξεργασία
+    pushHistory();
+    categories = data.categories;
+    catOrder = data.catOrder;
+    
+    if (data.theme) {
+      applyTheme(data.theme);
+      saveTheme(data.theme);
+    }
+    
+    saveData();
+    render();
+    updateUndoBtn();
+  };
+  
+  processLinks();
+}
+
+/* ===============================
+   📌 Αντικατάσταση του restoreAutoBackup
+   =============================== */
+function restoreAutoBackup(index) {
+  const backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
+  
+  if (index < 0 || index >= backups.length) {
+    alert("Μη έγκυρη επιλογή backup!");
+    return;
+  }
+  
+  const backup = backups[index];
+  
+  if (confirm(`Επαναφορά από backup της ${backup.timestamp};\nΘα χάσετε τρέχουσες αλλαγές!`)) {
+    safeRestore(backup);
+    alert(`Επαναφορά ολοκληρώθηκε από backup: ${backup.timestamp}`);
+  }
+}
+
+/* ===============================
+   📌 Έλεγχος κατά την εκκίνηση
+   =============================== */
+function checkAndCompressExistingImages() {
+  Object.keys(categories).forEach(cat => {
+    categories[cat].forEach(async (link) => {
+      if (link.iconType === "upload" && link.iconValue && 
+          link.iconValue.startsWith('data:image') && 
+          link.iconValue.length > 10000) { // Ειδικά για πολύ μεγάλες εικόνες
+        
+        console.log("Συμπίεση μεγάλης εικόνας σε κατηγορία:", cat);
+        link.iconValue = await compressImageIfNeeded(link.iconValue, 64, 64, 0.7);
+        saveData();
+      }
+    });
+  });
+}
+
+
+
+
 
 /* ===============================
    📌 Backup & Restore
@@ -1672,54 +1806,6 @@ document.getElementById("restoreBtn").onclick=()=>{
   inp.click();
 };
 
-/* ===============================
-   📌 AUTO-BACKUP SYSTEM
-   =============================== */
-
-// Δημιουργία auto-backup
-function saveAutoBackup() {
-  const backupData = {
-    timestamp: new Date().toLocaleString("el-GR"),
-    categories: JSON.parse(JSON.stringify(categories)),
-    catOrder: [...catOrder],
-    theme: getTheme()
-  };
-  
-  let backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
-  backups.unshift(backupData);
-  
-  // Κράτα μόνο τα τελευταία 5 backups
-  if (backups.length > 5) {
-    backups = backups.slice(0, 5);
-  }
-  
-  localStorage.setItem("autoBackups", JSON.stringify(backups));
-  console.log("✅ Auto-backup created:", backupData.timestamp);
-}
-
-// Επαναφορά από auto-backup
-function restoreAutoBackup(index) {
-  const backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
-  if (!backups[index]) {
-    alert("Δεν βρέθηκε αυτό το backup!");
-    return;
-  }
-  
-  const backup = backups[index];
-  if (confirm(`Επαναφορά από backup: ${backup.timestamp}\n\nΘέλετε να συνεχίσετε;`)) {
-    pushHistory();
-    categories = backup.categories;
-    catOrder = backup.catOrder;
-    if (backup.theme) {
-      applyTheme(backup.theme);
-      saveTheme(backup.theme);
-    }
-    saveData();
-    render();
-    alert("✅ Επαναφορά ολοκληρώθηκε!");
-  }
-}
-	
 /* ===============================
    📌 Παλέτα Χρωμάτων
    =============================== */
@@ -1884,6 +1970,113 @@ document.getElementById("themeSelect").addEventListener("change", e => {
 // κλήση στην εκκίνηση
 loadTheme();
 
+
+/* ===============================
+   📌 Auto-Backup System
+   =============================== */
+
+// Δημιουργία auto-backup κάθε φορά που αποθηκεύονται δεδομένα
+function createAutoBackup() {
+  const backupData = {
+    categories: JSON.parse(JSON.stringify(categories)),
+    catOrder: [...catOrder],
+    theme: getTheme(),
+    timestamp: new Date().toLocaleString('el-GR')
+  };
+  
+  // Λήψη υπαρχόντων backups
+  let backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
+  
+  // Προσθήκη νέου backup
+  backups.unshift(backupData);
+  
+  // Διατήρηση μόνο των 5 πιο πρόσφατων backups
+  if (backups.length > 5) {
+    backups = backups.slice(0, 5);
+  }
+  
+  // Αποθήκευση backups
+  localStorage.setItem("autoBackups", JSON.stringify(backups));
+  
+  console.log("Auto-backup created:", backupData.timestamp);
+}
+
+// Επαναφορά από auto-backup
+
+function restoreAutoBackup(index) {
+  const backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
+  
+  if (index < 0 || index >= backups.length) {
+    alert("Μη έγκυρη επιλογή backup!");
+    return;
+  }
+  
+  const backup = backups[index];
+  
+  if (confirm(`Επαναφορά από backup της ${backup.timestamp}`)) {
+    pushHistory();
+    
+    // ✅ DATA VALIDATION & CLEANUP
+    categories = {};
+    catOrder = [];
+    
+    // Επαλήθευση και καθαρισμός δεδομένων
+    Object.keys(backup.categories || {}).forEach(cat => {
+      categories[cat] = (backup.categories[cat] || []).map(link => ({
+        url: link.url || "",
+        name: link.name || "",
+        desc: link.desc || "",
+        iconType: link.iconType || "auto",
+        iconValue: link.iconValue || null,
+        pinned: !!link.pinned  // εξασφαλίζει boolean
+      }));
+      catOrder.push(cat);
+    });
+    
+    // Optimize εικόνων ΑΜΕΣΑ μετά το restore
+    setTimeout(async () => {
+      await optimizeAllExistingIcons();
+      saveData();
+      render();
+      updateUndoBtn();
+      alert("✅ Επαναφορά ολοκληρώθηκε! Τα εικονίδια βελτιστοποιήθηκαν.");
+    }, 100);
+  }
+}
+
+// Εμφάνιση λίστας auto-backups
+function showAutoBackups() {
+  const backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
+  if (!backups.length) {
+    alert("Δεν υπάρχει διαθέσιμο auto-backup!");
+    return;
+  }
+
+  let msg = "Διαθέσιμα Auto-Backups:\n\n";
+  backups.forEach((b, i) => {
+    msg += `${i}: ${b.timestamp} (${Object.keys(b.categories).length} κατηγορίες)\n`;
+  });
+  msg += "\nΠληκτρολόγησε 0,1,2,3,4 για να διαλέξεις:";
+
+  const choice = prompt(msg);
+  if (choice !== null && !isNaN(choice)) {
+    restoreAutoBackup(parseInt(choice));
+  }
+}
+
+// Τροποποίηση της saveData για αυτόματο backup
+const originalSaveData = saveData;
+saveData = function() {
+  originalSaveData();
+  createAutoBackup(); // Δημιουργία backup κάθε φορά που αποθηκεύονται δεδομένα
+};
+
+// Σύνδεση του κουμπιού auto-backup
+document.getElementById("autoBackupBtn").addEventListener("click", showAutoBackups);
+
+// Δημιουργία αρχικού backup κατά την εκκίνηση
+setTimeout(createAutoBackup, 1000);
+
 loadData(); 
 if(catOrder.length===0){
   categories={"Εισαγωγή":[]};
@@ -1926,34 +2119,6 @@ document.querySelectorAll("input[type=color]").forEach(input => {
   if(el && sw) sw.style.background = el.value || getTheme()[id];
 });
 
-// Resize existing base64 images (for backup restore)
-function resizeBase64Image(base64, maxSize = 64) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    img.onload = function() {
-      let width = img.width;
-      let height = img.height;
-      
-      if (width > height && width > maxSize) {
-        height = (height * maxSize) / width;
-        width = maxSize;
-      } else if (height > maxSize) {
-        width = (width * maxSize) / height;
-        height = maxSize;
-      }
-      
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL('image/png'));
-    };
-    
-    img.src = base64;
-  });
-}
 </script>
 </body>
 </html>
