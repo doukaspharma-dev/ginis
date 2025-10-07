@@ -52,7 +52,10 @@
     display:flex; justify-content:center; align-items:center;
     gap:10px; margin:12px 0 18px; position:relative;
   }
-  .topbar-right { margin-left:auto; }
+  .topbar-right {
+  position: relative;
+  right: -286px; /* Πάει αριστερά */
+}
 
   /* -------------------------------------------------
      5. ΚΟΥΜΠΙΑ
@@ -284,64 +287,57 @@
   background: color-mix(in srgb, var(--accent) 80%, #000 20%); /* Πιο σκούρο μπλε στο hover */
   transform: scale(1.15);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
 }
 /* popup με τα κουμπάκια */
 .card .menu-popup {
   position: absolute;
-  top: -32px;        /* εμφανίζεται ΠΑΝΩ από τις ⋮ */
-  right: 8px;
-  background: var(--bg2);
-  border: 2px solid var(--border);
-  border-radius: 4px;
-  padding: 1px;   /* μικρότερο περιθώριο μέσα */
-  gap: 1px;       /* μικρότερο κενό ανάμεσα στα κουμπιά */
+  top: -32px;                /* λίγο πιο κοντά στην κάρτα */
+  right: 2px;
   display: none;
-  flex-direction: row; /* κάθετα τα κουμπάκια */
-  gap: 4px;
-  z-index: 1200;
+  flex-direction: row;
+  gap: 2px;
+  background: #1b2631;
+  border: 1px solid #000;
+  border-radius: 6px;
+  padding: 2px 4px;          /* μικρότερο padding */
+  z-index: 1000;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  transform: scale(0.9);     /* μικραίνει ολόκληρο το πλαίσιο */
+  transform-origin: top right;
 }
 
-/* styling για τα κουμπιά μέσα στο popup */
+/* styling για τα κουμπάκια */
 .card .menu-popup button {
-  background: transparent;
-  border: none;
+  background: #2c3e50;
+  border: 1px solid #000;
+  border-radius: 50%;
+  width: 24px;               /* μικρότεροι κύκλοι */
+  height: 24px;
   cursor: pointer;
-  padding: 1px;       /* πιο μικρό */
-}
-
-.card .menu-popup button svg {
-  width: 14px;        /* μικρότερο εικονίδιο */
-  height: 14px;
-  fill: var(--text);
-}
-.card .menu-popup button:hover svg {
-  fill: var(--accent);
-}
-
-.card .menu-popup button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
+/* εικονίδιο μέσα στο κουμπί */
 .card .menu-popup button svg {
-  width: 16px;
-  height: 16px;
-  fill: var(--text);
+  width: 10px;
+  height: 10px;
+  fill: #fff;
   transition: fill 0.2s ease;
 }
 
-/* ✨ Εφέ στο hover */
+/* hover εφέ */
 .card .menu-popup button:hover {
-  transform: scale(1.2);            /* μεγαλώνει λίγο */
-  background: rgba(255,255,255,0.1); /* ή βάζεις φόντο */
-  border-radius: 4px;
+  transform: scale(1.1);
+  background: var(--accent);
+ display: flex;
 }
 
 .card .menu-popup button:hover svg {
-  fill: var(--accent); /* αλλάζει χρώμα */
+  fill: #fff;
 }
 
 
@@ -687,11 +683,91 @@ footer {
   opacity: 0.7;
 }
 
+/* -------------------------------------------------
+   ΡΟΛΟΙ - ΗΜΕΡΟΜΗΝΙΑ (ΔΕΞΙΑ ΣΕ ΙΔΙΑ ΓΡΑΜΜΗ)
+------------------------------------------------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  position: relative;
+  padding: 0 10px 0 50px; /* ΑΥΞΗΣΗ ΑΡΙΣΤΕΡΟΥ ΚΕΝΟΥ: 10px -> 50px */
+}
 
+.datetime-widget {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  text-align: center;
+  min-width: 160px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  margin-left: 10px;
+}
 
+.datetime-widget .time {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 2px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px rgba(244, 162, 97, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
 
+.datetime-widget .date {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.9;
+}
 
+/* Κεντρικό content */
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: center;
+  margin-left: 30px; /* Αντιστάθμιση για το επιπλέον padding */
+}
 
+/* Responsive για κινητά */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+    padding: 0 10px; /* Reset padding σε κινητά */
+  }
+  
+  .datetime-widget {
+    margin-left: 0;
+    order: -1;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .logo-title {
+    flex-direction: column;
+    margin-left: 0; /* Reset margin σε κινητά */
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Εναλλακτικό στυλ με gradient */
+.datetime-widget.gradient {
+  background: linear-gradient(135deg, rgba(244, 162, 97, 0.2), rgba(42, 157, 244, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
 
 
@@ -721,14 +797,24 @@ footer {
 <div class="wrap">
 
 <header>
+
   <div class="logo-title">
     <img src="assets/unnamed.png" alt="Logo">
     <div class="titles">
-     <h1 class="typewriter">Τα δικά μου χρήσιμα</h1>
-      <h2>Φαρμακείο Γκίνις Πέτρος Πολύγωνο</h2>
+      <h1 class="typewriter">Τα δικά μου χρήσιμα</h1>
+      <h2>Φαρμακείο Γκίνης Κ. Πέτρος, Πολύγωνο.</h2>
       <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
     </div>
   </div>
+  
+  <!-- Ρολόι - Ημερομηνία -->
+  <div class="datetime-widget">
+    <div class="time" id="currentTime">00:00:00</div>
+    <div class="date" id="currentDate">Παρασκευή, 1 Ιανουαρίου</div>
+  </div>
+  
+  
+  
 </header>
 
 
@@ -770,6 +856,7 @@ footer {
     <div class="note">Φτιαγμένο με αγάπη από το Doukas Pharmacy Support®</div>
   </div>
 </footer>
+
 <!-- ===== MODAL ΝΕΟΥ LINK ===== -->
 <div class="modal" id="modalForm">
   <div class="box">
@@ -906,6 +993,8 @@ footer {
     </div>
   </div>
 </div>
+
+
 
 
 <!-- ===== ΚΡΥΦΟ ΚΟΥΜΠΙ ΓΙΑ ΠΑΛΕΤΑ ===== -->
@@ -1197,14 +1286,14 @@ function render(){
       card.dataset.idx=idx;
       if(l.pinned) card.classList.add("pinned");
 
-      // 👉 ΝΕΟ μενού
+      // 👉 ΝΕΟ μενού  κουμπάκια
       card.innerHTML = `
         <div class="menu-btn">⋮</div>
         <div class="menu-popup">
-          <button class="edit" aria-label="Επεξεργασία">${svgIcon('edit')}</button>
-          <button class="del" aria-label="Διαγραφή">${svgIcon('delete')}</button>
-          <button class="pin" aria-label="Pin / Unpin">${svgIcon('pin', !!l.pinned)}</button>
-        </div>
+  <button class="edit">✏️</button>
+  <button class="delete">🗑️</button>
+  <button class="pin">📌</button>
+</div>
       `;
 
       const a = document.createElement("a");
@@ -1484,7 +1573,7 @@ document.addEventListener("click", e => {
   /* ---------------------------
      Διαγραφή link
   --------------------------- */
-  if (target.closest(".del")) {
+  if (target.closest(".delete")) {
     const c = target.closest(".card");
     const catName = c.dataset.cat;
     pushHistory();
@@ -2118,6 +2207,44 @@ document.querySelectorAll("input[type=color]").forEach(input => {
   const sw=document.getElementById('swatch-'+id);
   if(el && sw) sw.style.background = el.value || getTheme()[id];
 });
+
+/* ===============================
+   📌 ΡΟΛΟΙ - ΗΜΕΡΟΜΗΝΙΑ
+   =============================== */
+function updateDateTime() {
+  const now = new Date();
+  
+  // Ελληνικά ονόματα ημερών και μηνών
+  const days = ['Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο'];
+  const months = ['Ιανουαρίου', 'Φεβρουαρίου', 'Μαρτίου', 'Απριλίου', 'Μαΐου', 'Ιουνίου', 
+                 'Ιουλίου', 'Αυγούστου', 'Σεπτεμβρίου', 'Οκτωβρίου', 'Νοεμβρίου', 'Δεκεμβρίου'];
+  
+  // Ωρα
+  const time = now.toLocaleTimeString('el-GR', { 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit' 
+  });
+  
+  // Ημερομηνία
+  const dayName = days[now.getDay()];
+  const day = now.getDate();
+  const monthName = months[now.getMonth()];
+  const year = now.getFullYear();
+  
+  const date = `${dayName}, ${day} ${monthName} ${year}`;
+  
+  // Ενημέρωση DOM
+  const timeEl = document.getElementById('currentTime');
+  const dateEl = document.getElementById('currentDate');
+  
+  if (timeEl) timeEl.textContent = time;
+  if (dateEl) dateEl.textContent = date;
+}
+
+// Εκκίνηση ρολογιού
+updateDateTime();
+setInterval(updateDateTime, 1000);
 
 </script>
 </body>
