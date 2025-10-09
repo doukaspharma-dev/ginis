@@ -1,0 +1,160 @@
+/* -------------------------------------------------
+   RESPONSIVE DESIGN
+------------------------------------------------- */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+  
+  header {
+    padding: 0 10px;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .logo-title {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .datetime-widget {
+    margin-left: 0;
+  }
+}
+
+/* Small Tablet */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .topbar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .topbar-right {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+  
+  footer .btnrow {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .radio-player {
+    width: 250px;
+    right: 10px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .wrap {
+    padding: 15px 5px 180px;
+  }
+  
+  .logo-title img {
+    height: 50px;
+  }
+  
+  .titles h1 {
+    font-size: 20px;
+  }
+  
+  .titles h2 {
+    font-size: 12px;
+  }
+  
+  .titles h3 {
+    font-size: 11px;
+  }
+  
+  .datetime-widget {
+    min-width: 140px;
+    padding: 8px 12px;
+  }
+  
+  .datetime-widget .time {
+    font-size: 20px;
+  }
+  
+  .datetime-widget .date {
+    font-size: 14px;
+  }
+  
+  button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .modal .box {
+    width: 98%;
+    padding: 12px;
+  }
+  
+  .help-menu {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .radio-player {
+    width: 200px;
+    bottom: 70px;
+    right: 5px;
+  }
+}
+
+/* Very small mobile */
+@media (max-width: 320px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .card {
+    width: 90%;
+  }
+  
+  .topbar {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+}
+
+/* High resolution displays */
+@media (min-width: 1440px) {
+  .grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+  
+  .wrap {
+    max-width: 1400px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .topbar, footer, .menu-btn, .cat-actions {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .card {
+    break-inside: avoid;
+    border: 1px solid #ccc !important;
+  }
+}

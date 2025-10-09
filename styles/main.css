@@ -1,0 +1,886 @@
+/* -------------------------------------------------
+   1. ΘΕΜΑΤΙΚΑ ΧΡΩΜΑΤΑ (CSS variables)
+------------------------------------------------- */
+:root {
+  --bg1:#0d1b2a;
+  --bg2:#1b263b;
+  --card:#415a77;
+  --text:#e0e1dd;
+  --accent:#f4a261;
+  --border:rgba(255,255,255,.15);
+}
+
+/* -------------------------------------------------
+   2. RESET + BODY + WRAPPER
+------------------------------------------------- */
+* { box-sizing: border-box; }
+body {
+  margin:0;
+  background:linear-gradient(160deg,var(--bg1),var(--bg2));
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+.wrap { max-width:1200px; margin:0 auto; padding:24px 10px 210px; }
+
+/* -------------------------------------------------
+   3. HEADER
+------------------------------------------------- */
+header { 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  position: relative;
+  padding: 0 10px 0 50px;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-title img {
+  height: 70px;
+  border-radius: 12px;
+}
+
+.titles h1 {
+  margin: 4px 0 0;
+  font-size: 26px;
+  font-weight: 800;
+}
+.titles h2 {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #2a9df4;
+  font-weight: 700;
+}
+.titles h3 {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #bbb;
+  font-weight: 500;
+}
+
+/* Ρολόι - Ημερομηνία */
+.datetime-widget {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  text-align: center;
+  min-width: 160px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+.datetime-widget .time {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 2px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px rgba(244, 162, 97, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.datetime-widget .date {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.9;
+}
+
+/* -------------------------------------------------
+   4. TOPBAR (κουμπιά πάνω)
+------------------------------------------------- */
+.topbar {
+  display:flex; 
+  justify-content:center; 
+  align-items:center;
+  gap:10px; 
+  margin:12px 0 18px; 
+  position:relative;
+}
+.topbar-right {
+  margin-left: auto;
+}
+
+/* -------------------------------------------------
+   5. ΚΟΥΜΠΙΑ
+------------------------------------------------- */
+button {
+  padding:8px 14px; 
+  border:none; 
+  border-radius:10px; 
+  cursor:pointer;
+  background:var(--accent); 
+  color:#fff; 
+  font-weight:700; 
+  font-size:14px;
+}
+button.gray { background:#596070!important; color:#ccc!important; }
+button:disabled { opacity:.45; cursor:not-allowed; }
+button:hover { opacity:0.85; }
+button:active { transform:scale(0.97); }
+
+/* Dropdown επιλογής theme */
+#themeSelect {
+  padding:6px 10px; 
+  border-radius:8px; 
+  border:1px solid var(--border);
+  background:var(--card); 
+  color:var(--text); 
+  font-weight:600; 
+  cursor:pointer;
+}
+
+/* -------------------------------------------------
+   6. ΚΑΤΗΓΟΡΙΕΣ
+------------------------------------------------- */
+#categories { 
+  display:flex; 
+  flex-direction:column; 
+  gap:18px; 
+  padding:0 6px; 
+}
+.category {
+  background:rgba(255,255,255,.04); 
+  border:1px solid var(--border);
+  border-radius:14px; 
+  padding:10px;
+}
+.category.drag-over { 
+  outline:2px dashed #5aa9ff; 
+  outline-offset:4px; 
+}
+
+/* Στυλ για τίτλο κατηγορίας */
+.category-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 4px 2px;
+}
+
+.category-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 8px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Ενέργειες δεξιά */
+.cat-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.category-title:hover .cat-actions {
+  opacity: 1;
+}
+
+/* Collapse κουμπί */
+.toggle-btn {
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.toggle-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
+/* Edit / Delete */
+.cat-btn {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.cat-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
+/* -------------------------------------------------
+   7. GRID & CARDS
+------------------------------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10,1fr);
+  gap: 12px;
+  margin-top: 10px;
+  min-height: 0px;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  max-height: 9999px;
+  opacity: 1;
+}
+
+.grid.collapsed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 95%;
+  aspect-ratio: 1/1;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .18s ease;
+  padding: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.card:hover {
+  transform: scale(1.04);
+  background: color-mix(in oklab, var(--accent) 20%, transparent);
+  border-color: var(--accent);
+}
+
+.card.pinned {
+  outline: 2px solid gold;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 2px rgba(255,215,0,.25) inset;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------------------------
+   8. LINKS ΣΕ ΚΑΡΤΕΣ
+------------------------------------------------- */
+.card a {
+  display:flex; 
+  flex-direction:column; 
+  align-items:center; 
+  justify-content:center;
+  text-decoration:none; 
+  color:var(--text); 
+  width:100%; 
+  height:100%;
+  position: relative;
+  z-index: 0;
+}
+.card img.favicon {
+  width:48px; 
+  height:48px; 
+  margin-bottom:8px; 
+  display:block;
+}
+.link-title {
+  font-size:9px; 
+  font-weight:700; 
+  color:var(--text);
+  white-space:nowrap; 
+  word-break:break-word; 
+  text-align:center;
+  max-width:95%;
+}
+.link-desc {
+  font-size: 8px; 
+  color: rgba(255,255,255,.6); 
+  margin-top: 2px;
+  max-width: 90%; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  max-width: 15ch;
+}
+
+/* Hover σε links */
+a { 
+  color:var(--text); 
+  text-decoration:none; 
+  transition:.25s; 
+}
+a:not(.fav):not(.del):not(.edit):hover {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(244, 162, 97, 0.8);
+}
+
+/* -------------------------------------------------
+  9. ΝΕΟ MENU ΠΑΝΩ ΣΤΙΣ ΚΑΡΤΕΣ
+------------------------------------------------- */
+.card .menu-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 18px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1100;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.card:hover .menu-btn {
+  opacity: 1;
+  transform: scale(1.1);
+}
+.card .menu-btn:hover {
+  background: color-mix(in srgb, var(--accent) 80%, #000 20%);
+  transform: scale(1.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+}
+
+/* popup με τα κουμπάκια */
+.card .menu-popup {
+  position: absolute;
+  top: -32px;
+  right: 2px;
+  display: none;
+  flex-direction: row;
+  gap: 2px;
+  background: #1b2631;
+  border: 1px solid #000;
+  border-radius: 6px;
+  padding: 2px 4px;
+  z-index: 1000;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  transform: scale(0.9);
+  transform-origin: top right;
+}
+
+/* styling για τα κουμπάκια */
+.card .menu-popup button {
+  background: #2c3e50;
+  border: 1px solid #000;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+/* εικονίδιο μέσα στο κουμπί */
+.card .menu-popup button svg {
+  width: 10px;
+  height: 10px;
+  fill: #fff;
+  transition: fill 0.2s ease;
+}
+
+/* hover εφέ */
+.card .menu-popup button:hover {
+  transform: scale(1.1);
+  background: var(--accent);
+  display: flex;
+}
+
+.card .menu-popup button:hover svg {
+  fill: #fff;
+}
+
+/* -------------------------------------------------
+   10. FOOTER
+------------------------------------------------- */
+footer {
+  position:fixed; 
+  left:0; 
+  bottom:0; 
+  width:100%;
+  background:rgba(35,36,41,.96); 
+  backdrop-filter:blur(6px);
+  text-align:center; 
+  color:#a8b0bb; 
+  font-size:12px; 
+  padding:8px 10px;
+  overflow: hidden;
+}
+footer .btnrow { 
+  display:flex; 
+  flex-wrap:wrap; 
+  justify-content:center; 
+  gap:10px; 
+  margin-bottom:6px; 
+}
+footer .note { color:#aab2bd; font-weight:700; }
+body:has(footer) .wrap { padding-bottom:70px; }
+
+/* Wrapper για το pulse */
+.note-wrapper {
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.note {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-right 12s linear infinite,
+             colorShift 8s linear infinite;
+}
+
+/* Κίνηση */
+@keyframes scroll-right {
+  0%   { transform: translateX(-100vw); }
+  100% { transform: translateX(100vw); }
+}
+
+/* Εναλλαγή χρώματος */
+@keyframes colorShift {
+  0%   { color: #f4a261; }
+  25%  { color: #2a9df4; }
+  50%  { color: #a1ff0a; }
+  75%  { color: #ff4081; }
+  100% { color: #f4a261; }
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.2); }
+}
+
+/* -------------------------------------------------
+   11. MODALS
+------------------------------------------------- */
+.modal {
+  position:fixed; 
+  inset:0; 
+  display:none;
+  align-items:center; 
+  justify-content:center;
+  background:rgba(0,0,0,.6); 
+  z-index:4000;
+}
+.modal .box {
+  background:var(--bg2); 
+  border:1px solid var(--border);
+  border-radius:14px; 
+  padding:16px; 
+  width:94%; 
+  max-width:420px;
+}
+.modal h3 { margin:0 0 8px; font-size:18px; }
+.modal .row { display:flex; flex-direction:column; gap:6px; margin:8px 0; }
+.modal input,.modal textarea,select {
+  background:var(--card); 
+  color:var(--text); 
+  border:1px solid var(--border);
+  border-radius:8px; 
+  padding:8px; 
+  width:100%;
+}
+.modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:6px; }
+
+/* Επιλογή εικονιδίου */
+.icon-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.icon-row select,.icon-row input[type=file]{flex:1;}
+.icon-preview { display:flex; align-items:center; gap:8px; margin-top:4px; font-size:12px; color:#cbd5e1; }
+.icon-preview img{width:24px;height:24px;}
+
+/* Κουμπί παλέτας (αόρατο) */
+#paletteBtn {
+  position:fixed; 
+  top:50%; 
+  right:0; 
+  transform:translateY(-50%);
+  width:10px; 
+  height:30px; 
+  opacity:0; 
+  cursor:pointer; 
+  z-index:4500;
+  padding: 5px 5px;
+  margin-right: 5px;
+}
+
+/* Παλέτα */
+.palette-row { display:flex; align-items:center; gap:12px; }
+.color-swatch { width:48px; height:48px; border-radius:8px; border:1px solid var(--border); }
+
+/* -------------------------------------------------
+   12. TOOLTIP
+------------------------------------------------- */
+[data-tooltip]{position:relative;}
+[data-tooltip]::after{
+  content:attr(data-tooltip);
+  position:absolute; bottom:107%; left:50%; transform:translateX(-50%);
+  background:#fff9c4; color:#0a58ca; border:1px solid rgba(10,88,202,.35);
+  padding:4px 8px; border-radius:6px; white-space:nowrap; font-size:12px; font-weight:600;
+  opacity:0; pointer-events:none; transition:opacity .2s; box-shadow:0 6px 18px rgba(0,0,0,.2);
+}
+[data-tooltip]:hover::after{opacity:1;}
+
+/* -------------------------------------------------
+   13. TRANSITIONS
+------------------------------------------------- */
+body, footer, button {
+  transition: background .3s, color .3s, opacity .3s, transform .1s;
+}
+
+.category.drag-over {
+  outline: 2px dashed #5aa9ff;
+  outline-offset: 4px;
+  background: rgba(90, 169, 255, 0.08);
+}
+
+/* -------------------------------------------------
+   14. BUBBLE EFFECT
+------------------------------------------------- */
+.bubbles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+.bubbles span {
+  position: absolute;
+  display: block;
+  width: 20px; height: 20px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  bottom: -100px;
+  animation: rise 20s infinite;
+}
+.bubbles span:nth-child(1){ left:10%; animation-duration:12s; width:15px; height:15px;}
+.bubbles span:nth-child(2){ left:20%; animation-duration:18s;}
+.bubbles span:nth-child(3){ left:70%; animation-duration:16s; width:25px; height:25px;}
+.bubbles span:nth-child(4){ left:50%; animation-duration:22s;}
+.bubbles span:nth-child(5){ left:85%; animation-duration:26s;}
+
+@keyframes rise {
+  0% {transform: translateY(0) scale(1);}
+  100% {transform: translateY(-1200px) scale(0.5);}
+}
+
+/* Typewriter effect */
+.typewriter {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--accent);
+  width: 0;
+  animation: typing 3s steps(25, end) forwards,
+             hideCursor 0.1s 3s forwards;
+}
+
+@keyframes hideCursor {
+  to {
+    border-color: transparent;
+  }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to   { width: 100% }
+}
+
+/* Palette rows */
+.palette-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 6px 0;
+}
+
+.palette-row label {
+  flex: 1; 
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.palette-row input[type="color"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.color-preview {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.row.palette-row {
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.theme-toggle-wrapper {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.theme-toggle-wrapper .version {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+/* Χρώματα για κατηγορίες */
+.category:nth-child(1) .category-title h2 {
+  background: linear-gradient(135deg, rgba(244, 162, 97, 0.2), rgba(244, 162, 97, 0.1));
+  border: 1px solid rgba(244, 162, 97, 0.3);
+}
+
+.category:nth-child(2) .category-title h2 {
+  background: linear-gradient(135deg, rgba(42, 157, 244, 0.2), rgba(42, 157, 244, 0.1));
+  border: 1px solid rgba(42, 157, 244, 0.3);
+}
+
+.category:nth-child(3) .category-title h2 {
+  background: linear-gradient(135deg, rgba(161, 255, 10, 0.2), rgba(161, 255, 10, 0.1));
+  border: 1px solid rgba(161, 255, 10, 0.3);
+}
+
+.category:nth-child(4) .category-title h2 {
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.2), rgba(255, 64, 129, 0.1));
+  border: 1px solid rgba(255, 64, 129, 0.3);
+}
+
+.category:nth-child(5) .category-title h2 {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* Volume control */
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.1);
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.volume-icon {
+  font-size: 14px;
+}
+
+.volume-control {
+  width: 60px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--card);
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-control::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.volume-control::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+}
+
+/* Help menu */
+.help-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.5);
+  z-index: 4998;
+  display: none;
+}
+
+.help-menu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 4999;
+  display: none;
+}
+
+.help-menu h2 {
+  margin-top: 0;
+  color: var(--accent);
+  text-align: center;
+}
+
+.help-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.help-section h3 {
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.help-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.close-help {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--text);
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Zuccaradio button */
+.zuccaradio-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  position: relative;
+  overflow: hidden;
+}
+
+.zuccaradio-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,.3), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+/* Radio player */
+.radio-player {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px;
+  width: 300px;
+  z-index: 3000;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  display: none;
+}
+
+.radio-player h3 {
+  margin: 0 0 10px 0;
+  color: var(--accent);
+  text-align: center;
+}
+
+.radio-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.radio-info {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+.close-radio {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

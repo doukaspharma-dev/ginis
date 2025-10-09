@@ -1,0 +1,83 @@
+/* -------------------------------------------------
+   THEME SYSTEM
+------------------------------------------------- */
+
+/* DARK THEME (default) */
+[data-theme="dark"] {
+  --bg1: #0d1b2a;
+  --bg2: #1b263b;
+  --card: #415a77;
+  --text: #e0e1dd;
+  --accent: #f4a261;
+  --border: rgba(255,255,255,.15);
+}
+
+/* LIGHT THEME */
+[data-theme="light"] {
+  --bg1: #f8f9fa;
+  --bg2: #e9ecef;
+  --card: #dee2e6;
+  --text: #212529;
+  --accent: #2a9df4;
+  --border: rgba(0,0,0,.15);
+}
+
+/* GREEN THEME */
+[data-theme="green"] {
+  --bg1: #1a3c2e;
+  --bg2: #2d5a45;
+  --card: #4a7c5f;
+  --text: #e8f5e8;
+  --accent: #a1ff0a;
+  --border: rgba(161,255,10,.3);
+}
+
+/* BROWN THEME */
+[data-theme="brown"] {
+  --bg1: #3e2723;
+  --bg2: #5d4037;
+  --card: #8d6e63;
+  --text: #efebe9;
+  --accent: #d7ccc8;
+  --border: rgba(215,204,200,.3);
+}
+
+/* PURPLE THEME */
+[data-theme="purple"] {
+  --bg1: #2d1b4e;
+  --bg2: #4527a0;
+  --card: #7e57c2;
+  --text: #f3e5f5;
+  --accent: #e040fb;
+  --border: rgba(224,64,251,.3);
+}
+
+/* BLUE THEME */
+[data-theme="blue"] {
+  --bg1: #0d47a1;
+  --bg2: #1976d2;
+  --card: #42a5f5;
+  --text: #e3f2fd;
+  --accent: #82b1ff;
+  --border: rgba(130,177,255,.3);
+}
+
+/* ORANGE THEME */
+[data-theme="orange"] {
+  --bg1: #e65100;
+  --bg2: #ef6c00;
+  --card: #ff9800;
+  --text: #fff3e0;
+  --accent: #ffb74d;
+  --border: rgba(255,183,77,.3);
+}
+
+/* PINK THEME */
+[data-theme="pink"] {
+  --bg1: #880e4f;
+  --bg2: #ad1457;
+  --card: #e91e63;
+  --text: #fce4ec;
+  --accent: #f48fb1;
+  --border: rgba(244,143,177,.3);
+}

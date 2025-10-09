@@ -1,0 +1,3098 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Τα δικά μου χρήσιμα</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="assets/logo.png">
+
+  <style>
+  
+  /* -------------------------------------------------
+     1. ΘΕΜΑΤΙΚΑ ΧΡΩΜΑΤΑ (CSS variables)
+  ------------------------------------------------- */
+  :root {
+    --bg1:#0d1b2a;
+    --bg2:#1b263b;
+    --card:#415a77;
+    --text:#e0e1dd;
+    --accent:#f4a261;
+    --border:rgba(255,255,255,.15);
+  }
+
+  /* -------------------------------------------------
+     2. RESET + BODY + WRAPPER
+  ------------------------------------------------- */
+  * { box-sizing: border-box; }
+  body {
+    margin:0;
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  .wrap { max-width:1200px; margin:0 auto; padding:24px 10px 210px; }
+
+  /* -------------------------------------------------
+     3. HEADER
+  ------------------------------------------------- */
+  header { text-align:center; margin-bottom:10px; }
+  header h1 { margin:4px 0 0; font-size:26px; font-weight:800; }
+  header h2 { margin:6px 0 0; font-size:14px; color:#2a9df4; font-weight:700; }
+  header h3 { margin:6px 0 0; font-size:13px; color:#bbb; font-weight:500; }
+
+  /* -------------------------------------------------
+     4. TOPBAR (κουμπιά πάνω)
+  ------------------------------------------------- */
+  .topbar {
+    display:flex; justify-content:center; align-items:center;
+    gap:10px; margin:12px 0 18px; position:relative;
+  }
+  .topbar-right {
+  position: relative;
+  right: -78px; /* Πάει αριστερά */
+}
+
+  /* -------------------------------------------------
+     5. ΚΟΥΜΠΙΑ
+  ------------------------------------------------- */
+  button {
+    padding:8px 14px; border:none; border-radius:10px; cursor:pointer;
+    background:var(--accent); color:#fff; font-weight:700; font-size:14px;
+  }
+  button.gray { background:#596070!important; color:#ccc!important; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  button:hover { opacity:0.85; }
+  button:active { transform:scale(0.97); }
+
+  /* Dropdown επιλογής theme */
+  #themeSelect {
+    padding:6px 10px; border-radius:8px; border:1px solid var(--border);
+    background:var(--card); color:var(--text); font-weight:600; cursor:pointer;
+  }
+  #theme-toggle {
+  position: relative;
+}
+
+
+/* -------------------------------------------------
+     6. ΚΑΤΗΓΟΡΙΕΣ
+  ------------------------------------------------- */
+  #categories { display:flex; flex-direction:column; gap:18px; padding:0 6px; }
+  .category {
+    background:rgba(255,255,255,.04); border:1px solid var(--border);
+    border-radius:14px; padding:10px;
+  }
+  .category.drag-over { outline:2px dashed #5aa9ff; outline-offset:4px; }
+
+
+/* ===== Στυλ για τίτλο κατηγορίας ===== */
+
+.category-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 4px 2px;
+}
+
+/* Όνομα κατηγορίας αριστερά - ΜΕ ΤΟ ΝΕΟ ΧΡΩΜΑΤΙΣΤΟ ΦΩΝΤΟ */
+.category-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  
+  /* ΝΕΟ ΣΤΥΛ ΠΑΡΟΜΟΙΟ ΜΕ ΤΟ ΡΟΛΟΙ */
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 8px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Ενέργειες δεξιά */
+.cat-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+/* Φαίνονται στο hover */
+.category-title:hover .cat-actions {
+  opacity: 1;
+}
+
+/* Collapse κουμπί */
+.toggle-btn {
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.toggle-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
+/* Edit / Delete */
+.cat-btn {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.cat-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
+
+  /* -------------------------------------------------
+     7. GRID & CARDS
+  ------------------------------------------------- */
+
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 95%;
+  aspect-ratio: 1/1;
+  overflow: visible; /* ✅ πολύ σημαντικό */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .18s ease;
+  padding: 10px;
+
+  /* ✨ Fade-in animation */
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  background: color-mix(in oklab, var(--accent) 20%, transparent);
+  border-color: var(--accent);
+}
+
+.card.pinned {
+  outline: 2px solid gold;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 2px rgba(255,215,0,.25) inset;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+  /* -------------------------------------------------
+     8. LINKS ΣΕ ΚΑΡΤΕΣ
+  ------------------------------------------------- */
+  .card a {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-decoration:none; color:var(--text); width:100%; height:100%;
+  }
+  .card img.favicon {
+    width:48px; height:48px; margin-bottom:8px; display:block;
+  }
+  .link-title {
+    font-size:9px; font-weight:700; color:var(--text);
+    white-space:nowrap; word-break:break-word; text-align:center;
+    max-width:95%;
+  }
+  .link-desc {
+  font-size: 8px; 
+  color: rgba(255,255,255,.6); 
+  margin-top: 2px;
+  max-width: 90%; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  max-width: 15ch; /* 👈 ΝΕΟ - περιορίζει σε 15 χαρακτήρες */
+}
+
+  /* Hover σε links */
+  a { color:var(--text); text-decoration:none; transition:.25s; }
+  a:not(.fav):not(.del):not(.edit):hover {
+    color:var(--accent);
+    background:rgba(230,57,70,0.15);
+    font-weight:600; padding:2px 4px; border-radius:6px;
+  }
+  
+  
+.card a:not(.fav):not(.del):not(.edit):hover {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(244, 162, 97, 0.8); /* λαμπάκι γύρω γύρω */
+}
+
+
+ /* -------------------------------------------------
+  9. ΝΕΟ MENU ΠΑΝΩ ΣΤΙΣ ΚΑΡΤΕΣ
+  ------------------------------------------------- */
+
+/* το <a> μένει χαμηλά ώστε να μην σκεπάζει το κουμπί */
+.card a {
+  position: relative;
+  z-index: 0;
+}
+
+.card .menu-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent); /* ΜΠΛΕ όπως το accent χρώμα */
+  color: white; /* ΛΕΥΚΟ κείμενο για καλύτερη αντίθεση */
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 18px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1100;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.card:hover .menu-btn {
+  opacity: 1;
+  transform: scale(1.1);
+}
+.card .menu-btn:hover {
+  background: color-mix(in srgb, var(--accent) 80%, #000 20%); /* Πιο σκούρο μπλε στο hover */
+  transform: scale(1.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+}
+/* popup με τα κουμπάκια */
+.card .menu-popup {
+  position: absolute;
+  top: -32px;                /* λίγο πιο κοντά στην κάρτα */
+  right: 2px;
+  display: none;
+  flex-direction: row;
+  gap: 2px;
+  background: #1b2631;
+  border: 1px solid #000;
+  border-radius: 6px;
+  padding: 2px 4px;          /* μικρότερο padding */
+  z-index: 1000;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  transform: scale(0.9);     /* μικραίνει ολόκληρο το πλαίσιο */
+  transform-origin: top right;
+}
+
+/* styling για τα κουμπάκια */
+.card .menu-popup button {
+  background: #2c3e50;
+  border: 1px solid #000;
+  border-radius: 50%;
+  width: 24px;               /* μικρότεροι κύκλοι */
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+/* εικονίδιο μέσα στο κουμπί */
+.card .menu-popup button svg {
+  width: 10px;
+  height: 10px;
+  fill: #fff;
+  transition: fill 0.2s ease;
+}
+
+/* hover εφέ */
+.card .menu-popup button:hover {
+  transform: scale(1.1);
+  background: var(--accent);
+ display: flex;
+}
+
+.card .menu-popup button:hover svg {
+  fill: #fff;
+}
+
+
+  /* -------------------------------------------------
+     10. FOOTER
+  ------------------------------------------------- */
+  footer {
+    position:fixed; left:0; bottom:0; width:100%;
+    background:rgba(35,36,41,.96); backdrop-filter:blur(6px);
+    text-align:center; color:#a8b0bb; font-size:12px; padding:8px 10px;
+  }
+  footer .btnrow { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:6px; }
+  footer .note { color:#aab2bd; font-weight:700; }
+  body:has(footer) .wrap { padding-bottom:70px; }
+  
+
+
+  /* -------------------------------------------------
+     11. MODALS
+  ------------------------------------------------- */
+  .modal {
+    position:fixed; inset:0; display:none;
+    align-items:center; justify-content:center;
+    background:rgba(0,0,0,.6); z-index:4000;
+  }
+  .modal .box {
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:14px; padding:16px; width:94%; max-width:420px;
+  }
+  .modal h3 { margin:0 0 8px; font-size:18px; }
+  .modal .row { display:flex; flex-direction:column; gap:6px; margin:8px 0; }
+  .modal input,.modal textarea,select {
+    background:var(--card); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:8px; width:100%;
+  }
+  .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:6px; }
+
+  /* Επιλογή εικονιδίου */
+  .icon-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .icon-row select,.icon-row input[type=file]{flex:1;}
+  .icon-preview { display:flex; align-items:center; gap:8px; margin-top:4px; font-size:12px; color:#cbd5e1; }
+  .icon-preview img{width:24px;height:24px;}
+
+  /* Κουμπί παλέτας (αόρατο) */
+#paletteBtn {
+    position:fixed; top:50%; right:0; transform:translateY(-50%);
+    width:10px; height:30px; opacity:0; cursor:pointer; z-index:4500;
+    padding: 5px 5px; /* Μεγαλώνει την clickable περιοχή */
+    margin-right: 5px; /* Απομάκρυνση λίγο από την άκρη */
+}
+
+  /* Παλέτα */
+  .palette-row { display:flex; align-items:center; gap:12px; }
+  .color-swatch { width:48px; height:48px; border-radius:8px; border:1px solid var(--border); }
+
+  /* -------------------------------------------------
+     12. TOOLTIP
+  ------------------------------------------------- */
+  [data-tooltip]{position:relative;}
+  [data-tooltip]::after{
+    content:attr(data-tooltip);
+    position:absolute; bottom:107%; left:50%; transform:translateX(-50%);
+    background:#fff9c4; color:#0a58ca; border:1px solid rgba(10,88,202,.35);
+    padding:4px 8px; border-radius:6px; white-space:nowrap; font-size:12px; font-weight:600;
+    opacity:0; pointer-events:none; transition:opacity .2s; box-shadow:0 6px 18px rgba(0,0,0,.2);
+  }
+  [data-tooltip]:hover::after{opacity:1;}
+
+  /* -------------------------------------------------
+     13. TRANSITIONS
+  ------------------------------------------------- */
+  body, footer, button {
+    transition: background .3s, color .3s, opacity .3s, transform .1s;
+  }
+  
+  .category.drag-over {
+  outline: 2px dashed #5aa9ff;
+  outline-offset: 4px;
+  background: rgba(90, 169, 255, 0.08);
+}
+
+  /* -------------------------------------------------
+     14. BUBBLE EFE
+  ------------------------------------------------- */
+
+.bubbles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+.bubbles span {
+  position: absolute;
+  display: block;
+  width: 20px; height: 20px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  bottom: -100px;
+  animation: rise 20s infinite;
+}
+.bubbles span:nth-child(1){ left:10%; animation-duration:12s; width:15px; height:15px;}
+.bubbles span:nth-child(2){ left:20%; animation-duration:18s;}
+.bubbles span:nth-child(3){ left:70%; animation-duration:16s; width:25px; height:25px;}
+.bubbles span:nth-child(4){ left:50%; animation-duration:22s;}
+.bubbles span:nth-child(5){ left:85%; animation-duration:26s;}
+
+@keyframes rise {
+  0% {transform: translateY(0) scale(1);}
+  100% {transform: translateY(-1200px) scale(0.5);}
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10,1fr);
+  gap: 12px;
+  margin-top: 10px;
+  min-height: 0px;
+
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  max-height: 9999px; /* πάντα αρκετό για πολλά links */
+  opacity: 1;
+}
+
+.grid.collapsed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle-btn {
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  transition: background .2s;
+}
+.toggle-btn:hover {
+  background: rgba(0,0,0,.65);
+}
+
+/* Νέο στυλ για header */
+header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* απόσταση λογότυπου-κειμένου */
+}
+
+.logo-title img {
+  height: 70px; /* μέγεθος logo, το ρυθμίζεις όπως θες */
+  border-radius: 12px; /* προαιρετικό, αν θες στρογγυλεμένες γωνίες */
+}
+
+.titles h1 {
+  margin: 4px 0 0;
+  font-size: 26px;
+  font-weight: 800;
+}
+.titles h2 {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #2a9df4;
+  font-weight: 700;
+}
+.titles h3 {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #bbb;
+  font-weight: 500;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(35,36,41,.96);
+  backdrop-filter: blur(6px);
+  font-size: 12px;
+  color: #a8b0bb;
+  padding: 8px 10px;
+  overflow: hidden;
+}
+
+/* Wrapper για το pulse */
+.note-wrapper {
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.note {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-right 12s linear infinite,
+             colorShift 8s linear infinite;
+	/* text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff, 0 0 30px #00e5ff;*/
+}
+
+
+/* Κίνηση */
+@keyframes scroll-right {
+  0%   { transform: translateX(-100vw); }
+  100% { transform: translateX(100vw); }
+}
+
+/* Εναλλαγή χρώματος */
+@keyframes colorShift {
+  0%   { color: #f4a261; }
+  25%  { color: #2a9df4; }
+  50%  { color: #a1ff0a; }
+  75%  { color: #ff4081; }
+  100% { color: #f4a261; }
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.2); }
+}
+
+.typewriter {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--accent);
+  width: 0;
+  animation: typing 3s steps(25, end) forwards,
+             hideCursor 0.1s 3s forwards;
+}
+
+@keyframes hideCursor {
+  to {
+    border-color: transparent;
+  }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to   { width: 100% }
+}
+
+
+
+.card {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Keyframes όπως πριν */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Διορθώσεις για hover στις κάρτες */
+
+/* Το link μέσα στην κάρτα δεν κάνει scale */
+.card a:not(.fav):not(.del):not(.edit):hover {
+  color: var(--accent);
+  background: rgba(230,57,70,0.1);
+  border-radius: 10px;
+}
+
+/* Ολόκληρη η κάρτα μεγαλώνει στο hover */
+.card:hover {
+  transform: scale(1.04);
+  background: color-mix(in oklab, var(--accent) 20%, transparent);
+  border-color: var(--accent);
+}
+
+/* Το grid αφήνει τις κάρτες να “ξεφεύγουν” όταν κάνουν scale */
+.grid {
+  overflow: visible !important;
+}
+
+.palette-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* label αριστερά, preview δεξιά */
+  margin: 6px 0;
+}
+
+.palette-row label {
+  flex: 1; 
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.palette-row input[type="color"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none; /* μένει αόρατο */
+}
+
+.color-preview {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.row.palette-row {
+  flex-direction: row !important; /* παράκαμψη του column */
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+
+.theme-toggle-wrapper {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.theme-toggle-wrapper .version {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+/* -------------------------------------------------
+   12. ΡΟΛΟΙ - ΗΜΕΡΟΜΗΝΙΑ (ΔΕΞΙΑ ΣΕ ΙΔΙΑ ΓΡΑΜΜΗ)
+------------------------------------------------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  position: relative;
+  padding: 0 10px 0 50px; /* ΑΥΞΗΣΗ ΑΡΙΣΤΕΡΟΥ ΚΕΝΟΥ: 10px -> 50px */
+}
+
+.datetime-widget {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  text-align: center;
+  min-width: 160px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+.datetime-widget .time {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 2px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px rgba(244, 162, 97, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.datetime-widget .date {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.9;
+}
+
+/* Κεντρικό content */
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: center;
+  margin-left: 30px; /* Αντιστάθμιση για το επιπλέον padding */
+}
+
+/* Responsive για κινητά */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+    padding: 0 10px; /* Reset padding σε κινητά */
+  }
+  
+  .datetime-widget {
+    margin-left: 0;
+    order: -1;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .logo-title {
+    flex-direction: column;
+    margin-left: 0; /* Reset margin σε κινητά */
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Εναλλακτικό στυλ με gradient */
+.datetime-widget.gradient {
+  background: linear-gradient(135deg, rgba(244, 162, 97, 0.2), rgba(42, 157, 244, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== ΧΡΩΜΑΤΙΣΤΟ ΦΩΝΤΟ ΜΟΝΟ ΓΙΑ ΤΟ ΟΝΟΜΑ ΚΑΤΗΓΟΡΙΑΣ ===== */
+.category-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 4px 2px;
+}
+
+/* Το όνομα κατηγορίας με το special φόντο */
+.category-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  
+  /* Νέο στυλ για το φόντο */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 8px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  
+  /* Κείμενο */
+  text-shadow: 0 0 10px rgba(244, 162, 97, 0.3);
+}
+
+/* Ενέργειες δεξιά */
+.cat-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+/* Φαίνονται στο hover */
+.category-title:hover .cat-actions {
+  opacity: 1;
+}
+/* Διαφορετικά χρώματα για κάθε κατηγορία */
+.category:nth-child(1) .category-title h2 {
+  background: linear-gradient(135deg, rgba(244, 162, 97, 0.2), rgba(244, 162, 97, 0.1));
+  border: 1px solid rgba(244, 162, 97, 0.3);
+}
+
+.category:nth-child(2) .category-title h2 {
+  background: linear-gradient(135deg, rgba(42, 157, 244, 0.2), rgba(42, 157, 244, 0.1));
+  border: 1px solid rgba(42, 157, 244, 0.3);
+}
+
+.category:nth-child(3) .category-title h2 {
+  background: linear-gradient(135deg, rgba(161, 255, 10, 0.2), rgba(161, 255, 10, 0.1));
+  border: 1px solid rgba(161, 255, 10, 0.3);
+}
+
+.category:nth-child(4) .category-title h2 {
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.2), rgba(255, 64, 129, 0.1));
+  border: 1px solid rgba(255, 64, 129, 0.3);
+}
+
+.category:nth-child(5) .category-title h2 {
+  background: linear-gradient(135deg, rgba(159, 89, 243, 0.2), rgba(159, 89, 243, 0.1));
+  border: 1px solid rgba(159, 89, 243, 0.3);
+}
+
+/* Για περισσότερες κατηγορίες επαναλαμβάνουμε τα χρώματα */
+.category:nth-child(6) .category-title h2 {
+  background: linear-gradient(135deg, rgba(244, 162, 97, 0.2), rgba(244, 162, 97, 0.1));
+  border: 1px solid rgba(244, 162, 97, 0.3);
+}
+
+/* Στυλ για το ρολόι όταν είναι editable */
+.datetime-widget.editable-title {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.datetime-widget.editable-title:hover {
+  background: linear-gradient(135deg, rgba(244, 162, 97, 0.3), rgba(42, 157, 244, 0.3));
+  transform: scale(1.02);
+}
+
+
+  </style>
+</head>
+<body>
+ <!-- Audio element - κρυφό -->
+  <audio id="welcomeSound" preload="auto" style="display: none;">
+    <source src="assets/hello.mp3" type="audio/mpeg">
+    <source src="assets/hello.wav" type="audio/wav">
+  </audio>
+  <style>
+    #paletteModal .actions-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    #paletteModal .actions-row button {
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+/* Βεβαιωθείτε ότι τα prompts εμφανίζονται σωστά */
+.palette-modal {
+  z-index: 4000;
+}
+
+/* Προσθέστε αυτό για καλύτερη αλληλεπίδραση */
+.datetime-widget {
+  z-index: 1;
+  position: relative;
+}
+
+
+
+/* Help Menu Styles - ΔΙΩΡΘΩΜΕΝΕΣ */
+.help-menu {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 1000;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    margin: 0 auto;
+}
+
+.help-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 999;
+}
+
+.help-menu h2 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: center;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.help-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.help-section h3 {
+    color: #2c3e50;
+    margin-bottom: 12px;
+    font-size: 1.1em;
+}
+
+.help-section p {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.help-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.help-section li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    color: #555;
+}
+
+.help-section li:before {
+    content: "•";
+    color: #3498db;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.close-help {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #7f8c8d;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-help:hover {
+    background: #f0f0f0;
+    color: #e74c3c;
+}
+
+/* ΒΟΗΘΕΙΑ ΚΟΥΜΠΙ - ΜΟΝΟ ΑΥΤΟ ΚΡΑΤΑ */
+.help-btn {
+    background: var(--accent) !important;
+}
+
+.help-btn:hover {
+    background: var(--accent-hover, #8e44ad) !important;
+    transform: translateY(-2px);
+}
+/* Help Button Theme Colors - ΟΛΑ ΤΑ THEMES */
+.help-btn.default { background: #9b59b6 !important; }
+.help-btn.dark { background: #00bcd4 !important; }
+.help-btn.light { background: #2980b9 !important; }
+..help-btn.green { background: #2ecc71 !important; }
+.help-btn.brown { background: #bd5b6b !important; }
+.help-btn.purple { background: #9b59b6 !important; }
+.help-btn.blue { background: #3498db !important; }
+.help-btn.orange { background: #d69358 !important; }
+.help-btn.pink { background: #b5678d !important; }
+
+.help-btn.default:hover { background: #8e44ad !important; }
+.help-btn.dark:hover { background: #00bcd4 !important; }
+.help-btn.light:hover { background: #2980b9 !important; }
+.help-btn.green:hover { background: #b4e072 !important; }
+.help-btn.brown:hover { background: #A0522D !important; }
+.help-btn.purple:hover { background: #8e44ad !important; }
+.help-btn.blue:hover { background: #2980b9 !important; }
+.help-btn.orange:hover { background: #d35400 !important; }
+.help-btn.pink:hover { background: #fd79a8 !important; }
+
+/* Responsive βελτιώσεις help */
+@media (max-width: 768px) {
+    .help-menu {
+        width: 95%;
+        padding: 20px;
+        margin: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .help-menu {
+        width: 98%;
+        padding: 15px;
+        margin: 5px;
+    }
+	
+	/* Zuccaradio Button Styles */
+.zuccaradio-btn {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24) !important;
+    color: white !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    padding: 10px 16px !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3) !important;
+}
+
+.zuccaradio-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4) !important;
+    background: linear-gradient(135deg, #ff7979, #ff3838) !important;
+}
+
+.zuccaradio-btn.playing {
+    background: linear-gradient(135deg, #00b894, #00a085) !important;
+    box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3) !important;
+}
+
+.zuccaradio-btn.playing:hover {
+    background: linear-gradient(135deg, #00d4a7, #00b894) !important;
+    box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4) !important;
+}
+
+/* Volume Control Styles */
+.volume-container {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    position: relative;
+    z-index: 200; /* Προσθήκη αυτού */
+}
+
+.volume-control {
+    width: 80px;
+    cursor: pointer;
+    accent-color: var(--accent);
+}
+
+.volume-control::-webkit-slider-runnable-track {
+    background: var(--card);
+    border-radius: 10px;
+    height: 6px;
+    border: 1px solid var(--border);
+}
+
+.volume-control::-webkit-slider-thumb {
+    appearance: none;
+    background: var(--accent);
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.volume-control::-moz-range-track {
+    background: var(--card);
+    border-radius: 10px;
+    height: 6px;
+    border: 1px solid var(--border);
+}
+
+.volume-control::-moz-range-thumb {
+    background: var(--accent);
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+#volumeTooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1000; /* Προσθήκη αυτού */
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+}
+
+.volume-icon {
+    font-size: 16px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 100; /* Προσθήκη αυτού */
+}
+
+.volume-icon:hover {
+    transform: scale(1.1);
+}
+
+</style>
+  <!-- Bubbles  -->
+
+<div class="bubbles">
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+
+ 
+<div class="wrap">
+
+<header>
+
+
+  <div class="logo-title">
+    <img src="assets/logo.png" alt="Logo">
+    <div class="titles">
+      <h1 class="typewriter">Τα δικά μου χρήσιμα</h1>
+      <h2>Συστεγασμένα Φαρμακεία Νεοκ. & Νικ. Μενεξιάδης & ΣΙΑ Ο.Ε.</h2>
+      <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
+    </div>
+  </div>
+  
+<!-- Ρολόι - Ημερομηνία (ΕΞΩ από το logo-title) -->
+<div class="datetime-widget" id="titleWidget" data-tooltip="Τι ώρα είναι ξέρεις??">
+    <div class="time" id="currentTime">00:00:00</div>
+    <div class="date" id="currentDate">Παρασκευή, 1 Ιανουαρίου</div>
+</div>
+
+</header>
+
+<div class="topbar">
+  <!-- Κουμπιά κεντρικά -->
+  <button id="addBtnTop">+ Προσθήκη νέου link</button>
+  <button id="undoBtnTop" class="gray" disabled>↩ Αναίρεση</button>
+  <button id="backupBtn">Backup</button>
+  <button id="restoreBtn">Restore</button>
+  
+  <!-- ΝΕΟ ΚΟΥΜΠΙ ZUCCARADIO -->
+  <button id="zuccaradioBtn" class="zuccaradio-btn" data-tooltip="Ακούστε Zuccaradio">🎵 Zuccaradio</button>
+  
+  <button class="nav-btn help-btn default" id="helpBtn" data-tooltip="Διάβασέ με">💡 Βοήθεια</button>
+
+  <!-- Δεξιά -->
+  <div class="topbar-right">
+    <select id="themeSelect">
+      <option value="dark">Dark 🌙</option>
+      <option value="light">Light ☀️</option>
+      <option value="green">Green 🌵</option>
+      <option value="brown">Brown ☕</option>
+      <option value="purple">Purple 🪀</option>
+      <option value="blue">Blue 🌊</option>
+      <option value="orange">Orange 🍊</option>
+      <option value="pink">Pink 🌸</option>
+    </select>
+  </div>
+</div>
+
+
+
+
+<div id="categories"></div>
+</div>
+
+
+<footer>
+  <div class="btnrow">
+    <button id="addBtnFoot">+ Προσθήκη νέου link</button>
+  </div>
+  <div class="note-wrapper">
+    <div class="note">Φτιαγμένο με αγάπη από το Doukas Pharmacy Support®</div>
+  </div>
+</footer>
+
+<!-- ===== MODAL ΝΕΟΥ LINK ===== -->
+<div class="modal" id="modalForm">
+  <div class="box">
+    <h3 id="modalTitle">Νέο link</h3>
+    <form id="linkForm" autocomplete="off">
+      <!-- URL -->
+      <div class="row">
+        <input autocomplete="off" type="text" id="url" placeholder="Διεύθυνση (URL)" required>
+      </div>
+
+      <!-- Όνομα -->
+      <div class="row">
+        <input autocomplete="off" type="text" id="name" placeholder="Όνομα (max 13)">
+      </div>
+
+      <!-- Περιγραφή -->
+      <div class="row">
+        <input autocomplete="off" type="text" id="desc" placeholder="Περιγραφή">
+      </div>
+
+      <!-- Icon επιλογές -->
+      <div class="row">
+        <label style="font-size:13px;">Εικονίδιο</label>
+        <div class="icon-row">
+          <select id="iconMode">
+            <option value="auto">Αυτόματο favicon</option>
+            <option value="builtin">Ενσωματωμένο εικονίδιο</option>
+            <option value="upload">Ανέβασμα εικόνας...</option>
+            <option value="url">Από URL...</option> <!-- ΝΕΑ επιλογή -->
+          </select>
+
+          <!-- Builtin -->
+          <select id="builtinIcon" style="display:none">
+            <option value="star">★ Αστέρι</option>
+            <option value="heart">❤ Καρδιά</option>
+            <option value="pill">💊 Χάπι</option>
+            <option value="firstaid">🩹 Πρώτες βοήθειες</option>
+            <option value="link">🔗 Link</option>
+            <option value="doc">📄 Έγγραφο</option>
+          </select>
+
+          <!-- Upload -->
+          <input id="iconFile" type="file"
+                 accept="image/*,.ico,.png,.jpg,.jpeg,.webp,.svg"
+                 style="display:none">
+
+          <!-- URL -->
+          <input id="iconUrl" type="url"
+                 placeholder="https://example.com/icon.png"
+                 style="display:none; flex:1;">
+        </div>
+
+        <!-- Προεπισκόπηση -->
+        <div class="icon-preview" id="iconPreview" style="display:none">
+          <span>Προεπισκόπηση:</span>
+          <img id="iconPreviewImg" alt="icon">
+        </div>
+      </div>
+
+      <!-- Επιλογή / Δημιουργία κατηγορίας -->
+      <div class="row">
+        <select id="categorySelect"></select>
+        <input autocomplete="off" type="text" id="newCategory" placeholder="Νέα κατηγορία">
+      </div>
+
+
+      <!-- Κουμπιά -->
+      <div class="actions">
+        <button type="button" id="cancelModal">Άκυρο</button>
+        <button type="submit">Αποθήκευση</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="theme-toggle-wrapper">
+  <span class="version">ver. 3.5.3c</span>
+</div>
+
+
+
+<!-- ===== MODAL ΠΑΛΕΤΑΣ ΧΡΩΜΑΤΩΝ ===== -->
+<div class="modal" id="paletteModal">
+  <div class="box">
+    <h3>Παλέτα Χρωμάτων</h3>
+
+    <div class="row palette-row">
+      <label for="bg1">Φόντο 1</label>
+      <input type="color" id="bg1" value="#0d1b2a">
+      <div class="color-preview" id="preview-bg1"></div>
+    </div>
+
+    <div class="row palette-row">
+      <label for="bg2">Φόντο 2</label>
+      <input type="color" id="bg2" value="#1b263b">
+      <div class="color-preview" id="preview-bg2"></div>
+    </div>
+
+    <div class="row palette-row">
+      <label for="card">Κάρτα</label>
+      <input type="color" id="card" value="#415a77">
+      <div class="color-preview" id="preview-card"></div>
+    </div>
+
+    <div class="row palette-row">
+      <label for="accent">Κουμπί</label>
+      <input type="color" id="accent" value="#2f80ed">
+      <div class="color-preview" id="preview-accent"></div>
+    </div>
+
+    <div class="row palette-row">
+      <label for="text">Κείμενο</label>
+      <input type="color" id="text" value="#eaeef5">
+      <div class="color-preview" id="preview-text"></div>
+    </div>
+
+    <div class="row palette-row">
+      <label for="border">Περίγραμμα</label>
+      <input type="color" id="border" value="#cccccc">
+      <div class="color-preview" id="preview-border"></div>
+    </div>
+
+    <!-- Εδώ μένει και το Auto-Backup Restore -->
+    
+    <!-- Επιπλέον κουμπιά οριζόντια -->
+    <div class="actions-row">
+      <button id="defaultPalette">Default</button>
+      <button id="closePalette">Κλείσιμο</button>
+    </div>
+  
+    <div class="row palette-row">
+      <label for="autoBackup">Auto-Backup Restore</label>
+      <button id="autoBackupBtn">Επαναφορά</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- ===== ΚΡΥΦΟ ΚΟΥΜΠΙ ΓΙΑ ΠΑΛΕΤΑ ===== -->
+<div id="paletteBtn" data-tooltip="Ρυθμίσεις χρωμάτων"></div>
+
+<!-- Help Menu -->
+<div class="help-overlay" id="helpOverlay"></div>
+<div class="help-menu" id="helpMenu">
+    <button class="close-help" id="closeHelp">&times;</button>
+    
+    <h2>📚 Οδηγίες Χρήσης</h2>
+    
+    <div class="help-section">
+        <h3>🎴 Πώς να χρησιμοποιήσετε τα shortcuts</h3>
+        <p>Για εύκολο χειρισμό των αγαπημένων σας sites</p>
+        <ul>
+            <li>Χρησιμοποιήστε τα κουμπιά <strong>"Επόμενη"</strong> και <strong>"Προηγούμενη"</strong> για πλοήγηση</li>
+            
+        </ul>
+    </div>
+    
+    <div class="help-section">
+        <h3>💡 Συμβουλές Μάθησης</h3>
+        <p>Ακολουθήστε αυτές τις συμβουλές για καλύτερα αποτελέσματα:</p>
+        <ul>
+            <li>Επανάληψη είναι το κλειδί - χρησιμοποιήστε την εφαρμογή καθημερινά</li>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="help-section">
+        <h3>🎯 Πληροφορίες Εφαρμογής</h3>
+        <p>Αυτή η εφαρμογή σας βοηθά να:</p>
+        <ul>
+            
+            <li>Νά βρίσκετε γρήγορα .........τον δρόμο σας!!</li>
+        </ul>
+    </div>
+    
+    <div class="help-section">
+        <h3>⌨️ Συντομεύσεις Πληκτρολογίου</h3>
+        <ul>
+            <li><strong>ESC:</strong> Κλείσιμο help menu</li>
+            <li><strong>Βοήθεια:</strong> Κουμπί για άνοιγμα αυτού του παραθύρου</li>
+        </ul>
+    </div>
+    
+    <div style="text-align: center; margin-top: 20px; color: #7f8c8d; font-style: italic;">
+        <p>Καλή επιτυχία στην εκμάθηση! </p>
+    </div>
+</div>
+
+
+
+<script>
+/* ===============================
+   📌 Κατάσταση / Μεταβλητές
+   =============================== */
+let collapsedCats = JSON.parse(localStorage.getItem("collapsedCats") || "[]");
+
+let categories = {};   // { Κατηγορία: [ {url,name,desc,iconType,iconValue,pinned?}, ... ] }
+let catOrder = [];     // Σειρά εμφάνισης κατηγοριών
+let editing = null;    // {cat, idx}
+let historyStack = []; // Ιστορικό για undo
+
+// Default χρώματα
+let themeDefault = {
+  bg1:"#1f1f1f", bg2:"#232429", card:"#2b2d33", text:"#eaeef5", accent:"#2f80ed"
+};
+
+
+
+/* ===============================
+   📌 Default Favicon Generator
+   =============================== */
+function getDefaultFavicon() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64; 
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    
+    // Φόντο
+    ctx.fillStyle = '#415a77';
+    ctx.fillRect(0, 0, 64, 64);
+    
+    // Κύκλος
+    ctx.fillStyle = '#e0e1dd';
+    ctx.beginPath();
+    ctx.arc(32, 32, 20, 0, 2 * Math.PI);
+    ctx.fill();
+    
+    // Γράμμα "L"
+    ctx.fillStyle = '#415a77';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('L', 32, 32);
+    
+    return canvas.toDataURL('image/png');
+}
+/* ===============================
+   📌 SVG Εικονίδια (διαφανή)
+   =============================== */
+function svgIcon(kind, active=false){
+  const color = active ? "#ffd54f" : "#e8eaed";
+  if(kind==="edit") return `
+    <svg viewBox="0 0 24 24" aria-label="Επεξεργασία" role="img">
+      <path fill="${color}" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/>
+      <path fill="${color}" d="M20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.83z"/>
+    </svg>`;
+  if(kind==="delete") return `
+    <svg viewBox="0 0 24 24" aria-label="Διαγραφή" role="img">
+      <path fill="${color}" d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1z"/>
+    </svg>`;
+  // pin
+  return `
+    <svg viewBox="0 0 24 24" aria-label="Pin" role="img">
+      <path fill="${color}" d="M16,12V5l1-1V3H7V4l1,1v7L5,15v2h6v4h2v-4h6v-2L16,12z"/>
+    </svg>`;
+}
+
+/* ===============================
+   📌 Αποθήκευση Δεδομένων
+   =============================== */
+function saveData(){
+  localStorage.setItem("categories", JSON.stringify(categories));
+  localStorage.setItem("catOrder", JSON.stringify(catOrder));
+  localStorage.setItem("categoryColors", JSON.stringify(categoryColors)); // ΝΕΟ
+}
+function loadData(){
+  categories = JSON.parse(localStorage.getItem("categories") || "{}");
+  catOrder = JSON.parse(localStorage.getItem("catOrder") || "[]");
+  categoryColors = JSON.parse(localStorage.getItem("categoryColors") || "{}"); // ΝΕΟ
+}
+
+/* ===============================
+   📌 ΤΥΧΑΙΑ ΧΡΩΜΑΤΑ ΓΙΑ ΚΑΤΗΓΟΡΙΕΣ
+   =============================== */
+function getRandomCategoryColor() {
+  // Λίστα με όμορφα gradient χρώματα
+  const colorPairs = [
+    { bg: 'rgba(244, 162, 97, 0.2)', border: 'rgba(244, 162, 97, 0.3)' },      // Orange
+    { bg: 'rgba(42, 157, 244, 0.2)', border: 'rgba(42, 157, 244, 0.3)' },      // Blue
+    { bg: 'rgba(161, 255, 10, 0.2)', border: 'rgba(161, 255, 10, 0.3)' },      // Green
+    { bg: 'rgba(255, 64, 129, 0.2)', border: 'rgba(255, 64, 129, 0.3)' },      // Pink
+    { bg: 'rgba(159, 89, 243, 0.2)', border: 'rgba(159, 89, 243, 0.3)' },      // Purple
+    { bg: 'rgba(255, 215, 0, 0.2)', border: 'rgba(255, 215, 0, 0.3)' },        // Yellow
+    { bg: 'rgba(0, 230, 118, 0.2)', border: 'rgba(0, 230, 118, 0.3)' },        // Emerald
+    { bg: 'rgba(156, 39, 176, 0.2)', border: 'rgba(156, 39, 176, 0.3)' },      // Deep Purple
+    { bg: 'rgba(33, 150, 243, 0.2)', border: 'rgba(33, 150, 243, 0.3)' },      // Light Blue
+    { bg: 'rgba(229, 57, 53, 0.2)', border: 'rgba(229, 57, 53, 0.3)' },        // Red
+    { bg: 'rgba(0, 150, 136, 0.2)', border: 'rgba(0, 150, 136, 0.3)' },        // Teal
+    { bg: 'rgba(121, 85, 72, 0.2)', border: 'rgba(121, 85, 72, 0.3)' }         // Brown
+  ];
+  
+  // Επιλογή τυχαίου χρώματος
+  const randomIndex = Math.floor(Math.random() * colorPairs.length);
+  return colorPairs[randomIndex];
+}
+
+
+/* ===============================
+   📌 Undo / Ιστορικό
+   =============================== */
+function pushHistory(){
+  historyStack.push(JSON.stringify({
+    categories: JSON.parse(JSON.stringify(categories)),
+    catOrder: [...catOrder],
+    theme: getTheme()
+  }));
+  if(historyStack.length > 80) historyStack.shift();
+  updateUndoBtn();
+}
+function updateUndoBtn(){
+  const b = document.getElementById("undoBtnTop");
+  if(historyStack.length === 0){ b.disabled = true; b.classList.add("gray"); }
+  else { b.disabled = false; b.classList.remove("gray"); }
+}
+function undo(){
+  if(historyStack.length === 0) return;
+  const snap = JSON.parse(historyStack.pop());
+  categories = snap.categories;
+  catOrder = snap.catOrder;
+  applyTheme(snap.theme);
+  saveData(); saveTheme(snap.theme);
+  render();
+  updateUndoBtn();
+}
+
+let firstLoad = true;
+
+// Προσθέτει staggered animation στις κάρτες (μόνο στο πρώτο render)
+function animateCards() {
+  if (!firstLoad) return;
+  const cards = document.querySelectorAll(".card");
+  cards.forEach((card, i) => {
+    card.style.animationDelay = (i * 0.1) + "s";
+  });
+  firstLoad = false; // μετά την πρώτη φορά, δεν ξανατρέχει
+}
+
+// Override render
+const originalRender = render;
+render = function() {
+  originalRender();
+  animateCards();
+};
+
+
+/* ===============================
+   📌 Βοηθοί
+   =============================== */
+function normalizeUrl(u){
+  if(!u) return "";
+  let s = u.trim();
+  if(!/^https?:\/\//i.test(s)){
+    if(/^www\./i.test(s)) s = "https://" + s;
+    else s = "https://" + s;
+  }
+  return s;
+}
+function dedupeAdd(cat, linkObj){
+  const url = linkObj.url;
+  if(!(categories[cat])) categories[cat] = [];
+  
+  // Κανονικοποίηση URL για καλύτερο έλεγχο
+  const normalizeUrlForComparison = (url) => {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.hostname + urlObj.pathname.replace(/\/$/, '');
+    } catch {
+      return url.toLowerCase().replace(/\/$/, '');
+    }
+  };
+  
+  const normalizedNewUrl = normalizeUrlForComparison(url);
+  
+  // Έλεγχος για διπλότυπο
+  const existingLink = categories[cat].find(L => {
+    const existingUrl = normalizeUrlForComparison(L.url || "");
+    return existingUrl === normalizedNewUrl;
+  });
+  
+  if (existingLink) {
+    const existingName = existingLink.name || "Χωρίς όνομα";
+    alert(`⚠️ Αυτή η συντόμευση ήδη υπάρχει!\n\nURL: ${url}\nΚατηγορία: ${cat}\nΥπάρχον όνομα: ${existingName}`);
+    return false;
+  }
+  
+  categories[cat].push(linkObj);
+  return true;
+}
+
+// Εμφανίζει τα διαθέσιμα auto-backups και επιτρέπει restore
+function showAutoBackups() {
+  const backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
+  if (!backups.length) {
+    alert("Δεν υπάρχει διαθέσιμο auto-backup!");
+    return;
+  }
+
+  let msg = "Διαθέσιμα Auto-Backups:\n\n";
+  backups.forEach((b, i) => {
+    msg += i + ": " + b.timestamp + "\n";
+  });
+  msg += "\nΠληκτρολόγησε 0,1,2 για να διαλέξεις:";
+
+  const choice = prompt(msg);
+  if (choice !== null && !isNaN(choice)) {
+    restoreAutoBackup(parseInt(choice));
+  }
+}
+
+// σύνδεση του κουμπιού
+document.getElementById("autoBackupBtn").addEventListener("click", showAutoBackups);
+
+/* ===============================
+   📌 Render — Σχεδίαση UI (με Pin + Drag&Drop για νέα links)
+   =============================== */
+function render(){
+  const wrap = document.getElementById("categories");
+  wrap.innerHTML = "";
+
+  catOrder.forEach(cat => {
+    const sec = document.createElement("div");
+    sec.className = "category";
+    sec.draggable = true;
+    sec.dataset.cat = cat;
+
+    // τίτλος κατηγορίας
+    const title = document.createElement("div");
+    title.className = "category-title";
+
+    // όνομα αριστερά
+    const h2 = document.createElement("h2");
+    h2.textContent = cat;
+    
+    // ΝΕΟ: Εφαρμογή χρώματος για την κατηγορία
+    if (!categoryColors[cat]) {
+      // Αν δεν υπάρχει χρώμα, δημιούργησε ένα νέο
+      categoryColors[cat] = getRandomCategoryColor();
+      saveData(); // Αποθήκευση του νέου χρώματος
+    }
+    
+    // ΝΕΟ: Εφαρμογή του χρώματος στο όνομα
+    const color = categoryColors[cat];
+    h2.style.background = `linear-gradient(135deg, ${color.bg}, ${color.bg.replace('0.2', '0.1')})`;
+    h2.style.border = `1px solid ${color.border}`;
+    
+    title.appendChild(h2);
+
+    // actions δεξιά
+    const actions = document.createElement("div");
+    actions.className = "cat-actions";
+
+    const toggleBtn = document.createElement("span");
+    toggleBtn.textContent = collapsedCats.includes(cat) ? "▸" : "▾";
+    toggleBtn.className = "toggle-btn";
+    actions.appendChild(toggleBtn);
+
+    const renameBtn = document.createElement("span");
+    renameBtn.className = "cat-btn rename";
+    renameBtn.textContent = "✎";
+    actions.appendChild(renameBtn);
+
+    const delBtn = document.createElement("span");
+    delBtn.className = "cat-btn delcat";
+    delBtn.textContent = "🗑";
+    actions.appendChild(delBtn);
+
+    title.appendChild(actions);
+    sec.appendChild(title);
+
+    // grid με links
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    grid.dataset.cat = cat;
+    if (collapsedCats.includes(cat)) grid.classList.add("collapsed");
+    sec.appendChild(grid);
+
+    // event collapse
+    toggleBtn.onclick = () => {
+      const isCollapsed = grid.classList.toggle("collapsed");
+      toggleBtn.textContent = isCollapsed ? "▸" : "▾";
+      if (isCollapsed) {
+        if (!collapsedCats.includes(cat)) collapsedCats.push(cat);
+        const idx = catOrder.indexOf(cat);
+        if (idx > -1) {
+          catOrder.splice(idx, 1);
+          catOrder.push(cat);
+          saveData();
+          render();
+        }
+      } else {
+        collapsedCats = collapsedCats.filter(c => c !== cat);
+      }
+      localStorage.setItem("collapsedCats", JSON.stringify(collapsedCats));
+    };
+
+    // περιεχόμενο κατηγορίας (links)
+    const list = (categories[cat] || []);
+    const orderIdx = list.map((_,i)=>i).sort((a,b)=>{
+      const pa = !!(list[a] && list[a].pinned), pb = !!(list[b] && list[b].pinned);
+      if(pa===pb) return a-b;
+      return pb - pa;
+    });
+
+    orderIdx.forEach(idx=>{
+      const l = list[idx] || {};
+
+      let initialIcon = "";
+      if(l.iconType === "upload" && l.iconValue){
+        initialIcon = l.iconValue;
+      }
+      else if(l.iconType === "builtin" && l.iconValue){
+        initialIcon = builtinToDataUrl(l.iconValue);
+      }
+      else if(l.iconType === "url" && l.iconValue){
+        initialIcon = l.iconValue;
+      }
+ else if(l.url){
+  try{
+    const domain = (new URL(l.url)).hostname;
+    if(domain) initialIcon = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+    else initialIcon = getDefaultFavicon();  // ΜΟΝΟ αν αποτύχει
+  }catch(e){
+    initialIcon = getDefaultFavicon();  // ΜΟΝΟ αν αποτύχει
+  }
+} else {
+  initialIcon = getDefaultFavicon();  // ΜΟΝΟ αν δεν υπάρχει URL
+}
+
+      const card = document.createElement("div");
+      card.className="card";
+      card.draggable=true;
+      card.dataset.cat=cat;
+      card.dataset.idx=idx;
+      if(l.pinned) card.classList.add("pinned");
+
+      // 👉 ΝΕΟ μενού  κουμπάκια
+      card.innerHTML = `
+        <div class="menu-btn">⋮</div>
+        <div class="menu-popup">
+  <button class="edit">✏️</button>
+  <button class="delete">🗑️</button>
+  <button class="pin">📌</button>
+</div>
+      `;
+
+      const a = document.createElement("a");
+      a.href = l.url || "#";
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.draggable = false;
+
+      const img = document.createElement("img");
+      img.className = "favicon";
+      img.setAttribute("alt", l.name || "");
+      img.draggable = false;
+
+      // ✅ ΒΕΛΤΙΩΜΕΝΟ FAVICON LOADING (Απλοποιημένο)
+      img.onerror = function() {
+        this.src = getDefaultFavicon();
+        this.style.width = '40px';
+        this.style.height = '40px';
+      };
+
+      img.onload = function() {
+        // Έλεγχος για πολύ μικρά favicons
+        if(this.naturalWidth < 16 || this.naturalHeight < 16){
+          this.src = getDefaultFavicon();
+        }
+        // Έλεγχος για πολύ μεγάλα favicons
+        else if(this.naturalWidth > 64 || this.naturalHeight > 64) {
+          this.style.maxWidth = '40px';
+          this.style.maxHeight = '40px';
+          this.style.objectFit = 'contain';
+        }
+        // Normalize μέγεθος για όλα τα favicons
+        this.style.width = '40px';
+        this.style.height = '40px';
+      };
+
+      img.src = initialIcon;
+
+      const titleDiv = document.createElement("div");
+      titleDiv.className = "link-title";
+      titleDiv.style.color = "var(--text)";
+      titleDiv.textContent = (l.name||"").slice(0,13);
+
+      const descDiv = document.createElement("div");
+      descDiv.className = "link-desc";
+      descDiv.textContent = (l.desc || "").slice(0, 15);
+
+      a.appendChild(img);
+      a.appendChild(titleDiv);
+      a.appendChild(descDiv);
+
+      card.appendChild(a);
+      grid.appendChild(card);
+    });
+
+    // 👉 Drag & Drop νέα links
+    sec.addEventListener("dragover", e => {
+      e.preventDefault();
+      sec.classList.add("drag-over");
+    });
+    sec.addEventListener("dragleave", () => {
+      sec.classList.remove("drag-over");
+    });
+    sec.addEventListener("drop", e => {
+      e.preventDefault();
+      sec.classList.remove("drag-over");
+      const url = e.dataTransfer.getData("text/uri-list") || e.dataTransfer.getData("text/plain");
+      if (!url) return;
+      fetchTitle(url).then(title => {
+        const newLink = {
+          url,
+          name: title || (new URL(url).hostname),
+          desc: "",
+          iconType: "auto",
+          iconValue: ""
+        };
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(newLink);
+        saveData();
+        render();
+      });
+    });
+
+    wrap.appendChild(sec);
+  });
+}
+
+/* ===============================
+   📌 Συνάρτηση για να βρίσκουμε τον τίτλο σελίδας
+   =============================== */
+async function fetchTitle(url) {
+  try {
+    const res = await fetch(url, { mode: "cors" });
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.querySelector("title")?.innerText.trim();
+  } catch {
+    return "";
+  }
+}
+
+
+
+/* ===============================
+   📌 Listeners — Κουμπιά και Ενέργειες
+   =============================== */
+   
+// Modal νέο link
+["addBtnTop","addBtnFoot"].forEach(id =>
+  document.getElementById(id).onclick = () => {
+    editing = null;
+    document.getElementById("modalTitle").innerText = "Νέο link";
+    document.getElementById("linkForm").reset();
+    document.getElementById("iconPreview").style.display="none";
+    document.getElementById("builtinIcon").style.display="none";
+    document.getElementById("iconFile").style.display="none";
+    document.getElementById("iconMode").value="auto";
+
+    document.getElementById("categorySelect").innerHTML =
+      catOrder.map(c=>`<option>${c}</option>`).join("");
+
+    document.getElementById("modalForm").style.display = "flex";
+  }
+);
+document.getElementById("cancelModal").onclick =
+  () => document.getElementById("modalForm").style.display = "none";
+
+// Icon mode switching
+const iconModeEl = document.getElementById("iconMode");
+const builtinEl  = document.getElementById("builtinIcon");
+const iconFileEl = document.getElementById("iconFile");
+const iconUrlEl  = document.getElementById("iconUrl"); // ΝΕΟ input
+const iconPrev   = document.getElementById("iconPreview");
+const iconPrevImg= document.getElementById("iconPreviewImg");
+
+iconModeEl.addEventListener("change", ()=>{
+  builtinEl.style.display  = iconModeEl.value==="builtin" ? "inline-block" : "none";
+  iconFileEl.style.display = iconModeEl.value==="upload"  ? "inline-block" : "none";
+  iconUrlEl.style.display  = iconModeEl.value==="url"     ? "inline-block" : "none";
+  iconPrev.style.display   = "none";
+});
+
+builtinEl.addEventListener("change", ()=>{
+  const url = builtinToDataUrl(builtinEl.value);
+  iconPrevImg.src = url; 
+  iconPrev.style.display="flex";
+});
+
+iconFileEl.addEventListener("change", ()=>{
+  const f = iconFileEl.files && iconFileEl.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = () => { 
+    iconPrevImg.src = r.result; 
+    iconPrev.style.display="flex"; 
+  };
+  r.readAsDataURL(f);
+});
+
+// ΝΕΟ: από URL
+iconUrlEl.addEventListener("input", ()=>{
+  const u = iconUrlEl.value.trim();
+  if(u){
+    iconPrevImg.src = u;
+    iconPrev.style.display="flex";
+  }else{
+    iconPrev.style.display="none";
+  }
+});
+
+// Helper: emoji σε PNG dataURL
+function builtinToDataUrl(type){
+  const map = {
+    star: "★",
+    heart: "❤",
+    pill: "💊",
+    firstaid: "🩹",
+    link: "🔗",
+    doc: "📄"
+  };
+  const emoji = map[type] || "🔗";
+  const canvas = document.createElement("canvas");
+  canvas.width = 64; 
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  ctx.font = "48px serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(emoji, 32, 32);
+  return canvas.toDataURL("image/png");
+}
+
+
+// Demo: υποβολή φόρμας
+document.getElementById("linkForm").onsubmit = e => {
+  e.preventDefault();
+  alert("Αποθήκευση link με iconType=" + iconModeEl.value);
+};
+
+
+// Υποβολή φόρμας
+const urlEl = document.getElementById("url"),
+      nameEl = document.getElementById("name"),
+      descEl = document.getElementById("desc"),
+      catSel = document.getElementById("categorySelect"),
+      newCatEl = document.getElementById("newCategory");
+
+document.getElementById("linkForm").onsubmit = e => {
+  e.preventDefault();
+  const url = normalizeUrl(urlEl.value);
+  const name = nameEl.value.trim();
+  const desc = descEl.value.trim();
+  if(!url){ alert("Παρακαλώ εισάγετε URL"); return; }
+
+  let cat = catSel.value, newCat = newCatEl.value.trim();
+  if(newCat) cat = newCat;
+
+  if(!categories[cat]){ pushHistory(); categories[cat]=[]; catOrder.push(cat); }
+
+  // εικονίδιο
+  let iconType = iconModeEl.value;
+  let iconValue = null;
+  if(iconType==="builtin"){
+    iconValue = builtinEl.value || "link";
+  }else if(iconType==="upload"){
+    if(iconFileEl.files && iconFileEl.files[0]){
+      iconValue = iconPrevImg.src || null;
+    }else{
+      iconType = "auto";
+    }
+  }else if(iconType==="url"){     // ΝΕΟ mode
+    if(iconUrlEl.value.trim()){
+      iconValue = iconUrlEl.value.trim();
+    }else{
+      iconType = "auto";
+    }
+  }
+
+  pushHistory();
+  const baseObj = { url, name, desc, iconType, iconValue };
+  if(editing){
+    const prev = categories[editing.cat][editing.idx] || {};
+    const updated = { ...baseObj, pinned: !!prev.pinned }; // κρατάμε το pinned
+    categories[editing.cat][editing.idx] = updated;
+  }else{
+    const linkObj = { ...baseObj, pinned:false };
+    dedupeAdd(cat, linkObj);
+  }
+
+  saveData(); render();
+  document.getElementById("modalForm").style.display = "none";
+};
+
+
+// Ενέργειες σε κάρτες/κατηγορίες
+document.addEventListener("click", e => {
+  const target = e.target;
+
+  /* ---------------------------
+     Toggle popup menu
+  --------------------------- */
+  if (target.closest(".menu-btn")) {
+    const btn = target.closest(".menu-btn");
+    const menu = btn.nextElementSibling;
+    // κλείσε όλα τα υπόλοιπα
+    document.querySelectorAll(".menu-popup").forEach(m => {
+      if (m !== menu) m.style.display = "none";
+    });
+    // άνοιξε/κλείσε το συγκεκριμένο
+    menu.style.display = (menu.style.display === "flex" ? "none" : "flex");
+    return;
+  }
+
+  // Κλικ έξω -> κλείνουν όλα τα popup
+  if (!target.closest(".menu-popup")) {
+    document.querySelectorAll(".menu-popup").forEach(m => m.style.display = "none");
+  }
+
+  /* ---------------------------
+     Διαγραφή link
+  --------------------------- */
+  if (target.closest(".delete")) {
+    const c = target.closest(".card");
+    const catName = c.dataset.cat;
+    pushHistory();
+    categories[catName].splice(+c.dataset.idx, 1);
+    if (categories[catName].length === 0) {
+      delete categories[catName];
+      catOrder = catOrder.filter(x => x !== catName);
+    }
+    saveData();
+    render();
+    return;
+  }
+
+  /* ---------------------------
+     Επεξεργασία link
+  --------------------------- */
+  if (target.closest(".edit")) {
+    const c = target.closest(".card");
+    editing = { cat: c.dataset.cat, idx: +c.dataset.idx };
+    const l = categories[editing.cat][editing.idx];
+
+    urlEl.value = l.url;
+    nameEl.value = l.name || "";
+    descEl.value = l.desc || "";
+    catSel.innerHTML = catOrder.map(x =>
+      `<option ${x === editing.cat ? "selected" : ""}>${x}</option>`
+    ).join("");
+    newCatEl.value = "";
+
+    // icon προεπισκόπηση
+    iconModeEl.value = l.iconType || "auto";
+    builtinEl.style.display = iconModeEl.value === "builtin" ? "inline-block" : "none";
+    iconFileEl.style.display = iconModeEl.value === "upload" ? "inline-block" : "none";
+    iconPrev.style.display = "none";
+    if (l.iconType === "builtin") {
+      builtinEl.value = l.iconValue || "link";
+      iconPrevImg.src = builtinToDataUrl(builtinEl.value);
+      iconPrev.style.display = "flex";
+    } else if (l.iconType === "upload" && l.iconValue) {
+      iconPrevImg.src = l.iconValue;
+      iconPrev.style.display = "flex";
+    }
+
+    document.getElementById("modalTitle").innerText = "Επεξεργασία link";
+    document.getElementById("modalForm").style.display = "flex";
+    return;
+  }
+
+  /* ---------------------------
+     Μετονομασία κατηγορίας
+  --------------------------- */
+  if (target.closest(".rename")) {
+    const cat = target.closest(".category").dataset.cat;
+    const newN = prompt("Νέο όνομα:", cat);
+    if (newN && newN !== cat) {
+      pushHistory();
+      categories[newN] = categories[cat];
+      delete categories[cat];
+      catOrder[catOrder.indexOf(cat)] = newN;
+      saveData();
+      render();
+    }
+    return;
+  }
+
+  /* ---------------------------
+     Διαγραφή κατηγορίας
+  --------------------------- */
+  if (target.closest(".delcat")) {
+    const cat = target.closest(".category").dataset.cat;
+    if (confirm("Διαγραφή " + cat + ";")) {
+      pushHistory();
+      delete categories[cat];
+      catOrder = catOrder.filter(c => c !== cat);
+      saveData();
+      render();
+    }
+    return;
+  }
+
+  /* ---------------------------
+     Pin / Unpin
+  --------------------------- */
+  if (target.closest(".pin")) {
+    const card = target.closest(".card");
+    const cat = card.dataset.cat;
+    const idx = +card.dataset.idx;
+    const item = categories[cat][idx];
+    if (!item) return;
+    pushHistory();
+    item.pinned = !item.pinned;
+    saveData();
+    render();
+    return;
+  }
+});
+
+/* ===============================
+   📌 Ελέγχει και συμπιέζει μεγάλες εικόνες
+   =============================== */
+function compressImageIfNeeded(dataUrl, maxWidth = 64, maxHeight = 64, quality = 0.8) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = function() {
+	
+
+      // Αν η εικόνα είναι μικρή, κράτα την ως έχει
+      if (img.width <= maxWidth && img.height <= maxHeight) {
+        resolve(dataUrl);
+        return;
+      }
+
+      // Συμπίεση για μεγάλες εικόνες
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Υπολογισμός νέων διαστάσεων διατηρώντας aspect ratio
+      let width = img.width;
+      let height = img.height;
+      
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      
+      ctx.drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/png', quality));
+    };
+    
+    img.onerror = function() {
+      // Αν αποτύχει το load, επέστρεψε default
+      resolve('assets/default-favicon.png');
+    };
+    
+    img.src = dataUrl;
+  });
+}
+
+/* ===============================
+   📌 Ενημέρωση loadData για έλεγχο εικόνων
+   =============================== */
+const originalLoadData = loadData;
+loadData = function() {
+  originalLoadData();
+  
+  // Έλεγχος και διόρθωση μεγάλων εικόνων
+  Object.keys(categories).forEach(cat => {
+    categories[cat].forEach(link => {
+      if (link.iconType === "upload" && link.iconValue && 
+          link.iconValue.startsWith('data:image') && 
+          link.iconValue.length > 5000) { // Αν είναι μεγάλη εικόνα (>5KB)
+        
+        compressImageIfNeeded(link.iconValue).then(compressed => {
+          link.iconValue = compressed;
+          saveData(); // Αποθήκευση αλλαγών
+        });
+      }
+    });
+  });
+};
+
+/* ===============================
+   📌 Ενημέρωση restore για έλεγχο εικόνων
+   =============================== */
+function safeRestore(data) {
+  // Επεξεργασία όλων των links για συμπίεση εικόνων
+  const processLinks = async () => {
+    for (const cat in data.categories) {
+      for (const link of data.categories[cat]) {
+        if (link.iconType === "upload" && link.iconValue && 
+            link.iconValue.startsWith('data:image')) {
+          
+          // Έλεγχος αν είναι μεγάλη εικόνα
+          if (link.iconValue.length > 5000) {
+            link.iconValue = await compressImageIfNeeded(link.iconValue);
+          }
+        }
+      }
+    }
+    
+    // Εφαρμογή των δεδομένων μετά την επεξεργασία
+    pushHistory();
+    categories = data.categories;
+    catOrder = data.catOrder;
+    
+    if (data.theme) {
+      applyTheme(data.theme);
+      saveTheme(data.theme);
+    }
+    
+    saveData();
+    render();
+    updateUndoBtn();
+  };
+  
+  processLinks();
+}
+
+/* ===============================
+   📌 Αντικατάσταση του restoreAutoBackup
+   =============================== */
+function restoreAutoBackup(index) {
+  const backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
+  
+  if (index < 0 || index >= backups.length) {
+    alert("Μη έγκυρη επιλογή backup!");
+    return;
+  }
+  
+  const backup = backups[index];
+  
+  if (confirm(`Επαναφορά από backup της ${backup.timestamp};\nΘα χάσετε τρέχουσες αλλαγές!`)) {
+    safeRestore(backup);
+    alert(`Επαναφορά ολοκληρώθηκε από backup: ${backup.timestamp}`);
+  }
+}
+
+
+
+/* ===============================
+   📌 Έλεγχος κατά την εκκίνηση
+   =============================== */
+function checkAndCompressExistingImages() {
+  Object.keys(categories).forEach(cat => {
+    categories[cat].forEach(async (link) => {
+      if (link.iconType === "upload" && link.iconValue && 
+          link.iconValue.startsWith('data:image') && 
+          link.iconValue.length > 10000) { // Ειδικά για πολύ μεγάλες εικόνες
+        
+        console.log("Συμπίεση μεγάλης εικόνας σε κατηγορία:", cat);
+        link.iconValue = await compressImageIfNeeded(link.iconValue, 64, 64, 0.7);
+        saveData();
+      }
+    });
+  });
+}
+
+
+
+
+
+/* ===============================
+   📌 Backup & Restore
+   =============================== */
+document.getElementById("backupBtn").onclick=()=>{
+  const blob=new Blob([JSON.stringify({
+    categories,catOrder,theme:getTheme(),version:3
+  },null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="bookmarks_backup.json";
+  a.click();
+};
+
+document.getElementById("restoreBtn").onclick=()=>{
+  const choice = confirm("OK: Επαναφορά από JSON backup\nCancel: Εισαγωγή από HTML σελιδοδείκτες");
+  const inp=document.createElement("input");
+  inp.type="file"; inp.accept = choice ? ".json" : ".html,.htm,.txt";
+  inp.onchange=()=>{
+    const r=new FileReader();
+    r.onload=()=>{
+      if(choice){
+        try{
+          const d=JSON.parse(r.result);
+          if(d.categories && d.catOrder){
+            pushHistory();
+            categories=d.categories;catOrder=d.catOrder;
+            if(d.theme){applyTheme(d.theme);saveTheme(d.theme);}
+            saveData(); render(); updateUndoBtn();
+          } else { alert("Μη έγκυρο JSON."); }
+        }catch{ alert("Μη έγκυρο JSON."); }
+      } else {
+        const merge = confirm("OK: Συγχώνευση (δεν προσθέτει διπλά)\nCancel: Αντικατάσταση");
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(r.result,"text/html");
+        const anchors = Array.from(doc.querySelectorAll("a[href]"));
+        if(anchors.length===0){ alert("Δεν βρέθηκαν links στο HTML."); return; }
+        if(!merge){ pushHistory(); categories={}; catOrder=[]; }
+
+        function closestHeading(el){
+          let cur=el; for(let i=0;i<4 && cur;i++, cur=cur.previousElementSibling){
+            if(/H[1-3]/.test(cur.tagName)) return cur.textContent.trim();
+          }
+          let p=el.parentElement; while(p){
+            const h = p.querySelector("h3,h2,h1"); if(h) return h.textContent.trim();
+            p=p.parentElement;
+          }
+          return "Εισαγωγή";
+        }
+
+        let added=0;
+        anchors.forEach(a=>{
+          let href=a.getAttribute("href")||"";
+          if(!href) return;
+          if(!/^https?:\/\//i.test(href) && !/^www\./i.test(href)) return;
+          const url = normalizeUrl(href);
+          const name = (a.getAttribute("title")||a.textContent||"").trim();
+          const desc = "";
+          const cat = closestHeading(a);
+          if(!(categories[cat])){ categories[cat]=[]; catOrder.push(cat); }
+          const ok = dedupeAdd(cat, {url,name,desc,iconType:"auto",iconValue:null,pinned:false});
+          if(ok) added++;
+        });
+
+        saveData(); render(); updateUndoBtn();
+        alert("Εισαγωγή HTML ολοκληρώθηκε. Προστέθηκαν "+added+" links.");
+      }
+    };
+    r.readAsText(inp.files[0]);
+  };
+  inp.click();
+};
+
+/* ===============================
+   📌 Παλέτα Χρωμάτων
+   =============================== */
+document.getElementById("paletteBtn").onclick=
+  ()=>document.getElementById("paletteModal").style.display="flex";
+document.getElementById("closePalette").onclick=
+  ()=>document.getElementById("paletteModal").style.display="none";
+
+["bg1","bg2","card","text","accent"].forEach(id=>{
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.oninput=e=>{
+    document.documentElement.style.setProperty("--"+id,e.target.value);
+    // update swatch if exists
+    const sw = document.getElementById('swatch-'+id);
+    if(sw) sw.style.background = e.target.value;
+    pushHistory();
+    saveTheme(getTheme());
+  };
+});
+document.getElementById("defaultPalette").onclick=()=>{
+  applyTheme(themeDefault);
+  saveTheme(themeDefault);
+  ["bg1","bg2","card","text","accent"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value = themeDefault[id];
+    const sw = document.getElementById('swatch-'+id);
+    if(sw) sw.style.background = themeDefault[id];
+  });
+  pushHistory();
+};
+
+/* ===============================
+   📌 Undo
+   =============================== */
+document.getElementById("undoBtnTop").onclick=undo;
+
+/* ===============================
+   📌 Drag & Drop (links και κατηγορίες)
+   =============================== */
+let dragSrc=null;
+document.addEventListener("dragstart",e=>{
+  const c=e.target.closest(".card"),
+        cat=e.target.closest(".category");
+  if(c){dragSrc=c;} else if(cat){dragSrc=cat;}
+});
+document.addEventListener("dragover",e=>{
+  if(e.target.closest(".card")||e.target.closest(".category")) e.preventDefault();
+});
+document.addEventListener("drop",e=>{
+  e.preventDefault(); if(!dragSrc) return;
+  const card=e.target.closest(".card"),
+        cat=e.target.closest(".category");
+
+  // Μεταφορά link
+  if(dragSrc.classList.contains("card")){
+    const f=dragSrc.dataset.cat, i=+dragSrc.dataset.idx, l=categories[f][i];
+    pushHistory();
+    categories[f].splice(i,1);
+    if(card && card!==dragSrc){
+      categories[card.dataset.cat].splice(+card.dataset.idx,0,l);
+    }else if(cat){
+      categories[cat.dataset.cat].push(l);
+    }else{
+      categories[f].push(l);
+    }
+    saveData(); render();
+  }
+
+  // Μεταφορά κατηγορίας
+  if(dragSrc.classList.contains("category") && cat){
+    const fi=catOrder.indexOf(dragSrc.dataset.cat),
+          ti=catOrder.indexOf(cat.dataset.cat);
+    pushHistory();
+    catOrder.splice(fi,1);
+    catOrder.splice(ti,0,dragSrc.dataset.cat);
+    saveData(); render();
+  }
+  dragSrc=null;
+});
+
+/* ===============================
+   📌 Θέματα
+=============================== */
+const themes = {
+  dark: { bg1:"#0d1b2a", bg2:"#1b263b", card:"#415a77", text:"#e0e1dd", accent:"#00bcd4" },
+  light: { bg1:"#f0f4f8", bg2:"#ffffff", card:"#e0e7ef", text:"#2c3e50", accent:"#1565c0" },
+  green: { bg1:"#2b2f24", bg2:"#3b4330", card:"#5a6b4c", text:"#f2f5e9", accent:"#a4c639" },
+  brown: { bg1:"#332020", bg2:"#4a2b2b", card:"#663d3d", text:"#faeeee", accent:"#e57373"},
+  purple: { bg1:"#2a1f38", bg2:"#3a2b4d", card:"#513d66", text:"#f5edf9", accent:"#ba68c8" },
+  blue: { bg1:"#102840", bg2:"#16324f", card:"#1e4060", text:"#e3f2fd", accent:"#64b5f6" },
+  orange: { bg1:"#402010", bg2:"#5a2b15", card:"#73381c", text:"#fff3e0", accent:"#ffb74d" },
+  pink: { bg1:"#3d1f2b", bg2:"#522a3d", card:"#66384e", text:"#fce4ec", accent:"#f48fb1" }
+};
+
+function applyTheme(t){
+  for(const [k,v] of Object.entries(t)){
+    document.documentElement.style.setProperty("--"+k, v);
+  }
+}
+
+function getTheme(){
+  const cs = getComputedStyle(document.documentElement);
+  return {
+    bg1: cs.getPropertyValue("--bg1").trim(),
+    bg2: cs.getPropertyValue("--bg2").trim(),
+    card: cs.getPropertyValue("--card").trim(),
+    text: cs.getPropertyValue("--text").trim(),
+    accent: cs.getPropertyValue("--accent").trim()
+  };
+}
+
+function changeTheme(theme) {
+    const root = document.documentElement;
+    const helpBtn = document.getElementById('helpBtn');
+    
+    // Remove existing theme classes
+    root.className = '';
+    
+    // Apply new theme
+    if (theme !== 'default') {
+        root.classList.add(theme + '-theme');
+    }
+    
+    // 🔥 ΔΙΟΡΘΩΜΕΝΟ: Χρήση CSS classes αντί για inline style
+    if (helpBtn) {
+        // Αφαίρεσε όλες τις theme classes
+        helpBtn.classList.remove('default', 'dark', 'light', 'green', 'brown', 'purple', 'blue', 'orange', 'pink');
+        // Πρόσθεσε τη νέα theme class
+        helpBtn.classList.add(theme);
+    }
+    
+    // Save theme preference
+    localStorage.setItem('selectedTheme', theme);
+}
+// αποθήκευση theme (όνομα ή custom)
+function saveTheme(nameOrObj){ 
+  if(typeof nameOrObj === "string"){
+    localStorage.setItem("themeName", nameOrObj);
+    localStorage.removeItem("customTheme");
+  } else {
+    localStorage.setItem("themeName", "custom");
+    localStorage.setItem("customTheme", JSON.stringify(nameOrObj));
+  }
+}
+
+// φόρτωμα αποθηκευμένου θέματος
+function loadTheme(){
+  let name = localStorage.getItem("themeName") || "dark";
+  let t = null;
+
+  if(name === "custom"){
+    t = JSON.parse(localStorage.getItem("customTheme") || "null");
+    if(t) applyTheme(t);
+  } else {
+    t = themes[name] || themes.dark;
+    applyTheme(t);
+  }
+
+  // 🔥 ΝΕΟ: Ενημέρωση help button
+  const helpBtn = document.getElementById('helpBtn');
+  if (helpBtn) {
+    helpBtn.classList.remove('default', 'dark', 'light', 'green', 'brown', 'purple', 'blue', 'orange', 'pink');
+    helpBtn.classList.add(name === 'custom' ? 'default' : name);
+  }
+
+  // ενημέρωση dropdown
+  const sel = document.getElementById("themeSelect");
+  if(sel){
+    if(name === "custom"){
+      if(![...sel.options].some(o => o.value === "custom")){
+        sel.add(new Option("Custom", "custom"));
+      }
+      sel.value = "custom";
+    } else {
+      sel.value = name;
+    }
+  }
+}
+
+// αλλαγή όταν επιλέγεις από το dropdown
+document.getElementById("themeSelect").addEventListener("change", e => {
+  let chosen = e.target.value;
+  if(themes[chosen]){
+    applyTheme(themes[chosen]);
+    saveTheme(chosen);
+    changeTheme(chosen); // 🔥 ΠΡΟΣΘΗΚΗ ΑΥΤΗΣ ΤΗΣ ΓΡΑΜΜΗΣ
+  }
+});
+// κλήση στην εκκίνηση
+loadTheme();
+
+
+/* ===============================
+   📌 Auto-Backup System
+   =============================== */
+
+// Δημιουργία auto-backup κάθε φορά που αποθηκεύονται δεδομένα
+function createAutoBackup() {
+  const backupData = {
+    categories: JSON.parse(JSON.stringify(categories)),
+    catOrder: [...catOrder],
+    theme: getTheme(),
+    timestamp: new Date().toLocaleString('el-GR')
+  };
+  
+  // Λήψη υπαρχόντων backups
+  let backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
+  
+  // Προσθήκη νέου backup
+  backups.unshift(backupData);
+  
+  // Διατήρηση μόνο των 5 πιο πρόσφατων backups
+  if (backups.length > 5) {
+    backups = backups.slice(0, 5);
+  }
+  
+  // Αποθήκευση backups
+  localStorage.setItem("autoBackups", JSON.stringify(backups));
+  
+  console.log("Auto-backup created:", backupData.timestamp);
+}
+
+// Επαναφορά από auto-backup
+
+function restoreAutoBackup(index) {
+  const backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
+  
+  if (index < 0 || index >= backups.length) {
+    alert("Μη έγκυρη επιλογή backup!");
+    return;
+  }
+  
+  const backup = backups[index];
+  
+  if (confirm(`Επαναφορά από backup της ${backup.timestamp}`)) {
+    pushHistory();
+    
+    // ✅ DATA VALIDATION & CLEANUP
+    categories = {};
+    catOrder = [];
+    
+    // Επαλήθευση και καθαρισμός δεδομένων
+    Object.keys(backup.categories || {}).forEach(cat => {
+      categories[cat] = (backup.categories[cat] || []).map(link => ({
+        url: link.url || "",
+        name: link.name || "",
+        desc: link.desc || "",
+        iconType: link.iconType || "auto",
+        iconValue: link.iconValue || null,
+        pinned: !!link.pinned  // εξασφαλίζει boolean
+      }));
+      catOrder.push(cat);
+    });
+    
+    // Optimize εικόνων ΑΜΕΣΑ μετά το restore
+    setTimeout(async () => {
+      await optimizeAllExistingIcons();
+      saveData();
+      render();
+      updateUndoBtn();
+      alert("✅ Επαναφορά ολοκληρώθηκε! Τα εικονίδια βελτιστοποιήθηκαν.");
+    }, 100);
+  }
+}
+
+// Εμφάνιση λίστας auto-backups
+function showAutoBackups() {
+  const backups = JSON.parse(localStorage.getItem("autoBackups") || "[]");
+  if (!backups.length) {
+    alert("Δεν υπάρχει διαθέσιμο auto-backup!");
+    return;
+  }
+
+  let msg = "Διαθέσιμα Auto-Backups:\n\n";
+  backups.forEach((b, i) => {
+    msg += `${i}: ${b.timestamp} (${Object.keys(b.categories).length} κατηγορίες)\n`;
+  });
+  msg += "\nΠληκτρολόγησε 0,1,2,3,4 για να διαλέξεις:";
+
+  const choice = prompt(msg);
+  if (choice !== null && !isNaN(choice)) {
+    restoreAutoBackup(parseInt(choice));
+  }
+}
+
+// Τροποποίηση της saveData για αυτόματο backup
+const originalSaveData = saveData;
+saveData = function() {
+  originalSaveData();
+  createAutoBackup(); // Δημιουργία backup κάθε φορά που αποθηκεύονται δεδομένα
+};
+
+// Σύνδεση του κουμπιού auto-backup
+document.getElementById("autoBackupBtn").addEventListener("click", showAutoBackups);
+
+// Δημιουργία αρχικού backup κατά την εκκίνηση
+setTimeout(createAutoBackup, 1000);
+
+
+
+
+
+/* ===============================
+   📌 ΗΧΗΤΙΚΟ WELCOME ΜΕ ΠΡΩΤΗ ΑΛΛΗΛΕΠΙΔΡΑΣΗ
+   =============================== */
+
+let welcomePlayed = false;
+
+function playWelcomeOnInteraction() {
+  if (welcomePlayed) return;
+  
+  const welcomeSound = document.getElementById('welcomeSound');
+  if (welcomeSound) {
+    // Ένταση 80% - καλό compromise
+    welcomeSound.volume = 0.8;
+    
+    // Προσπάθεια αναπαραγωγής με fallback
+    const playPromise = welcomeSound.play();
+    
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        welcomePlayed = true;
+        console.log('🔊 Ηχητικό welcome played');
+      }).catch(error => {
+        console.log('Αυτόματη αναπαραγωγή απέτυχε, απαιτείται χειροκίνητο κλικ');
+      });
+    }
+  }
+}
+
+// Προσθήκη event listeners για πρώτη αλληλεπίδραση
+window.addEventListener('load', function() {
+  // Περίμενε λίγο και μετά παίξε με το πρώτο click/scroll/touch
+  setTimeout(() => {
+    document.addEventListener('click', playWelcomeOnInteraction, { once: true });
+    document.addEventListener('scroll', playWelcomeOnInteraction, { once: true });
+    document.addEventListener('touchstart', playWelcomeOnInteraction, { once: true });
+    
+    // Fallback: auto-play μετά από 3 δευτερόλεπτα
+    setTimeout(playWelcomeOnInteraction, 3000);
+  }, 1000);
+});
+
+/* ===============================
+   📌 ΕΠΕΞΕΡΓΑΣΙΑ ΥΠΟΤΙΤΛΟΥ ΜΕ DOUBLE-CLICK
+   =============================== */
+
+let currentSubtitle = "Συστεγασμένα Φαρμακεία Νεοκ. & Νικ. Μενεξιάδης & ΣΙΑ Ο.Ε.";
+
+function loadSubtitle() {
+  const savedSubtitle = localStorage.getItem("customSubtitle");
+  if (savedSubtitle) {
+    currentSubtitle = savedSubtitle;
+    updateSubtitleDisplay();
+  }
+}
+
+function saveSubtitle(subtitle) {
+  currentSubtitle = subtitle;
+  localStorage.setItem("customSubtitle", subtitle);
+  updateSubtitleDisplay();
+}
+
+function updateSubtitleDisplay() {
+  const subtitleElement = document.querySelector('.titles h2');
+  if (subtitleElement) {
+    subtitleElement.textContent = currentSubtitle;
+  }
+}
+
+// Προσθήκη double-click event
+document.addEventListener('DOMContentLoaded', function() {
+  const titleWidget = document.getElementById('titleWidget');
+  
+  if (titleWidget) {
+    titleWidget.style.cursor = 'pointer';
+    
+    titleWidget.addEventListener('dblclick', function(e) {
+    e.stopPropagation(); // Σταματά την propagation
+    e.preventDefault(); // Αποφεύγει τυχόν default behavior
+      const newSubtitle = prompt('Αλλαγή υπότιτλου:', currentSubtitle);
+      if (newSubtitle && newSubtitle.trim() !== '') {
+        saveSubtitle(newSubtitle.trim());
+      }
+    });
+  }
+  
+  // Φόρτωση αποθηκευμένου υπότιτλου
+  loadSubtitle();
+});
+loadData(); 
+if(catOrder.length===0){
+  categories={"Εισαγωγή":[]};
+  catOrder=["Εισαγωγή"];
+  saveData();
+}
+render(); updateUndoBtn();
+
+// Help Menu Functionality
+function initHelpMenu() {
+    const helpMenu = document.getElementById('helpMenu');
+    const helpOverlay = document.getElementById('helpOverlay');
+    const closeHelp = document.getElementById('closeHelp');
+    
+    // Create help button if it doesn't exist
+if (!document.getElementById('helpBtn')) {
+    const helpBtn = document.createElement('button');
+    helpBtn.id = 'helpBtn';
+    helpBtn.className = 'nav-btn help-btn default';
+    helpBtn.innerHTML = '❓ Βοήθεια';
+    document.querySelector('.nav-buttons').appendChild(helpBtn);
+    
+    helpBtn.addEventListener('click', showHelpMenu);
+} else {
+    document.getElementById('helpBtn').addEventListener('click', showHelpMenu);
+}
+    
+    // Help menu functions
+    function showHelpMenu() {
+        helpMenu.style.display = 'block';
+        helpOverlay.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+    
+    function hideHelpMenu() {
+        helpMenu.style.display = 'none';
+        helpOverlay.style.display = 'none';
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+    
+    // Event listeners
+    closeHelp.addEventListener('click', hideHelpMenu);
+    helpOverlay.addEventListener('click', hideHelpMenu);
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            hideHelpMenu();
+        }
+    });
+}
+
+// Initialize help menu when page loads
+document.addEventListener('DOMContentLoaded', initHelpMenu);
+
+
+
+// Συνδέει previews με inputs
+document.querySelectorAll("input[type=color]").forEach(input => {
+  const preview = document.getElementById("preview-" + input.id);
+  if (preview) {
+    preview.style.background = input.value;
+
+    // ενημέρωση preview όταν αλλάζει το χρώμα
+    input.addEventListener("input", () => {
+      preview.style.background = input.value;
+    });
+
+    // click στο preview ανοίγει τον picker
+    preview.addEventListener("click", () => input.click());
+
+    // click στο label ανοίγει τον picker
+    const label = document.querySelector("label[for=" + input.id + "]");
+    if (label) {
+      label.addEventListener("click", () => input.click());
+    }
+  }
+});
+
+
+function changeTheme(theme) {
+    const root = document.documentElement;
+    const helpBtn = document.getElementById('helpBtn');
+    
+    console.log('🔄 Αλλαγή theme σε:', theme); // DEBUG
+    console.log('📌 Help button classes πριν:', helpBtn?.className); // DEBUG
+    
+    // Remove existing theme classes
+    root.className = '';
+    
+    // Apply new theme
+    if (theme !== 'default') {
+        root.classList.add(theme + '-theme');
+    }
+    
+    // Ενημέρωση help button
+    if (helpBtn) {
+        helpBtn.classList.remove('default', 'dark', 'light', 'green', 'brown', 'purple', 'blue', 'orange', 'pink');
+        helpBtn.classList.add(theme);
+        console.log('🎨 Help button classes μετά:', helpBtn.className); // DEBUG
+    }
+    
+    // Save theme preference
+    localStorage.setItem('selectedTheme', theme);
+}
+
+// update palette swatches initial
+["bg1","bg2","card","text","accent"].forEach(id=>{
+  const el=document.getElementById(id);
+  const sw=document.getElementById('swatch-'+id);
+  if(el && sw) sw.style.background = el.value || getTheme()[id];
+});
+
+/* ===============================
+   📌 ΡΟΛΟΙ - ΗΜΕΡΟΜΗΝΙΑ
+   =============================== */
+function updateDateTime() {
+  const now = new Date();
+  
+  // Ελληνικά ονόματα ημερών και μηνών
+  const days = ['Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο'];
+  const months = ['Ιανουαρίου', 'Φεβρουαρίου', 'Μαρτίου', 'Απριλίου', 'Μαΐου', 'Ιουνίου', 
+                 'Ιουλίου', 'Αυγούστου', 'Σεπτεμβρίου', 'Οκτωβρίου', 'Νοεμβρίου', 'Δεκεμβρίου'];
+  
+  // Ωρα
+  const time = now.toLocaleTimeString('el-GR', { 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit' 
+  });
+  
+  // Ημερομηνία
+  const dayName = days[now.getDay()];
+  const day = now.getDate();
+  const monthName = months[now.getMonth()];
+  const year = now.getFullYear();
+  
+  const date = `${dayName}, ${day} ${monthName} ${year}`;
+  
+  // Ενημέρωση DOM
+  const timeEl = document.getElementById('currentTime');
+  const dateEl = document.getElementById('currentDate');
+  
+  if (timeEl) timeEl.textContent = time;
+  if (dateEl) dateEl.textContent = date;
+}
+
+// Εκκίνηση ρολογιού
+updateDateTime();
+setInterval(updateDateTime, 1000);
+
+/* ===============================
+   📌 ZUCCARADIO PLAYER - ΔΙΟΡΘΩΜΕΝΟ
+   =============================== */
+
+// Δημιουργία audio element για το ραδιόφωνο
+const radioPlayer = new Audio();
+radioPlayer.preload = "none";
+let isRadioPlaying = false;
+
+// Χειρισμός errors
+radioPlayer.addEventListener('error', function(e) {
+    console.error('Radio error:', e);
+    alert('Σφάλμα στην αναπαραγωγή. Δοκιμάστε ξανά.');
+    resetRadioButton();
+});
+
+radioPlayer.addEventListener('ended', function() {
+    resetRadioButton();
+});
+
+function resetRadioButton() {
+    isRadioPlaying = false;
+    const btn = document.getElementById("zuccaradioBtn");
+    btn.classList.remove("playing");
+    btn.innerHTML = "🎵 Zuccaradio";
+    btn.setAttribute("data-tooltip", "Ακούστε Zuccaradio");
+}
+
+// Συνάρτηση για εναλλαγή play/pause
+function toggleRadio() {
+    const btn = document.getElementById("zuccaradioBtn");
+    
+    if (!isRadioPlaying) {
+        // Start playing
+        console.log("Starting radio...");
+        radioPlayer.src = "https://stream.zuccaradio.com/stream";
+        
+        // Προσθήκη timestamp για να αποφύγουμε caching issues
+        radioPlayer.src += "?t=" + new Date().getTime();
+        
+        radioPlayer.volume = 0.7;
+        
+        const playPromise = radioPlayer.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log("Radio started successfully");
+                isRadioPlaying = true;
+                btn.classList.add("playing");
+                btn.innerHTML = "⏸️ Zuccaradio";
+                btn.setAttribute("data-tooltip", "Παύση Zuccaradio");
+            }).catch(error => {
+                console.error("Play failed:", error);
+                alert("Δεν μπορώ να παίξω το ραδιόφωνο: " + error.message);
+                resetRadioButton();
+            });
+        }
+    } else {
+        // Stop playing
+        console.log("Stopping radio...");
+        radioPlayer.pause();
+        radioPlayer.currentTime = 0;
+        resetRadioButton();
+    }
+}
+
+// Event listener για το κουμπί
+document.getElementById("zuccaradioBtn").addEventListener("click", function(e) {
+    e.preventDefault();
+    toggleRadio();
+});
+
+// Αυτόματη διακοπή όταν παίζει άλλος ήχος
+document.getElementById("welcomeSound").addEventListener("play", function() {
+    if (isRadioPlaying) {
+        console.log("Stopping radio due to welcome sound");
+        toggleRadio();
+    }
+});
+
+// Reset όταν η σελίδα φορτώνει
+window.addEventListener('beforeunload', function() {
+    if (isRadioPlaying) {
+        radioPlayer.pause();
+    }
+});
+
+/* ===============================
+   📌 VOLUME CONTROL WITH TOOLTIP
+   =============================== */
+
+// Δημιουργία volume control με tooltip
+const volumeContainer = document.createElement('div');
+volumeContainer.className = 'volume-container';
+
+const volumeIcon = document.createElement('span');
+volumeIcon.className = 'volume-icon';
+volumeIcon.textContent = '🔊';
+volumeIcon.title = 'Σίγαση/Ενεργοποίηση ήχου';
+
+const volumeControl = document.createElement('input');
+volumeControl.type = 'range';
+volumeControl.className = 'volume-control';
+volumeControl.min = '0';
+volumeControl.max = '1';
+volumeControl.step = '0.1';
+volumeControl.value = '0.7';
+volumeControl.title = 'Ρύθμιση έντασης';
+
+// Tooltip element για volume
+const volumeTooltip = document.createElement('div');
+volumeTooltip.id = 'volumeTooltip';
+
+// Προσθήκη στο container
+volumeContainer.appendChild(volumeIcon);
+volumeContainer.appendChild(volumeControl);
+volumeContainer.appendChild(volumeTooltip);
+
+// Βάλτο δίπλα στο κουμπί - με καλύτερο positioning
+const radioButton = document.getElementById("zuccaradioBtn");
+radioButton.parentNode.insertBefore(volumeContainer, radioButton.nextSibling);
+
+// Event listeners για το tooltip
+volumeControl.addEventListener('input', (e) => {
+    const volume = e.target.value;
+    radioPlayer.volume = volume;
+    
+    // Ενημέρωση tooltip
+    const volumePercent = Math.round(volume * 100);
+    volumeTooltip.textContent = `Ένταση: ${volumePercent}%`;
+    
+    // Show tooltip όταν αλλάζει η ένταση
+    volumeTooltip.style.opacity = '1';
+    clearTimeout(volumeControl.tooltipTimeout);
+    volumeControl.tooltipTimeout = setTimeout(() => {
+        volumeTooltip.style.opacity = '0';
+    }, 1500);
+    
+    // Ενημέρωση volume icon
+    updateVolumeIcon(volume);
+});
+
+volumeControl.addEventListener('mouseenter', () => {
+    const volumePercent = Math.round(volumeControl.value * 100);
+    volumeTooltip.textContent = `Ένταση: ${volumePercent}%`;
+    volumeTooltip.style.opacity = '1';
+});
+
+volumeControl.addEventListener('mouseleave', () => {
+    volumeTooltip.style.opacity = '0';
+});
+
+// Volume icon click για mute/unmute
+volumeIcon.addEventListener('click', () => {
+    // Εναλλαγή mute/unmute
+    if (radioPlayer.volume > 0) {
+        radioPlayer.volume = 0;
+        volumeControl.value = 0;
+        volumeTooltip.textContent = 'Σίγαση';
+    } else {
+        radioPlayer.volume = 0.7;
+        volumeControl.value = 0.7;
+        const volumePercent = Math.round(0.7 * 100);
+        volumeTooltip.textContent = `Ένταση: ${volumePercent}%`;
+    }
+    volumeTooltip.style.opacity = '1';
+    setTimeout(() => volumeTooltip.style.opacity = '0', 1500);
+    updateVolumeIcon(volumeControl.value);
+});
+
+// Συνάρτηση για ενημέρωση volume icon
+function updateVolumeIcon(volume) {
+    if (volume == 0) {
+        volumeIcon.textContent = '🔇';
+    } else if (volume < 0.3) {
+        volumeIcon.textContent = '🔈';
+    } else if (volume < 0.7) {
+        volumeIcon.textContent = '🔉';
+    } else {
+        volumeIcon.textContent = '🔊';
+    }
+}
+
+// Αρχικοποίηση volume icon
+updateVolumeIcon(volumeControl.value);
+
+
+</script>
+</body>
+</html>
