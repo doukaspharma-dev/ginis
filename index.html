@@ -70,6 +70,9 @@
 body {
   margin:0;
   background:linear-gradient(160deg,var(--bg1),var(--bg2));
+  background-size: 100% 100%;      /* Αποφυγή επανάληψης gradient */
+  background-repeat: no-repeat;    /* Αποφυγή tiling */
+  background-attachment: fixed;    /* Σταθερό κατά το scroll */
   color:var(--text);
   font-family:Arial,Helvetica,sans-serif;
   padding-bottom: 70px; /* Προσθήκη padding στο body */
@@ -217,7 +220,6 @@ body:has(footer) .wrap {
 }
 
 
-
 /* -------------------------------------------------
      6. ΚΑΤΗΓΟΡΙΕΣ
   ------------------------------------------------- */
@@ -353,6 +355,49 @@ body:has(footer) .wrap {
     transform: translateY(0);
   }
 }
+
+
+
+  /*background & shadow */
+
+.card {
+  border-radius: 12px;
+  gap: 6px;
+  width: 95%;
+  aspect-ratio: 1/1;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .3s ease;
+  padding: 10px;
+  
+  /* ✨ Soft background & shadow */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(244, 162, 97, 0.08);
+  
+  /* 🌊 Floating animation */
+  animation: fadeInUp 0.6s ease forwards, cardFloat 3s ease-in-out infinite;
+}
+
+/* Animation για απαλό "πλωτό" εφέ */
+@keyframes cardFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+
+
+
+
+
 
 
   /* -------------------------------------------------
@@ -916,10 +961,11 @@ footer {
 header {
   display: flex;
   justify-content: space-between;
+  gap: 30px;
   align-items: center;
   margin-bottom: 10px;
   position: relative;
-  padding: 0 10px 0 50px;
+  padding: 0 10px 0 40px;
 }
 
 /* ===== Στυλ ρολογιού ===== */
@@ -1984,6 +2030,9 @@ footer .btnrow button {
 
 body {
   background: linear-gradient(to bottom, var(--bg1) 0%, var(--bg2) 50%, #2c3e50 100%);
+  background-size: 100% 100%;      /* Αποφυγή επανάληψης gradient */
+  background-repeat: no-repeat;    /* Αποφυγή tiling */
+  background-attachment: fixed;    /* Σταθερό κατά το scroll */
 }
 
 /* =====================================================================
@@ -1999,7 +2048,7 @@ body {
   max-width: 1200px;           /* Μέγιστο πλάτος container */
   
   /* 🔧 ΚΕΝΟ ΑΠΟ ΤΑ ΚΟΥΜΠΙΑ - ΑΛΛΑΞΤΕ ΕΔΩ! */
-  margin: -25px auto 15px auto;  /* 5px πάνω (από κουμπιά), 15px κάτω (μέχρι κατηγορίες) */
+  margin: -35px auto 15px auto;  /* 5px πάνω (από κουμπιά), 15px κάτω (μέχρι κατηγορίες) */
                                /* Αλλάξτε το 5px για να αλλάξετε το κενό από τα κουμπιά */
   
   padding: 0 40px;             /* Αποστάσεις από άκρα σελίδας (αριστερά/δεξιά) */
@@ -2227,7 +2276,7 @@ body {
 .topbar-center {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;  /* Απόσταση ανάμεσα στα κουμπιά */
+  gap: 17px;  /* Απόσταση ανάμεσα στα κουμπιά */
   justify-content: center;
   flex: 1;
   min-width: 0;
@@ -2291,6 +2340,100 @@ body {
 
 
 
+
+/* === AUTO-NAVIGATION VISUAL EFFECTS === */
+
+/* Κύρια κάρτα - ασφαλές positioning */
+.card.autonav-highlight {
+  position: relative;
+}
+
+/* 🟦 Μπλε γραμμή γύρω γύρω - border effect */
+.card.autonav-highlight::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 3px solid #4a90e2;
+  border-radius: 10px;
+  animation: autonavBlueGlow 1s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 🟡 Χρυσή γραμμή στο κάτω μέρος */
+
+.card.autonav-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 10%;
+  right: 10%;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    #ffd700, 
+    #ffa500, 
+    #ffd700, 
+    transparent
+  );
+  border-radius: 2px;
+  animation: autonavGlow 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 🔵 Animation για τη μπλε γραμμή */
+@keyframes autonavBlueGlow {
+  0%, 100% { 
+    opacity: 0.7; 
+    box-shadow: 0 0 12px rgba(74, 144, 226, 0.6);
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1; 
+    box-shadow: 0 0 25px rgba(74, 144, 226, 0.9), 0 0 35px rgba(74, 144, 226, 0.5);
+    transform: scale(1.02);
+  }
+}
+
+/* 🔶 Animation για τη χρυσή γραμμή */
+@keyframes autonavGlow {
+  0%, 100% { 
+    opacity: 1; 
+    box-shadow: 0 0 10px #ffd700; 
+    transform: scaleX(1);
+  }
+  50% { 
+    opacity: 0.8; 
+    box-shadow: 0 0 20px #ffa500; 
+    transform: scaleX(1.1);
+  }
+}
+
+
+
+
+
+
+
+
+.eortologio-container {
+  position: absolute;
+  top: 270px;    /* ← Αλλάξτε αυτό (μικρότερη τιμή = πιο ψηλά) */
+  left: 95px;   /* ← Αλλάξτε αυτό (μεγαλύτερη τιμή = πιο δεξιά) */
+  z-index: 999;
+}
+
+
+
+
+
+
+
+
  </style>
 	
  <!-- Video background -->
@@ -2310,6 +2453,16 @@ body {
     <source src="assets/hello.wav" type="audio/wav">
   </audio>
 
+
+
+<body ondragstart="return false">
+
+
+
+
+
+
+
 <!-- Bubbles  -->
 <div class="bubbles">
   <span></span><span></span><span></span><span></span><span></span>
@@ -2319,11 +2472,18 @@ body {
 <div class="wrap" style="padding-bottom: 10px;">
 
 <header>
+
+
+
+
+
+
+
   <div class="logo-title">
     <img src="assets/logo.png" alt="Logo">
     <div class="titles">
       <h1 class="typewriter">Τα δικά μου χρήσιμα</h1>
-      <h2>Γκίνης Πέτρος - Πριγκηποννήσων 37 Γκύζη.</h2>
+      <h2>Συστεγασμένα Φαρμακεία Νεοκ. & Νικ. Μενεξιάδης & ΣΙΑ Ο.Ε.</h2>
       <h3>Χρήσιμα εργαλεία και σύνδεσμοι</h3>
     </div>
   </div>
@@ -2333,6 +2493,9 @@ body {
     <div class="time" id="currentTime">00:00:00</div>
     <div class="date" id="currentDate">Παρασκευή, 1 Ιανουαρίου</div>
 </div>
+
+
+
 
 </header>
 
@@ -2357,13 +2520,13 @@ body {
    <button id="videoToggle" onclick="toggleVideo()">📹 Video</button>
    <button id="audioButton" onclick="toggleVideoAudio()">🔇 Audio</button>
     <select id="themeSelect">
-      <option value="dark">Dark     🌙</option>
-      <option value="light">Light   ☀️</option>
+      <option value="dark">Dark     🌙</option>      
       <option value="green">Green   🌵</option>
       <option value="brown">Brown   ☕</option>
       <option value="purple">Purple 🪀</option>
 	  <option value="blue">Blue     🌊</option>
       <option value="orange">Orange 🍊</option>
+	  <option value="light">Light   ☀️</option>
       <option value="pink">Pink     🌸</option>
     </select>
   </div>
@@ -2375,6 +2538,24 @@ body {
 <div class="tip-banner-container">
   <div id="tip-banner" class="tip-banner" style="display: none;"></div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <div id="categories"></div>
 </div>
@@ -2462,7 +2643,7 @@ body {
 </div>
 
 <div class="theme-toggle-wrapper">
-  <span class="version">ver. 4.1.0s</span>
+  <span class="version">ver. 4.1.6e</span>
 </div>
 
 <!-- ===== MODAL ΠΑΛΕΤΑΣ ΧΡΩΜΑΤΩΝ ===== -->
@@ -2529,12 +2710,26 @@ body {
     <h2>📚 Οδηγίες Χρήσης</h2>
     
     <div class="help-section">
+	<h3>👍 Μια εφαρμογή πλήρως λειτουργική που περιλαμβάνει:</h3>
+	<ul>
+  <p> ✅ Έξυπνη διαχείριση σελιδοδεικτών</p>
+  <p> ✅ Optimized Drag & Drop performance  </p>
+ <p>  ✅ Post-it σημειώσεις με αυτόματη προσαρμογή χρωμάτων</p>
+ <p>  ✅ Zuccaradio web radio</p>
+  <p> ✅ Welcome sound στο πρώτο κλικ</p>
+  <p> ✅ Πλήρη ελληνικά σχόλια για εύκολη εκμάθηση</p>
+  <p> ✅ Auto-Navigation system με τυχαίο highlight</p>
+   <ul>
+   
+  <li> Για υποστήριξη ή ερωτήσεις, επικοινωνήστε με το Doukas Pharmacy Support®</li>
+	
         <h3>🎴 Πώς να χρησιμοποιήσετε τα shortcuts</h3>
         <p>Για εύκολο χειρισμό των αγαπημένων σας sites</p>
         <ul>
             <li>Χρησιμοποιήστε τα κουμπιά <strong>"Επόμενη"</strong> και <strong>"Προηγούμενη"</strong> για πλοήγηση</li>
         </ul>
     </div>
+	
     
     <div class="help-section">
         <h3>💡 Συμβουλές Μάθησης</h3>
@@ -2598,6 +2793,16 @@ body {
 </div>
 
 
+<div class="eortologio-container">
+<script language='javascript' src='https://www.eortologio.gr/export_code/eortologio.php?fnt_clr=FFFFFF&tbl_wdth=230&tbl_brdrclr=FFCC66&tbl_brd=4&td_bgclr=3333FF&tbl_cellpading=3&tbl_cellspacing=0&tbl_font=Verdana&tbl_font_size=18&tbl_title_font_size=17&tbl_title_bgcolor=FF9900&tbl_title_font_color=0000FF&morfi=2&what_day=123&ttl=0&fr1=0&fr2=0&tbl_title=Μην ξεχάσεις Γιορτάζουν'></script>
+</div>
+
+
+
+
+
+
+
 
 
 
@@ -2632,7 +2837,7 @@ const userTips = [
   "  💡Tip:  📱 Η εφαρμογή είναι responsive - δουλεύει τέλεια και σε κινητά!",
   "  💡Tip:  ⚡ Κάνε click πάνω δεξια σε κατηγορία για να την επεξεργαστείς!",
   "  💡Tip:  🔄 Μετακίνησε κατηγορίες με drag & drop για καλύτερη οργάνωση!",
-  "  💡Tip:  ❤️ Μόλις προστεθεί μια νέα λειτουργία θα ενημερωθείτε αμεσα εδώ !"
+  "  💡Tip:  ❤️ Μόλις προστεθεί μια νέα λειτουργία θα ενημερωθείτε άμεσα εδώ !"
 ];
 
 let currentTipIndex = 0;
@@ -4987,7 +5192,7 @@ document.addEventListener('keydown', function(e) {
    📌 ΕΠΕΞΕΡΓΑΣΙΑ ΥΠΟΤΙΤΛΟΥ ΜΕ DOUBLE-CLICK
    =============================== */
 
-let currentSubtitle = "Γκίνης Πέτρος - Πριγκηποννήσων 37 Γκύζη";
+let currentSubtitle = "Συστεγασμένα Φαρμακεία Νεοκ. & Νικ. Μενεξιάδης & ΣΙΑ Ο.Ε.";
 
 function loadSubtitle() {
   const savedSubtitle = localStorage.getItem("customSubtitle");
@@ -5169,7 +5374,107 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleButton.classList.add('video-on');
         }
     }
+	// 🎯 Auto-Navigation: Εκκίνηση του auto-navigation system
+initAutoNavigation();
 });
+
+
+
+// === AUTO-NAVIGATION SYSTEM - ΔΙΟΡΘΩΜΕΝΟ ===
+// 🔧 ΡΥΘΜΙΣΕΙΣ: IDLE_THRESHOLD=60s, CYCLE_INTERVAL=25s
+
+let autoNavigationEnabled = false;
+let lastHighlightedCard = null;
+let idleTimer = null;
+let autoCycleTimer = null;
+
+// ⏰ Χρονικές Ρυθμίσεις (ΤΑΧΥΤΗΤΑ)
+const IDLE_THRESHOLD = 30000;      // 60 δευτερόλεπτα = 1 λεπτό αδράνεια
+const CYCLE_INTERVAL = 10000;      // 25 δευτερόλεπτα αλλαγή κάρτας
+
+// 🎯 Τυχαία Επισήμανση Κάρτας
+function highlightRandomCard() {
+  const cards = document.querySelectorAll('.card');
+  if (cards.length === 0) return;
+
+  // Αφαίρεση προηγούμενης επισήμανσης
+  if (lastHighlightedCard) {
+    lastHighlightedCard.classList.remove('autonav-highlight');
+  }
+
+  // Επιλογή νέας τυχαίας κάρτας
+  let randomCard;
+  do {
+    randomCard = cards[Math.floor(Math.random() * cards.length)];
+  } while (randomCard === lastHighlightedCard && cards.length > 1);
+
+  // Εφαρμογή νέας επισήμανσης
+  randomCard.classList.add('autonav-highlight');
+  lastHighlightedCard = randomCard;
+}
+
+// 🚀 Idle Detection Setup
+function setupIdleDetection() {
+  // Επαναφορά timer
+  if (idleTimer) clearTimeout(idleTimer);
+
+  // Νέος timer
+  idleTimer = setTimeout(() => {
+    if (!autoNavigationEnabled) {  // 🔧 ΔΙΟΡΘΩΣΗ: Έλεγχος αν δεν είναι ήδη ενεργό
+      autoNavigationEnabled = true;
+      console.log('🎯 Auto-Navigation: Ενεργοποιήθηκε λόγω αδράνειας');
+      startAutoCycle();
+    }
+  }, IDLE_THRESHOLD);
+}
+
+// 🔄 Reset Idle Timer
+function resetIdleTimer() {
+  // 🔧 ΔΙΟΡΘΩΣΗ: Πάντα κάνε reset στον timer
+  setupIdleDetection();
+  
+  // 🔧 ΔΙΟΡΘΩΣΗ: Σταμάτα αν το auto-navigation είναι ενεργό
+  if (autoNavigationEnabled) {
+    console.log('⏸️ Auto-Navigation: Σταμάτησε λόγω δραστηριότητας');
+    autoNavigationEnabled = false;
+    if (autoCycleTimer) clearInterval(autoCycleTimer);
+    if (lastHighlightedCard) {
+      lastHighlightedCard.classList.remove('autonav-highlight');
+      lastHighlightedCard = null;
+    }
+  }
+}
+
+// 🎮 Start Auto Cycle
+function startAutoCycle() {
+  if (autoCycleTimer) clearInterval(autoCycleTimer);
+  
+  highlightRandomCard(); // Πρώτη επισήμανση
+  autoCycleTimer = setInterval(highlightRandomCard, CYCLE_INTERVAL);
+}
+
+// 🎯 Κύρια Συνάρτηση Εκκίνησης
+function initAutoNavigation() {
+  console.log('🚀 Auto-Navigation System: Εκκίνηση...');
+  
+  // Event Listeners για user activity
+  ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
+    document.addEventListener(event, () => {
+      resetIdleTimer();  // 🔧 ΔΙΟΡΘΩΣΗ: Κάλεσε πάντα τη resetIdleTimer
+    }, { passive: true });
+  });
+  
+  
+
+
+// Εκκίνηση idle detection
+  setupIdleDetection();
+  
+  console.log('✅ Auto-Navigation System: Έτοιμο! Περιμένει 60s αδράνεια...');
+}
+
+
+
 /* =====================================================================
    🎉 ΤΕΛΟΣ ΕΦΑΡΜΟΓΗΣ "ΤΑ ΔΙΚΑ ΜΟΥ ΧΡΗΣΙΜΑ"
    =====================================================================
@@ -5180,6 +5485,8 @@ document.addEventListener('DOMContentLoaded', function() {
    ✅ Zuccaradio web radio
    ✅ Welcome sound στο πρώτο κλικ
    ✅ Πλήρη ελληνικά σχόλια για εύκολη συντήρηση
+   ✅ Auto-Navigation system με τυχαίο highlight
+   
    
    Για υποστήριξη ή ερωτήσεις, επικοινωνήστε με το Doukas Pharmacy Support®
    --------------------------------------------------------------------- */
@@ -5188,6 +5495,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 </script>
+
+
 
 </body>
 </html>
