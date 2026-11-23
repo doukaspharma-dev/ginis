@@ -1,0 +1,443 @@
+{
+  "categories": {
+    "Παραγγελίες": [
+      {
+        "url": "https://b2b.pharmaservice.gr/",
+        "name": "Φαρμασερβις",
+        "desc": "Φαρμακαποθήκη",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.pharmacyb2b.gr/index.php?route=account/login",
+        "name": "Pharmacy",
+        "desc": "B2B",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://pharmacyneeds.gr/add-new-listing/?rand=1751957041&rand=1751957041",
+        "name": "PharmacyNeed",
+        "desc": "ελλήψεις",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://login.qr-code-generator.com/",
+        "name": "QR Code",
+        "desc": "GENERATOR",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.reach.novartis.gr/Login.php?ReturnTo=/Index.php",
+        "name": "NOVARTIS",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://b2b.astrazeneca.gr/el/Account/Ecom?ReturnUrl=%2F",
+        "name": "ASTRA ZENECA",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://pharmacyorders.chiesi.gr/index.php?route=account/login",
+        "name": "CIESI",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "http://www.sanofi.gr/",
+        "name": "SANOFI",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://prime.gr.pfizer.com/grpih/el/EUR/login",
+        "name": "PFIZER",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://orders.pharmaservice.gr/members/login.aspx",
+        "name": "orders.pharma",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      }
+    ],
+    "Εργαλεία": [
+      {
+        "url": "https://chat.openai.com/",
+        "name": "ChatGPT",
+        "desc": "AI Συνομιλία",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.instagram.com/",
+        "name": "Instagram",
+        "desc": "Φωτογραφίες",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://my.inalan.gr/",
+        "name": "INA LAN",
+        "desc": "inalan",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.dei.gr/el/e-contract/?gSC=corebrand&gad_source=1&gad_campaignid=11661297050&gbraid=0AAAAACTzdTq2PLQrN5ThvQaCK7_Z-EzEM&gclid=Cj0KCQjwn8XFBhCxARIsAMyH8BsqB022Q-Nfp6RRPl_GI5S3pLZgHJ8YweoFVUkbmoRBRg6GRM12IXoaAtWYEALw_wcB",
+        "name": "ΔΕΗ",
+        "desc": "Ρεύμα",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.google.com/",
+        "name": "GOOGLE",
+        "desc": "Internet",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "http://www.gmail.com/",
+        "name": "GMAIL",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://eservices.yeka.gr/(S(zswwljmnum2g0asovpbx03y3))/login.aspx?ReturnUrl=%2fWTO%2fWorkingTimeOrganizationSearch.aspx",
+        "name": "ΕΡΓΑΝΗ",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://fsa.gr/",
+        "name": "FSA(ΦΑΡΜΑΚΕΥΤ",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://myaccount.epsilonnet.gr/",
+        "name": "EPSILON DIGIT",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      }
+    ],
+    "ΕΟΠΥΥ & Ταμεία": [
+      {
+        "url": "https://www.eopyykmes.gr/",
+        "name": "ΕΟΠΥΥ ΚMEΣ",
+        "desc": "KMES",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.eopyy.gov.gr/el/eservices/edapy/",
+        "name": "ΕΟΠΥΥ",
+        "desc": "ΕΔΑΠΥ",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.galinos.gr/web/drugs/main/substances/risperidone/usage",
+        "name": "Γαληνός",
+        "desc": "Γαληνός - Δραστ",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://eservices.eopyy.gov.gr/eDAPYMaterial/faces/login.xhtml;eDAPYMaterialID=rBJLyx7QdJ67FQc0njk3VbRyLDLrQnZWlwTHT2Qsc4VnxVBGTSwQ!-1330848710",
+        "name": "E-DAPY",
+        "desc": "Αναλώσιμα",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://fyk.eopyy.gov.gr/",
+        "name": "ΕΟΠΥΥ - ΦΥΚ",
+        "desc": "ΦΥΚ",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://personaldoctors.eopyy.gov.gr/App",
+        "name": "Doctors",
+        "desc": "Πρωσοπικός Γιατ",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://old.eof.gr/web/guest/home",
+        "name": "ΕΟΦ",
+        "desc": "Φάρμακα",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.e-prescription.gr/portal/",
+        "name": "ΣΥΝΤΑΓΕΣ",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.e-syntagografisi.gr/p-rv/p",
+        "name": "ΡΑΝΤΕΒΟΥ",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.idika.org.gr/EfkaServices/Default.aspx",
+        "name": "E Φ Κ Α",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      }
+    ],
+    "Τράπεζες": [
+      {
+        "url": "https://www.ebanking.piraeusbank.gr/sites/corporate/el/Pages/default.aspx",
+        "name": "WinBank",
+        "desc": "Πειραιώς",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://ibank.nbg.gr/identity/login?ReturnUrl=https:%2F%2Fibank.nbg.gr%2Fidentity%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3DECE343FC-EE83-430C-97DA-7BB07764390F%26redirect_uri%3Dhttps%253A%252F%252Fibank.nbg.gr%252Fweb%252F%26response_type%3Dcode%26scope%3Dopenid%2520profile%2520ibank_profile%2520ibank-proxy-api-v1%26code_challenge%3DR4UZbIg77NyG6BHuFyE0adbrBFXL6ed7TZWzVpHDIx4%26code_challenge_method%3DS256%26response_mode%3Dform_post%26nonce%3D638920836991860314.NTEyNWU2NjktMTBhNS00NTc4LWFhZWUtY2VkNTRkOTQzOWZhNDc3M2UyNDItZDAyNi00MDlhLWFlZTYtNDg0YzNhMTIyMmZk%26state%3DCfDJ8DmoYMVVaL9IsXv25-9xCq3oTTs9ej1ChEIqRzQYTNpFwZ6nflXik_U56PrboAisFFwtUubqKdpLYFzMbYlKaysnfTUK0ZVDy0Kp0Ts0wSJjq7Rdw5B7h3vBH87yXugo7SvPaFHjQvXMbRR6ux9c5wPBdifJTRM4YR46_GbVuR34dcjXVvb_rLaho6ClrQxO3E5Q6FZwQlkifU5EbAt1tQJvzpuMO8bXxNPGI3xgkq4t2egS-USic8rzZaL2LYdcieOK4AOC9ngu75ICtmsL5XNmdHs2fcwW-GeF4cl-rMQeOAhb62l-u22umPIG28s4GirD_6ZCAl04H3S3YWI0MSnSQoaHLam_sSEkNKRQmrZJ%26x-client-SKU%3DID_NET8_0%26x-client-ver%3D7.1.2.0&loginType=Corporate",
+        "name": "NBG.GR",
+        "desc": "Εθνική",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.alpha.gr/",
+        "name": "ALPHA",
+        "desc": "Alpha Bank",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://ebanking.eurobank.gr/#/login",
+        "name": "EUROBANK",
+        "desc": "Eurobank",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      }
+    ],
+    "Ειδήσεις": [
+      {
+        "url": "https://www.ertnews.gr/live-tv/",
+        "name": "ERT",
+        "desc": "Ert News",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.cnn.com/",
+        "name": "CNN",
+        "desc": "Διεθνείς Ειδήσε",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.megatv.com/live/",
+        "name": "MEGA",
+        "desc": "Mega TV",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.protothema.gr/",
+        "name": "Πρώτο Θέμα",
+        "desc": "Ειδήσεις",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.political.gr/political-29-08-25/",
+        "name": "Politikal",
+        "desc": "Politikal.gr",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.naftemporiki.gr/",
+        "name": "Ναυτεμπορική",
+        "desc": "Εφημερίδα",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.skai.gr/tv/live",
+        "name": "Σκαι",
+        "desc": "Σκαι Τηλεόραση",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.fsa-platforma.gr/fsa/Farmks/efimeries",
+        "name": "ΕΦΗΜΕΡΙΕΣ",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      }
+    ],
+    "Ψυχαγωγία": [
+      {
+        "url": "https://www.netflix.com/",
+        "name": "Netflix",
+        "desc": "Ταινίες & Σειρέ",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.spotify.com/",
+        "name": "Spotify",
+        "desc": "Μουσική",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.disneyplus.com/",
+        "name": "Disney+",
+        "desc": "Ταινίες & Σειρέ",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://live24.gr/radio.jsp?aid=1",
+        "name": "LIVE 24",
+        "desc": "Radio",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      },
+      {
+        "url": "https://www.facebook.com/",
+        "name": "facebook",
+        "desc": "",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      }
+    ],
+    "DELIVERY": [
+      {
+        "url": "https://merchant.wolt.com/venue/64ad2655b64e113482e2fad9/menu-editor/65d60825c661589d064dbc1f",
+        "name": "WOLT",
+        "desc": "Φαρμακείο Μενεξ",
+        "iconType": "auto",
+        "iconValue": null,
+        "pinned": false
+      }
+    ]
+  },
+  "catOrder": [
+    "Παραγγελίες",
+    "Εργαλεία",
+    "ΕΟΠΥΥ & Ταμεία",
+    "Τράπεζες",
+    "Ειδήσεις",
+    "Ψυχαγωγία",
+    "DELIVERY"
+  ],
+  "categoryColors": {
+    "Παραγγελίες": {
+      "bg": "rgba(244, 162, 97, 0.2)",
+      "border": "rgba(244, 162, 97, 0.3)"
+    },
+    "Εργαλεία": {
+      "bg": "rgba(244, 162, 97, 0.2)",
+      "border": "rgba(244, 162, 97, 0.3)"
+    },
+    "ΕΟΠΥΥ & Ταμεία": {
+      "bg": "rgba(156, 39, 176, 0.2)",
+      "border": "rgba(156, 39, 176, 0.3)"
+    },
+    "Τράπεζες": {
+      "bg": "rgba(161, 255, 10, 0.2)",
+      "border": "rgba(161, 255, 10, 0.3)"
+    },
+    "Ειδήσεις": {
+      "bg": "rgba(42, 157, 244, 0.2)",
+      "border": "rgba(42, 157, 244, 0.3)"
+    },
+    "Ψυχαγωγία": {
+      "bg": "rgba(255, 215, 0, 0.2)",
+      "border": "rgba(255, 215, 0, 0.3)"
+    },
+    "DELIVERY": {
+      "bg": "rgba(255, 215, 0, 0.2)",
+      "border": "rgba(255, 215, 0, 0.3)"
+    }
+  },
+  "theme": {
+    "bg1": "#0d1b2a",
+    "bg2": "#1b263b",
+    "card": "#415a77",
+    "text": "#e0e1dd",
+    "accent": "#00bcd4"
+  },
+  "postitNotes": [],
+  "version": 5,
+  "exportedAt": "2026-11-23T18:29:39.255Z"
+}
